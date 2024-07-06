@@ -1,12 +1,20 @@
-import SignIn from './components/SignIn/Signin.jsx';
-import {Button, Logo} from './components/components.js';
+import { Layout } from './components/components.js';
+import { BrowserRouter, Routes, Route} from "react-router-dom";
+import {Home, NotFound, CheckUserRoute} from "./Pages/pages.js";
+
 function App() {
+  
   return (
-    <div className="bg-[#131314] h-screen flex justify-between py-4 px-8">
-      <Logo />
-      <Button />
-      <SignIn />
-    </div>
+    <BrowserRouter>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route element={<CheckUserRoute />}>
+          <Route path="" element={<Home />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Route>
+    </Routes>
+    </BrowserRouter>
   )
 }
 
