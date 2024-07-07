@@ -9,9 +9,9 @@ function Layout() {
   return (
     // will add store here
     <Provider store={store}>
-    <div className='flex flex-col justify-between min-h-screen textwhi'>
+    <div className='flex flex-col justify-between h-screen'>
       <Header />
-      <div className='bg-[#131314] h-screen'>
+      <div className='bg-[#131314] h-full overflow-scroll text-white'>
         <Outlet />
       </div>
       <Footer />
