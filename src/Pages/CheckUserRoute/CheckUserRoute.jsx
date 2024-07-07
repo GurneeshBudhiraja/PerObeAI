@@ -2,7 +2,7 @@ import React from 'react';
 import { Outlet } from 'react-router-dom';
 import {auth} from "../../Firebase/firebaseServices.js";
 import { useDispatch } from 'react-redux';
-import { setUser } from '../../store/authSlice/authSlice.js';
+import { setUser, logoutUser } from '../../store/authSlice/authSlice.js';
 
 
 function CheckUserRoute() {
@@ -11,6 +11,9 @@ function CheckUserRoute() {
     const retrieveUser = async () => {
       try {
         const {displayName:user,email,uid} = await auth.currentUser();
+        if([user,email,uid].some((element)=>!element)){
+          dispatch(logoutUser());
+        }
         dispatch(setUser({user,email,uid}));
       } catch (error) {
         console.log(error.message);
