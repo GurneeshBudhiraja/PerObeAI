@@ -29,7 +29,7 @@ class FirebaseAuth {
          }
        });
      } catch (error) {
-       reject(error);
+       reject(error.message);
      }
    });
  };
@@ -39,7 +39,7 @@ class FirebaseAuth {
     try {
       return signOut(this.auth);
     } catch (error) {
-      return { error: error.message };
+      throw new Error(error.message);
     }
   };
 
@@ -51,7 +51,7 @@ class FirebaseAuth {
       });
       return signInWithPopup(this.auth, this.provider);
     } catch (error) {
-      return { error: error.message };
+      throw new Error(error.message);
     }
   };
 }

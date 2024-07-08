@@ -12,6 +12,7 @@ function Home() {
     try {
       setIsError("");
       // checking if the user has uploaded any images or not
+      if(!uid) throw new Error("User not logged in");
       if(uploadedImages.length === 0){
         throw new Error("Please upload images to submit.");
       }

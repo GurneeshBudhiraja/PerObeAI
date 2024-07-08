@@ -17,13 +17,14 @@ export const authSlice = createSlice({
    state.email = action.payload.email;
    state.uid = action.payload.uid;
    state.isAuth = true; 
+  },
+  logoutUser:(state)=>{
+    state.uid = null;
+    state.user = null;
+    state.email = null;
+    state.isAuth = false;
   }
- },
- logoutUser:(state)=>{
-  state.user = null;
-  state.email = null;
-  state.isAuth = false;
- }
+}
 });
 export const {setUser,logoutUser} = authSlice.actions;
 export default authSlice.reducer;
