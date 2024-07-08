@@ -1,3 +1,3 @@
 import auth from "./Auth.js";
-
-export {auth};
+import storage from "./Storage.js";
+export {auth, storage};

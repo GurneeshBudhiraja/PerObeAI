@@ -1,6 +1,6 @@
 import { Layout } from './components/components.js';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
-import {Home, NotFound, CheckUserRoute} from "./Pages/pages.js";
+import {Home, NotFound, CheckUserRoute, ShowPictures} from "./Pages/pages.js";
 
 function App() {
   
@@ -10,6 +10,7 @@ function App() {
       <Route path="/" element={<Layout />}>
         <Route element={<CheckUserRoute />}>
           <Route path="" element={<Home />} />
+          <Route path="/showpictures" element={<ShowPictures />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Route>

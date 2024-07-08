@@ -1,7 +1,7 @@
 import React from 'react'
 import AddCircleIcon from "../../assets/add-circle-stroke-rounded.jsx"
 
-function FileInputButton({onFileChange, className=""}) {
+function FileInputButton({className="",...props}) {
   const inputRef = React.useRef(null);
   function buttonClicked(){
     inputRef.current.click();
@@ -14,8 +14,8 @@ function FileInputButton({onFileChange, className=""}) {
     type='file'
     accept='image/*'
     multiple
-    onChange={onFileChange}
     hidden={true}
+    {...props}
     />
     </>
   )
