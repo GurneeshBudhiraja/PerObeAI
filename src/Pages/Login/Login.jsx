@@ -1,9 +1,12 @@
-heimport { auth } from "../../Firebase/firebaseServices.js";
+import React from 'react'
+import  GoogleButton from "react-google-button";
+import {auth} from "../../Firebase/firebaseServices.js";
 import {useDispatch} from "react-redux";
 import { setUser } from "../../store/authSlice/authSlice.js";
-const SignIn = () => {
+import { useNavigate } from 'react-router-dom';
+function Login() {
+  const navigate = useNavigate();
   const dispatch = useDispatch();
-
   const logGoogleUser = async () => {
     try {
       const result = await auth.logInWithGoogle();
@@ -13,15 +16,16 @@ const SignIn = () => {
       } 
       dispatch(setUser({user,email,uid}));
       console.log(result);
+      navigate('/');
     } catch (error) {
       console.log(error.message);
     }
   };
   return (
-    <div>
-      <button onClick={logGoogleUser} className="h-fit bg-gradient-to-r from-blue-200 to-blue-400 hover:from-blue-400 hover:to-blue-500 
-    px-2 py-3 rounded-3xl">Sign In With Google</button>
-    </div>
-  );
-};
-export default SignIn;
+    <>
+      <GoogleButton onClick={logGoogleUser} />
+    </>
+  )
+}
+
+export default Login

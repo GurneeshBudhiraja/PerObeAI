@@ -1,32 +1,71 @@
-import React from 'react'
-import {Logo, SignIn, Button} from "../components.js";
-import { useSelector,useDispatch } from 'react-redux';
-import {logoutUser} from "../../store/authSlice/authSlice.js";
-import {auth} from "../../Firebase/firebaseServices.js";
-
+import React, { useId } from "react";
+import {Link} from "react-router-dom";
+import {useSelector, useDispatch} from "react-redux";
+import { logoutUser } from "../../store/authSlice/authSlice.js";
+import { Logo, Button } from "../components.js";
+import { v4 as uuidv4 } from "uuid";
+import {auth} from "../../Firebase/firebaseServices.js"; 
 function Header() {
-  const [isError, setIsError] = React.useState("");
-  const {user,email,uid,isAuth}= useSelector((state) => state.auth);
+  const isAuth = useSelector((state)=>state.auth.isAuth);
   const dispatch = useDispatch();
+  const options=[
+    {
+      name: "Sign Up",
+      link: "/signup",
+      show: isAuth?false:true,
+    },
+    {
+      name: "Log In",
+      link: "/login",
+      show: isAuth?false:true,
+    },
+    {
+      name: "Log Out",
+      link: "/",
+      show: isAuth?true:false,
+      action: "logOutUser",
+    },
+  ];
 
-  async function signOut(){
-    try {
-      setIsError(""); // resetting the error state
-      await auth.logOut();
-      dispatch(logoutUser());
-    } catch (error) {
-      setIsError(error.message);
-      console.log(error.message);
-    }
-  }
   return (
-     <div className="bg-[#131314] flex justify-between py-4 px-8 border-b-4 border-white">
+    <div className="bg-black border-b-2 border-blue-400 text-white flex justify-between items-center ">
       <Logo />
-      <div>
-        {isAuth?<h1 className='text-white'>Welcome back, {user}</h1>:<SignIn />}
-        {isAuth && <Button  buttonText="Log out  " className="h-fit bg-gradient-to-r from-blue-200 to-blue-400 hover:from-blue-400 hover:to-blue-500 px-2 py-3 rounded-3xl" onClick={signOut} />}
-      </div>
-   </div>
+      <ul className="flex gap-4">
+        {
+          options.map((option)=>{
+            const id = uuidv4();
+            if(option.show === true){
+              return (
+                <li key={id}>
+                <Link to={option.link} className="text-white">
+                  <Button buttonText={option.name} 
+                  onClick={
+                    option.action && 
+                    (async ()=>{
+                      try {
+                        await auth.logOut();
+                      } catch (error) {
+                        console.log(error.message);
+                      } finally{
+                        dispatch(logoutUser());
+                        setTimeout(()=>{
+                          window.location.reload(); // reload the page
+                        },1000);
+                      }
+                    })
+                  }
+                  
+                  />
+                </Link>
+              </li>
+            )
+          }
+          })
+        }
+
+      </ul>
+
+    </div>
   )
 }
 

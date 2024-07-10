@@ -1,6 +1,6 @@
-import { Layout } from './components/components.js';
+import { Layout,IsAuthenticate } from './components/components.js';
 import { BrowserRouter, Routes, Route} from "react-router-dom";
-import {Home, NotFound, CheckUserRoute, ShowPictures} from "./Pages/pages.js";
+import {Home, NotFound, CheckUserRoute, ShowPictures, Login, SingUp} from "./Pages/pages.js";
 
 function App() {
   
@@ -8,6 +8,10 @@ function App() {
     <BrowserRouter>
     <Routes>
       <Route path="/" element={<Layout />}>
+        <Route element={<IsAuthenticate />}>
+          <Route path="/login" element={<Login />} />
+          <Route path="/signup" element={<SingUp />} />
+        </Route>
         <Route element={<CheckUserRoute />}>
           <Route path="" element={<Home />} />
           <Route path="/showpictures" element={<ShowPictures />} />
