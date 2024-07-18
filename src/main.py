@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from controllers import gemini_router
+from routers import images_router
 
 app = FastAPI()
 
@@ -21,11 +21,11 @@ app.add_middleware(
 def read_root():
   return {"Hello": "World"}
 
-app.include_router(gemini_router.router)
+app.include_router(images_router.router)
 
 
 if __name__=="__main__":
-  uvicorn.run("main:app", host="127.0.0.1", port=3000, reload=True)
+  uvicorn.run("main:app", host="127.0.0.1", port=3500, reload=True)
 
 
 
