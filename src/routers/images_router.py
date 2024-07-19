@@ -16,7 +16,6 @@ def create_file(files_url: list[dict]):
     for file_url in files_url:
       tag = images._get_cloth_tag(file_url["url"])["tag"]
       cloth_tags_resp.append({"url":file_url["url"],"tag":tag})
-    return cloth_tags_resp
     for i in cloth_tags_resp:
       if i["tag"]=="upperwear":
         upperwear.append(i)
