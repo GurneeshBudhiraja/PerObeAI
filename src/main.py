@@ -25,7 +25,7 @@ app.include_router(images_router.router)
 
 
 if __name__=="__main__":
-  uvicorn.run("main:app", host="127.0.0.1", port=3500, reload=True)
+  uvicorn.run("main:app", host="127.0.0.1", port=3523, reload=True)
 
 
 
