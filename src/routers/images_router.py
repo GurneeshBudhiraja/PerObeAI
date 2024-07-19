@@ -3,7 +3,7 @@ from fastapi.responses import FileResponse, JSONResponse
 from typing import Annotated
 from utils import utils
 import json
-from langchain_functions.images import images
+from langchain_utils_function.images import images
 router = APIRouter( prefix="/api/web/v1/images", tags=["images"] )
 
 # endpoint for separating upperwear and lowerwear images
