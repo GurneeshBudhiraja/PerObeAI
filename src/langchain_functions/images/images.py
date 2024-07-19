@@ -18,7 +18,7 @@ def _get_cloth_tag(cloth_url:str):
         
         # Define a Pydantic model to parse the model's output
         class Text(BaseModel):
-            tag: str = Field(title="Tags",description="""Your job is to assign a tag to the image. If the image has a clothing item that is worn on the upper part of the body, assign the tag 'upperwear'. If the image has a clothing item that is worn on the lower part of the body, assign the tag 'lowerwear'. If the image has a clothing item that is not related to the above two categories, assign the tag 'other'.""")
+            tag: str = Field(title="Tags",description="""Your job is to assign a tag to the image. If the image has a clothing item that is worn on the upper part of the body, assign the tag 'upperwear'. If the image has a clothing item that is worn on the lower part of the body, assign the tag 'lowerwear'. If the image has a clothing item that is not related to the above two categories, assign the tag 'other'. You will also give the tag of 'other' to the clothing items that are accessories of some kind like bags, belts, ties, shoes of any type, etc.""")
 
         parser = JsonOutputParser(pydantic_object=Text)
 
