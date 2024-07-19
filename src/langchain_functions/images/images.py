@@ -1,8 +1,9 @@
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.pydantic_v1 import BaseModel, Field
-from langchain_google_genai import ChatGoogleGenerativeAI
-import base64, requests
+from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
+from langchain_google_vertexai import GoogleGenerativeAIEmbeddings
+import base64, requests,os
 from dotenv import load_dotenv
 
 # loading the environment variables
@@ -14,7 +15,7 @@ def _get_cloth_tag(cloth_url:str):
         image_data = base64.b64encode(requests.get(cloth_url).content).decode("utf-8")
         if not image_data:
             raise Exception("Error in fetching image data")
-        model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",transport="grpc")
+        model = ChatGoogleGenerativeAI(model="gemini-1.5-pro",transport="grpc")
         
         # Define a Pydantic model to parse the model's output
         class Text(BaseModel):
@@ -27,11 +28,10 @@ def _get_cloth_tag(cloth_url:str):
             ("human", [
                 {
                     "type": "image_url",
-                    "image_url": {"url":f"data:image/jpeg;base64,{image_data}"},
+                    "image_url": {"url":f"data:image/jpeg;base64,{image_data}"}
                 },
             ]),
         ])
-
         chain = prompt | model | parser
 
         # Run the chain and print the result
@@ -47,5 +47,13 @@ def _get_cloth_tag(cloth_url:str):
         return {"error":e}
     
 
+def _get_cloth_emebeddings(coth_links_list:list[dict]|None=None):
+    try:
+        pass
+    except Exception as e:
+        print("Error in _get_cloth_emebeddings: ",e)
+        print({"error":e})
+
 if __name__ == "__main__":
-    print(_get_cloth_tag("https://firebasestorage.googleapis.com/v0/b/perobeai-c5788.appspot.com/o/SsJbrxuuM2eujS1WurI54FAMj9R2%2FScreenshot%202024-07-18%20at%209fbf3e416-5641-4978-8219-fa6ba5b5e81c.00?alt=media&token=a591e522-125c-4a36-b9cc-82ed825a9f54"))
+    # print(_get_cloth_tag("https://firebasestorage.googleapis.com/v0/b/perobeai-c5788.appspot.com/o/SsJbrxuuM2eujS1WurI54FAMj9R2%2FScreenshot%202024-07-18%20at%209fbf3e416-5641-4978-8219-fa6ba5b5e81c.00?alt=media&token=a591e522-125c-4a36-b9cc-82ed825a9f54"))
+    _get_cloth_emebeddings()
