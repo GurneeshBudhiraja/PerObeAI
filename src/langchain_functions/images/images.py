@@ -8,17 +8,17 @@ from dotenv import load_dotenv
 # loading the environment variables
 load_dotenv()
 
-
-# give the tags based on the clothing item
+# assign the tags based on the clothing item
 def _get_cloth_tag(cloth_url:str):
     try:
         image_data = base64.b64encode(requests.get(cloth_url).content).decode("utf-8")
         if not image_data:
             raise Exception("Error in fetching image data")
         model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",transport="grpc")
+        
         # Define a Pydantic model to parse the model's output
         class Text(BaseModel):
-            tag: str = Field(title="Tags",description="Give a tag to an image either upperwear or lowerwear depending on the clothing item shown in the image. If the image does not contain a piece of clothing then give the tag as 'null'.")
+            tag: str = Field(title="Tags",description="""Your job is to assign a tag to the image. If the image has a clothing item that is worn on the upper part of the body, assign the tag 'upperwear'. If the image has a clothing item that is worn on the lower part of the body, assign the tag 'lowerwear'. If the image has a clothing item that is not related to the above two categories, assign the tag 'other'.""")
 
         parser = JsonOutputParser(pydantic_object=Text)
 
@@ -36,15 +36,16 @@ def _get_cloth_tag(cloth_url:str):
 
         # Run the chain and print the result
         print("Running the chain...")
-        tag_chain_resp= (chain.invoke({
+        tag_assign_chain_resp= (chain.invoke({
             "language": "English",
             "format_instructions": parser.get_format_instructions(),
         }))
         print("Chain completed.")
-        return tag_chain_resp
+        return tag_assign_chain_resp
     except Exception as e:
+        print("Error in _get_cloth_tag: ",e)
         return {"error":e}
     
 
 if __name__ == "__main__":
-    print("images.py")
+    print(_get_cloth_tag("https://firebasestorage.googleapis.com/v0/b/perobeai-c5788.appspot.com/o/SsJbrxuuM2eujS1WurI54FAMj9R2%2FScreenshot%202024-07-18%20at%209fbf3e416-5641-4978-8219-fa6ba5b5e81c.00?alt=media&token=a591e522-125c-4a36-b9cc-82ed825a9f54"))
