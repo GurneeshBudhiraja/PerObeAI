@@ -15,13 +15,13 @@ def _get_cloth_tag(cloth_url:str):
         image_data = base64.b64encode(requests.get(cloth_url).content).decode("utf-8")
         if not image_data:
             raise Exception("Error in fetching image data")
-        model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",transport="grpc")
+        model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",temperature=0.45,transport="grpc")
         
         # Define a Pydantic model to parse the model's output
         class Text(BaseModel):
             tag: str = Field(title="Tags",description="""Give a tag to the clothing item based on the image provided. The tags can be 'upperwear', 'lowerwear', 'null'. Give the tag upperwear if the image is of an upperwear item, lowerwear if the image is of a lowerwear item, and null if the image is not of any clothing item.""")
-            brief_description: str = Field(title="Brief Description",description=f"Give a brief description of the clothing item in the image provided in 300 words mentioning all the details of the clothing item. The details should include the color, patter, type of clothing item, ideal weather/temperature to wear the clothing item, the occasion to wear the clothing item, material and feel of the item, is it a casual or formal wear, and any extra details that you think are important for the model to pair the clothing item with other items. ")
-            blind_feel:str = Field(title="Blind Description",description="Give a description to the image considering that the person is blind. Guide the blind person how this clothing item feels like mentioning the pattern, texture, material, and feel of the clothing item.")
+            brief_description: str = Field(title="Brief Description",description=f"Give a brief description of the clothing item in the image provided in no more than 300 words mentioning all the details of the clothing item. The details should include the color, patter, type of clothing item, ideal weather/temperature to wear the clothing item, the occasion to wear the clothing item, material and feel of the item, is it a casual or formal wear, and any extra details that you think are important for the model to pair the clothing item with other items. Make sure to add some unique datapoints from the image that would help to understand the clothing item better.")
+            # blind_feel:str = Field(title="Blind Description",description="Give a description to the image considering that the person is blind in no more than 30 words. Guide the blind person how this clothing item feels like mentioning the pattern, texture, material, and feel of the clothing item.")
 
         parser = JsonOutputParser(pydantic_object=Text)
 
