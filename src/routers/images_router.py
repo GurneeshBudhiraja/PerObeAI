@@ -8,20 +8,14 @@ router = APIRouter( prefix="/api/web/v1/images", tags=["images"] )
 
 # endpoint for separating upperwear and lowerwear images
 @router.post("/differentiate")
-def create_file(files_url: list[dict]):
+def create_file(files_url: list[dict])-> dict:
   try:
-    cloth_tags_resp = []
-    upperwear=[] ; lowerwear=[]
+    clothes_description = dict()
     # get the tags for the images uploaded by the user
     for file_url in files_url:
-      tag = images._get_cloth_tag(file_url["url"])["tag"]
-      cloth_tags_resp.append({"url":file_url["url"],"tag":tag})
-    for i in cloth_tags_resp:
-      if i["tag"]=="upperwear":
-        upperwear.append(i)
-      elif i["tag"]=="lowerwear":
-        lowerwear.append(i)
-    return (upperwear,lowerwear)
+      cloth_description = images._get_cloth_tag(file_url["url"])
+      clothes_description[file_url["url"]] = cloth_description
+    return clothes_description
 
   except Exception as e:
     raise HTTPException(status_code=500, detail=str("Error: /web/differentiate: " + str(e)))

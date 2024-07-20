@@ -15,11 +15,13 @@ def _get_cloth_tag(cloth_url:str):
         image_data = base64.b64encode(requests.get(cloth_url).content).decode("utf-8")
         if not image_data:
             raise Exception("Error in fetching image data")
-        model = ChatGoogleGenerativeAI(model="gemini-1.5-pro",transport="grpc")
+        model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",transport="grpc")
         
         # Define a Pydantic model to parse the model's output
         class Text(BaseModel):
-            tag: str = Field(title="Tags",description="""Your job is to assign a tag to the image. If the image has a clothing item that is worn on the upper part of the body, assign the tag 'upperwear'. If the image has a clothing item that is worn on the lower part of the body, assign the tag 'lowerwear'. If the image has a clothing item that is not related to the above two categories, assign the tag 'other'. You will also give the tag of 'other' to the clothing items that are accessories of some kind like bags, belts, ties, shoes of any type, etc.""")
+            tag: str = Field(title="Tags",description="""Give a tag to the clothing item based on the image provided. The tags can be 'upperwear', 'lowerwear', 'null'. Give the tag upperwear if the image is of an upperwear item, lowerwear if the image is of a lowerwear item, and null if the image is not of any clothing item.""")
+            brief_description: str = Field(title="Brief Description",description=f"Give a brief description of the clothing item in the image provided in 300 words mentioning all the details of the clothing item. The details should include the color, patter, type of clothing item, ideal weather/temperature to wear the clothing item, the occasion to wear the clothing item, material and feel of the item, is it a casual or formal wear, and any extra details that you think are important for the model to pair the clothing item with other items. ")
+            blind_feel:str = Field(title="Blind Description",description="Give a description to the image considering that the person is blind. Guide the blind person how this clothing item feels like mentioning the pattern, texture, material, and feel of the clothing item.")
 
         parser = JsonOutputParser(pydantic_object=Text)
 
@@ -28,7 +30,7 @@ def _get_cloth_tag(cloth_url:str):
             ("human", [
                 {
                     "type": "image_url",
-                    "image_url": {"url":f"data:image/jpeg;base64,{image_data}"}
+                    "image_url": f"data:image/jpeg;base64,{image_data}",
                 },
             ]),
         ])
@@ -50,10 +52,12 @@ def _get_cloth_tag(cloth_url:str):
 def _get_cloth_emebeddings(coth_links_list:list[dict]|None=None):
     try:
         pass
+
+
     except Exception as e:
         print("Error in _get_cloth_emebeddings: ",e)
         print({"error":e})
 
 if __name__ == "__main__":
-    # print(_get_cloth_tag("https://firebasestorage.googleapis.com/v0/b/perobeai-c5788.appspot.com/o/SsJbrxuuM2eujS1WurI54FAMj9R2%2FScreenshot%202024-07-18%20at%209fbf3e416-5641-4978-8219-fa6ba5b5e81c.00?alt=media&token=a591e522-125c-4a36-b9cc-82ed825a9f54"))
-    _get_cloth_emebeddings()
+    print(_get_cloth_tag("https://firebasestorage.googleapis.com/v0/b/perobeai-c5788.appspot.com/o/SsJbrxuuM2eujS1WurI54FAMj9R2%2FScreenshot%202024-07-18%20at%209fbf3e416-5641-4978-8219-fa6ba5b5e81c.00?alt=media&token=a591e522-125c-4a36-b9cc-82ed825a9f54"))
+    # _get_cloth_emebeddings()
