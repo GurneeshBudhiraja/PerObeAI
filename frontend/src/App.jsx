@@ -3,7 +3,6 @@ import { BrowserRouter, Routes, Route} from "react-router-dom";
 import {Home, NotFound, CheckUserRoute, ShowPictures, Login, SingUp} from "./Pages/pages.js";
 
 function App() {
-  
   return (
     <BrowserRouter>
     <Routes>
