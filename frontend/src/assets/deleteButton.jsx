@@ -9,4 +9,5 @@ const DeleteButton = (props) => (
   </svg>
 );
 
+
 export default DeleteButton;
