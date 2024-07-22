@@ -8,6 +8,9 @@ router = APIRouter( prefix="/api/v1/web", tags=["images"] )
 @router.post("/embeddings")
 def create_file(images_url: list[dict],user_id:str)-> dict:
   try:
+    ## checking the query parameters
+    if not user_id:
+      raise Exception("User ID is missing")
     # function responsible for generating and storing the embeddings of the images
     embeddings_response = images.main(images_url=images_url,user_id=user_id)
     if not embeddings_response:
