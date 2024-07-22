@@ -1,0 +1,4 @@
+from pydantic import BaseModel, Field
+
+class Cloth_Image_Description(BaseModel):
+  description: str = Field(title="Brief Description",description=f"Give a brief description of the clothing item in the image provided in  300 words making sure there is no repeatability and mentioning all the unique attributes of the clothing item shown in the image. The details should include the color, patter, type of clothing item, ideal weather/temperature to wear the clothing item, the occasion to wear the clothing item, material and feel of the item, is it a casual or formal wear, and any extra details that you think are important for the model to pair the clothing item with other items. Make sure to add some unique datapoints from the image that would help to understand the clothing item better.")

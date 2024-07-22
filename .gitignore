@@ -1,2 +1,6 @@
 .env
 node_modules/
+text_embeddings
+*/__pycache__/
+perobe_ai_venv/
+*.pyc
