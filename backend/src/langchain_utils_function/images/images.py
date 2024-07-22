@@ -1,14 +1,12 @@
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain_openai import OpenAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 import os
 from model.cloth_tag import Cloth_Image_Tag
 from model.cloth_description import Cloth_Image_Description
 from model.astra_db import VectorStore
 from langchain_core.documents import Document
-from langchain_astradb import AstraDBVectorStore
 
 
 try:
