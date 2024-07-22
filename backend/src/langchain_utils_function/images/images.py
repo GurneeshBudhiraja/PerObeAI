@@ -6,9 +6,9 @@ from dotenv import load_dotenv
 import os
 from model.cloth_tag import Cloth_Image_Tag
 from model.cloth_description import Cloth_Image_Description
+from model.astra_db import VectorStore
 from langchain_core.documents import Document
 from langchain_astradb import AstraDBVectorStore
-from astrapy.info import CollectionVectorServiceOptions
 
 
 try:
@@ -123,21 +123,16 @@ def _get_image_description(image_data: str)-> dict:
 
 def _store_embeddings(images_documents: list[dict], user_id: str) -> bool:
     try:
-        embedding_model = GoogleGenerativeAIEmbeddings(model="models/embedding-001" ,api_key=os.getenv("GOOGLE_API_KEY"))
-        vstore = AstraDBVectorStore(
-            embedding=embedding_model,
-            collection_name=user_id,
-            api_endpoint=os.getenv("ASTRA_DB_API_ENDPOINT"),
-            token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
-            namespace=os.getenv("ASTRA_DB_KEYSPACE"),
-        )
-
-        indexes = vstore.add_documents(images_documents)
+        vector_store = VectorStore(user_id=user_id)
+        indexes = vector_store.add_documents(images_documents)
         print(f"Indexes: {indexes}")
+        if(indexes == []):
+            return False
         return True
-
     except Exception as e:
         print(f"Error in _store_embeddings: {str(e)}")
         return False
+
+
 if __name__=="__main__":
     pass
