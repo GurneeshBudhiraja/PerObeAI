@@ -1,7 +1,7 @@
 import uvicorn
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from routers import images_router
+from routers import images_router,recommendation_router
 
 app = FastAPI()
 
@@ -22,6 +22,7 @@ def read_root():
   return {"Hello": "World"}
 
 app.include_router(images_router.router)
+app.include_router(recommendation_router.router)
 
 
 if __name__=="__main__":

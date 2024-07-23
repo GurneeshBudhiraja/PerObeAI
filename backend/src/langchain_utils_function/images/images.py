@@ -1,14 +1,12 @@
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI, GoogleGenerativeAIEmbeddings
-from langchain_openai import OpenAIEmbeddings
+from langchain_google_genai import ChatGoogleGenerativeAI
 from dotenv import load_dotenv
 import os
 from model.cloth_tag import Cloth_Image_Tag
 from model.cloth_description import Cloth_Image_Description
 from model.astra_db import VectorStore
 from langchain_core.documents import Document
-from langchain_astradb import AstraDBVectorStore
 
 
 try:
@@ -69,11 +67,8 @@ def _get_image_tag(image_data) -> str:
         ## defining the model
         model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",temperature=0,transport="grpc")
 
-        ## model class for the structuring the output
-        cloth_tag_model = Cloth_Image_Tag
-
         ## model for the generating the image tags
-        parser = JsonOutputParser(pydantic_object=cloth_tag_model) ## Parser for parsing the output
+        parser = JsonOutputParser(pydantic_object=Cloth_Image_Tag) ## Parser for parsing the output
 
         ## structure for the prompt
         prompt = ChatPromptTemplate.from_messages([
@@ -97,29 +92,28 @@ def _get_image_tag(image_data) -> str:
 
 ## function for the description for the image
 def _get_image_description(image_data: str)-> dict:
-    model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",temperature=0.75,transport="grpc")
+    try:
+        model = ChatGoogleGenerativeAI(model="gemini-1.5-flash",temperature=0.50,transport="grpc")
 
-    ## model class for the structuring the output
-    cloth_description_model = Cloth_Image_Description
-
-    parser = JsonOutputParser(pydantic_object=cloth_description_model) ## Parser for parsing the output
+        parser = JsonOutputParser(pydantic_object=Cloth_Image_Description) ## Parser for parsing the output
 
 
-    prompt = ChatPromptTemplate.from_messages([
-        ("system", "Return the requested response object by following the below instructions\n'{format_instructions}'\n"),
-        ("human", [
-            {
-            "type": "image_url",
-            "image_url": f"data:image/jpeg;base64,{image_data}",
-            },
-        ]),
-    ])
-    chain  = prompt | model | parser 
+        prompt = ChatPromptTemplate.from_messages([
+            ("system", "Return the requested response object by following the below instructions\n'{format_instructions}'\n"),
+            ("human", [
+                {
+                "type": "image_url",
+                "image_url": f"data:image/jpeg;base64,{image_data}",
+                },
+            ]),
+        ])
+        chain  = prompt | model | parser 
 
-    ## invoking the chain
-    image_description = chain.invoke({"format_instructions": parser.get_format_instructions()})
-    return image_description
-
+        ## invoking the chain
+        image_description = chain.invoke({"format_instructions": parser.get_format_instructions()})
+        return image_description
+    except Exception as e:
+        print(f"exception is {e}")
 
 def _store_embeddings(images_documents: list[dict], user_id: str) -> bool:
     try:
