@@ -5,3 +5,5 @@ text_embeddings
 perobe_ai_venv/
 *.pyc
 text_embeddings.py
+vertexAI.json
+testing.py
