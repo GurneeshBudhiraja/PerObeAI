@@ -1,13 +1,16 @@
 from langchain_core.output_parsers import JsonOutputParser
+from uuid import uuid4
+import logging
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_google_vertexai import VertexAIEmbeddings
 from dotenv import load_dotenv
 import os
 from model.cloth_tag import Cloth_Image_Tag
 from model.cloth_description import Cloth_Image_Description
 from model.astra_db import VectorStore
 from langchain_core.documents import Document
-
+from pinecone_vector_db.pinecone_class import PineconeClass
 
 try:
     from .helpers import helpers
@@ -21,16 +24,18 @@ load_dotenv()
 def main(images_url: list[dict], user_id: str) -> list[dict]:
     try:
         # List to store the image data
-        images_documents = []
+        images_vector = []
 
         # Loop through the image URLs
-        for image_url in images_url:
+        for image in images_url:
+            image_url = image["url"]
+            print(f"Image URL :: {image_url}")
             # Get the image data
-            image_data = helpers._get_image_data(image_url=image_url["url"])
-
+            print("Generating the image data")
+            image_data = helpers._get_image_data(image_url=image_url)
             # Get the tag for the image
             image_tag = _get_image_tag(image_data=image_data)
-
+            print(f"Image tag generated for the image :: {image_tag}")
             # Check the tag of the image
             is_valid_image = helpers._check_tag(tag=image_tag)
 
@@ -38,26 +43,32 @@ def main(images_url: list[dict], user_id: str) -> list[dict]:
             if not is_valid_image:
                 print(f"Item is of {image_tag['tag']}")
                 continue
-
-            # Generate the description of the image if the tag is "upperwear" or "lowerwear"
-            image_description = _get_image_description(image_data=image_data)
-            if not image_description:
+            
+            # Generate the vector of the image
+            image_vector = generate_image_vector(image_url=image_url)
+            print(f"Image vector generated for the image :: {len(image_vector)} :: {image_vector[:5]}")
+            if not image_vector:
                 raise ValueError("Error in generating the image description")
 
-            # Combine the image URL, tag, and description into a Document for the _store_embeddings function
-            image_doc = Document(page_content=image_description["description"])
-
-            # Append the image document to the list
-            images_documents.append(image_doc)
-
-        ## making and storing the embeddings
-        did_store = _store_embeddings(images_documents=images_documents, user_id=user_id)
-        if not did_store:
-            raise ValueError("Error in storing the embeddings")
-        return True
+            image_doc_id = str(uuid4())
+            metadata={
+                "url":image_url,
+                "tag":image_tag["tag"],
+            }
+            image_vector_dict={
+                "id":image_doc_id,
+                "values":image_vector,
+                "metadata":metadata,
+            }
+            images_vector.append(image_vector_dict)
+        ## storing the embeddings list in the vector db
+        pinecone_class_instance = PineconeClass(user_id=user_id)
+        pinecone_insert_resp = pinecone_class_instance.insert_vectors(images_vector=images_vector)
+        logging.info(f"The vectors have been stored in the db :: {pinecone_insert_resp}")
+        return pinecone_insert_resp
     
     except Exception as e:
-        print(f"Error in images.py/main: {str(e)}")
+        logging.error(f"Error in main: {str(e)}")
         return []
 
 
@@ -89,6 +100,13 @@ def _get_image_tag(image_data) -> str:
     
     except Exception as e:
         return {"error": f"Error in _get_image_tag: {str(e)}"}
+
+
+## function to generate the vector of the image
+def generate_image_vector(image_url:str)->list[float]:
+    embedding_model = VertexAIEmbeddings(model_name="multimodalembedding")
+    image_vector = embedding_model.embed_image(image_path=image_url)
+    return image_vector
 
 ## function for the description for the image
 def _get_image_description(image_data: str)-> dict:
@@ -129,4 +147,6 @@ def _store_embeddings(images_documents: list[dict], user_id: str) -> bool:
 
 
 if __name__=="__main__":
-    pass
+    main(images_url=[
+        {"url":"https://firebasestorage.googleapis.com/v0/b/perobeai-430021.appspot.com/o/JKVDl1ErPjaj3TPRNuBUsN3W9xS2%2F7shirtPattern2294c986-52a7-498f-a0df-6f4f7805d209.png?alt=media&token=0b2d42a1-f077-4a05-91fd-374ecb4aebdf"}
+    ])

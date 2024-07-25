@@ -5,6 +5,6 @@ text_embeddings
 perobe_ai_venv/
 *.pyc
 text_embeddings.py
-vertexAI.json
 testing.ipynb
 text_embeddings.py
+application_default_credentials.json

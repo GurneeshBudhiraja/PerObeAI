@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from routers import images_router,recommendation_router
 
+
 app = FastAPI()
 
 origins = [
