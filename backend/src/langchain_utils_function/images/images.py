@@ -45,7 +45,7 @@ def main(images_url: list[dict], user_id: str) -> list[dict]:
                 raise ValueError("Error in generating the image description")
 
             # Combine the image URL, tag, and description into a Document for the _store_embeddings function
-            image_doc = Document(page_content=image_description["description"], metadata={"tag": image_tag["tag"], "image_url": image_url["url"]})
+            image_doc = Document(page_content=image_description["description"])
 
             # Append the image document to the list
             images_documents.append(image_doc)

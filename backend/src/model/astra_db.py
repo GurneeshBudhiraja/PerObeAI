@@ -16,4 +16,5 @@ class VectorStore:
       token=os.getenv("ASTRA_DB_APPLICATION_TOKEN"),
       namespace=os.getenv("ASTRA_DB_KEYSPACE"),
     )
+
     return vector_store
