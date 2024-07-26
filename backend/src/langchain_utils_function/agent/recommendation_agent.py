@@ -13,6 +13,7 @@ llm = ChatOpenAI(model="gpt-3.5-turbo-0125",api_key=os.environ.get("OPENAI_API_K
 
 ## function to be called from the router
 def _recommend(user_prompt:str, user_id:str):
+  
   try:
     if not user_prompt or not user_id:
       raise Exception("User id and prompt are required")
