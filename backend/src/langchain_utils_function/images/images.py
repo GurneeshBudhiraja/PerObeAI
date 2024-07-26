@@ -18,6 +18,7 @@ except ImportError:
 load_dotenv()
 
 
+
 def main(images_url: list[dict], user_id: str) -> list[dict]:
     try:
         # List to store the image data
