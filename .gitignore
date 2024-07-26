@@ -2,7 +2,6 @@
 node_modules/
 
 */__pycache__/
-perobe_ai_venv/
 *.pyc
 testing.ipynb
 application_default_credentials.json
