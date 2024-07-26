@@ -2,14 +2,11 @@ from langchain_core.output_parsers import JsonOutputParser
 from uuid import uuid4
 import logging
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_google_vertexai import VertexAIEmbeddings, VertexAI
 from dotenv import load_dotenv
-import os
 from model.cloth_tag import Cloth_Image_Tag
-from langchain_core.documents import Document
 from pinecone_vector_db.pinecone_class import PineconeClass
-from helpers import helpers
+
 ## Load the environment variables
 load_dotenv()
 
@@ -19,7 +16,7 @@ def main(images_url: list[dict], user_id: str) -> list[dict]:
         # List to store the image data
         images_vector = []
 
-        # Loop through the image URLs
+        # Loop through all the image URLs dictionary
         for image in images_url:
             image_url = image["url"]
             print(f"Image URL :: {image_url}")
@@ -29,7 +26,7 @@ def main(images_url: list[dict], user_id: str) -> list[dict]:
             print(f"Image tag generated for the image :: {image_tag}")
 
             # Check the tag of the image
-            is_valid_image = helpers._check_tag(tag=image_tag)
+            is_valid_image = validate_tag(tag=image_tag)
 
             # Skip the image if the tag is 'none'
             if not is_valid_image:
@@ -104,6 +101,15 @@ def generate_image_vector(image_url:str)->list[float]:
     embedding_model = VertexAIEmbeddings(model_name="multimodalembedding")
     image_vector = embedding_model.embed_image(image_path=image_url)
     return image_vector
+
+
+## validate the tag if it is a valid clothing item or not
+def validate_tag(tag:dict)->bool:
+    ## check if the tag key is present in the tag dictionary
+    if "tag" not in tag: 
+        return False
+    return tag["tag"] in ["upperwear","lowerwear"] ## checks if the tag is either upperwear or lowerwear
+
 
 
 if __name__=="__main__":
