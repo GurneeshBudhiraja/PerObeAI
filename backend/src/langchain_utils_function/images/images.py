@@ -28,7 +28,7 @@ def main(images_url: list[dict], user_id: str) -> list[dict]:
             # Check the tag of the image
             is_valid_image = validate_tag(tag=image_tag)
 
-            # Skip the image if the tag is 'none'
+            # Skip the iteration if the image["tag"] is none
             if not is_valid_image:
                 print(f"Item is of {image_tag['tag']}")
                 continue
