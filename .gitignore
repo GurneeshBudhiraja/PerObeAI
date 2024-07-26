@@ -4,7 +4,5 @@ text_embeddings
 */__pycache__/
 perobe_ai_venv/
 *.pyc
-text_embeddings.py
 testing.ipynb
-text_embeddings.py
 application_default_credentials.json
