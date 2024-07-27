@@ -19,7 +19,7 @@ class PineconeClass:
       )
       return upsert_response.upserted_count ## returns the total number of vectors inserted/updated
 
-    def get_similar_vectors(self, vector_list:list[float|int], top_k:int=3,include_values:bool=False,filter:dict={},include_metadata:bool=False):
+    def fetch_similar_vectors(self, vector_list:list[float|int], top_k:int=3,include_values:bool=False,filter:dict={},include_metadata:bool=False):
       similar_vectors = self.index.query(
         namespace=self.user_id,
         vector=vector_list,
@@ -29,6 +29,7 @@ class PineconeClass:
         include_metadata=include_metadata
       )
       return similar_vectors
+    
   except Exception as e:
     raise Exception(f"Error in PineconeClass: {str(e)}")
   

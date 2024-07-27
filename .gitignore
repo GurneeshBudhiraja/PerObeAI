@@ -6,3 +6,4 @@ node_modules/
 testing.ipynb
 application_default_credentials.json
 agent_testing.ipynb
+constants.py
