@@ -1,5 +1,4 @@
 from pydantic import BaseModel, Field
 
 class RecommendedOutfit(BaseModel):
-  upperwear_url:str = Field( title="upperwear_url",description="the url from the upperwear collection if the user asked for upperwear recommendation which when paired with the lowerwear collection will give the best outfit. Returns 'none' if the user did not ask for upperwear recommendation")
-  lowerwear_url:str = Field(title="lowerwear_url",description="the url from the lowerwear collection if the user asked for lowerwear recommendation which when paired with the upperwear collection will give the best outfit. Returns 'none' if the user did not ask for lowerwear recommendation")
+  outfit_urls: list[dict] = Field(..., title="Which cloth you would pick for the input by the user such that when both paired together makes a great outfit. Provide me the links from both upperwear and lowerwear section such that when both of them paired together makes a great outfit. You will return the upperwear link with key upperwear and lowerwear link with the key lowerwear in the output. You have to give only 2 urls one from each section if the whole outfit recommendation has been asked. Make sure to account the weather factor as well while recommending the outfit to the user")
