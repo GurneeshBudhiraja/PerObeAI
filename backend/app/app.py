@@ -1,18 +1,22 @@
 import uvicorn
+# Import the FastAPI class
 from fastapi import FastAPI
+# For loading the environment variables
 from dotenv import load_dotenv
+# For using the environment variables
 import os
+# Base class for creating custom middleware in FastAPI
 from starlette.middleware.base import BaseHTTPMiddleware
-
-# Import routers and middleware configuration
+# Import the routers
 from routers import images_router,recommendation_router
+# Import the middleware functions
 from middlewares import configure_cors_middleware, configure_logger_middleware
 
 
 # Load the environment variables
 load_dotenv()
 
-# Create the FastAPI instance
+# FastAPI instance
 app = FastAPI(title="PerObeAI",description="This is the backend for the PerObeAI project",version="0.1")
 
 
@@ -20,10 +24,10 @@ app = FastAPI(title="PerObeAI",description="This is the backend for the PerObeAI
 """
 Middlewares
 """
-# Add the CORS middleware
+# CORS middleware
 configure_cors_middleware(app)
 
-# Add the logger middleware
+# Logger middleware
 app.add_middleware(BaseHTTPMiddleware,dispatch=configure_logger_middleware)
 
 """
@@ -36,9 +40,9 @@ app.include_router(recommendation_router.router)
 
 
 
-# Main entry point
+# Entry point of the application
 if __name__=="__main__":
-  # Get the port from the env variable, default to 8000
+  # Get the PORT from the env variable, default to 8000 if PORT not found
   port = int(os.getenv("PORT",8000))
   uvicorn.run("app:app",port=port, reload=True)
 
