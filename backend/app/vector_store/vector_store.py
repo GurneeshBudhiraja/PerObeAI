@@ -22,18 +22,18 @@ class VectorStore:
       self.index = self.pc.Index(PINECONE_INDEX_NAME)
     
 
-    def insert_vectors(self,images_vector:list[dict])->int:
+    def insert_vectors(self,images_vector_data:list[dict])->int:
       """
       Inserts the vectors into the vector store
 
       Args:
-        images_vector (list): The list of vectors to be inserted
+        images_vector_data (list): The list of vectors to be inserted
 
       Returns:
         int: The number of vectors inserted
       """
       insert_response = self.index.upsert(
-        vectors=images_vector,
+        vectors=images_vector_data,
         namespace=self.user_id,
       )
       

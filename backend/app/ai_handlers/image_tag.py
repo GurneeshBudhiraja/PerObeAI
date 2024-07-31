@@ -10,7 +10,7 @@ from constants import FLASH_MODEL_001
 
 async def get_image_tag(image_url:str) -> Optional[Cloth_Image_Tag]:
     """
-    Function to get the image tag from the image url
+    Uses Gemini API to generate the image tag for the given image url
 
     Args:
         image_url (str): Image url for which the tag needs to be generated

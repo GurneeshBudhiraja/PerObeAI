@@ -22,8 +22,8 @@ async def process_images(images_url: list[dict], user_id: str) -> dict:
         dict: A dictionary
     """
     try:
-        # Contains the vector and other data of the images provided
-        images_vector_list = []
+        
+        images_data = []
 
         # Loop through all the image URLs dictionary
         for image in images_url:
@@ -53,15 +53,15 @@ async def process_images(images_url: list[dict], user_id: str) -> dict:
             formatted_data = format_image_data(image_url=image_url, image_tag=image_tag, image_vector=image_vector)
 
             # Append the image data dictionary to the list
-            images_vector_list.append(formatted_data)
+            images_data.append(formatted_data)
 
         # Check if the images_vector_list is empty
-        if not len(images_vector_list):
+        if not images_data:
             # TODO: will handle this differently later on
             return {}
         
         # Insert the vectors into the vector store
-        total_vectors_stored = insert_vectors(images_vectors=images_vector_list, user_id=user_id)
+        total_vectors_stored = insert_vectors(images_vector_data=images_data, user_id=user_id)
 
         # TODO: will handle this differntly later on
         print(total_vectors_stored)

@@ -19,6 +19,3 @@ def format_image_data(image_url:str,image_tag:dict,image_vector:list)->ImageData
   }
   
   return ImageData(values=image_vector,metadata=image_metadata)
-  
-if __name__=="__main__":
-  print(format_image_data("https://example.com/image.jpg",{"tag":"example"},[1,2,3,4,5]))
