@@ -1,13 +1,18 @@
-from fastapi import APIRouter, HTTPException, status
+from fastapi import APIRouter, HTTPException, status, Depends
+from firebase_utils import verify_firebase_uid
 from fastapi.responses import JSONResponse
 from langchain_utils_function.images import images
 
-router = APIRouter( prefix="/api/v1/web", tags=["images"] )
+router = APIRouter( prefix="/api/web/v1", tags=["images"] )
 
 # endpoint for separating upperwear and lowerwear images 
 ## TODO: will work on accessibility later on
 @router.post("/embeddings")
-def create_file(images_url: list[dict],user_id:str,accessibility:str|None=None)-> dict:
+def create_file(
+  images_url: list[dict],
+  user_id:str=Depends(verify_firebase_uid),
+  accessibility:str|None=None
+  )-> dict:
   try:
     ## checking the query parameters
     if not user_id:

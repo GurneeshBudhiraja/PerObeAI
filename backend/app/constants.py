@@ -1,13 +1,12 @@
-# list of allowed origins for the CORS middleware
-ALLOWED_ORIGINS = [
-  "*"
-]
+# List of allowed origins for the CORS middleware
+ALLOWED_ORIGINS = ["*"]
 
-# list of allowed hosts for the FastAPI trusted host middleware
-ALLOWED_HOSTS=["*"]
+# List of allowed hosts for the FastAPI trusted host middleware
+ALLOWED_HOSTS = ["*"]
 
+# Vector store constants
+PINECONE_INDEX_NAME = "perobe-ai"
 
-"""
-Vector store constants
-"""
-PINECONE_INDEX_NAME="perobe-ai"
+# Gemini model constants
+MULTIMODAL_EMBEDDING_MODEL = "multimodalembedding"
+FLASH_MODEL_001="gemini-1.5-flash-001"

@@ -1,22 +1,12 @@
+"""
+The logger middleware is used to log the requests and responses of the FastAPI application.
+"""
 from fastapi import Request
-from logtail import LogtailHandler
-import logging
 import time
-import os
+# Logger object for logging
+from utils import logger
 
 
-# Utility function to get the logger
-def get_logger():
-  print(f"Logger boilerplate :: {os.getenv('LOGS_TOKEN')}") # Debugging
-  handler = LogtailHandler(source_token=os.getenv("LOGS_TOKEN"))
-  logger = logging.getLogger(__name__)
-  logger.setLevel(logging.INFO)
-  logger.handlers = []
-  logger.addHandler(handler)
-  return logger
-
-# Initialize the logger
-logger  = get_logger()
 
 # Middleware to log requests
 async def configure_logger_middleware(request:Request,call_next):

@@ -1,8 +1,7 @@
 from langchain.tools import tool
 from pinecone_vector_db.pinecone_class import PineconeClass
 from langchain_google_vertexai import VertexAI, VertexAIEmbeddings
-from dotenv import load_dotenv
-load_dotenv()
+
 from model.recommendation_output import RecommendedOutfit
 try:
   from constants import LOWERWEAR_COLLECTION,UPPERWEAR_COLLECTION
