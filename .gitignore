@@ -1,8 +1,9 @@
 .env
 node_modules/
 
-*/__pycache__/
 *.pyc
+
 testing.ipynb
 application_default_credentials.json
+firebase_admin_credentials.json
 *.ipynb

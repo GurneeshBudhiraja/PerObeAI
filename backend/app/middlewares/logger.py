@@ -5,7 +5,7 @@ import time
 import os
 
 
-# Function to configure the logger
+# Utility function to get the logger
 def get_logger():
   print(f"Logger boilerplate :: {os.getenv('LOGS_TOKEN')}") # Debugging
   handler = LogtailHandler(source_token=os.getenv("LOGS_TOKEN"))
@@ -22,7 +22,6 @@ logger  = get_logger()
 async def configure_logger_middleware(request:Request,call_next):
   # Request receive time
   receive_time = time.time()
-
   try:
     # Call the next middleware or route handler
     response = await call_next(request)
@@ -40,7 +39,6 @@ async def configure_logger_middleware(request:Request,call_next):
         "process_time": process_time,
         "error": str(e)
     })
-    raise e
   else:
     # Request end time
     end_time = time.time()

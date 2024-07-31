@@ -1,11 +1,11 @@
+# for type hinting
+from fastapi import FastAPI
 # Middleware to handle CORS
 from fastapi.middleware.cors import CORSMiddleware
+# Import the allowed origins from the constants
+from constants import  ALLOWED_ORIGINS 
 
-# list of allowed origins
-from constants import origins_allowed 
-
-
-def configure_cors_middleware(app):
+def configure_cors_middleware(app: FastAPI):
   """
   Add the CORS middleware to the FastAPI application
 
@@ -15,7 +15,7 @@ def configure_cors_middleware(app):
 
   app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins_allowed,
+    allow_origins=ALLOWED_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
