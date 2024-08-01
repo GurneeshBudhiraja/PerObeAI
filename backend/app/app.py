@@ -1,26 +1,23 @@
 import uvicorn
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI
 from dotenv import load_dotenv
 import os
 from starlette.middleware.base import BaseHTTPMiddleware
 
-# Import routers and middlewares
-from routers import images_router,recommendation_router
-from middlewares import configure_cors_middleware, configure_logger_middleware, configure_trusted_host_middleware, configure_gzip_middleware
-
-
-from firebase_utils import verify_firebase_uid
-
 # Load the environment variables
 load_dotenv()
+
+# Import routers and middlewares
+from routers.web_apis.v1 import embeddings_router
+from middlewares import configure_cors_middleware, configure_logger_middleware, configure_trusted_host_middleware, configure_gzip_middleware
 
 
 
 # Initialize the FastAPI application
 app = FastAPI(
-  title="PerObeAI",
+  title="PerObeAI - Personal Wardrobe AI",
   description="This is the backend for the PerObeAI project",
-  version="0.1"
+  version="1.0.0"
   )
 
 
@@ -45,15 +42,12 @@ Routers
 """
 
 @app.get("/")
-def home():
-  return {"message":"Welcome to the PerObeAI backend"}
-# Include the routers TODO: will add separate comments for each router
-app.include_router(images_router.router)
-app.include_router(recommendation_router.router)
+def hello(name: str):
+  return {"message": f"Hello World {name}!"}
 
-@app.get("/secure-endpoint")
-async def secure_endpoint(uid:str = Depends(verify_firebase_uid)):
-  return {"message": f"Hello, user {uid}"}
+# Include the routers TODO: will add separate comments for each router
+app.include_router(embeddings_router)
+# app.include_router(recommendation_router.router)
 
 # Entry point of the application
 if __name__=="__main__":

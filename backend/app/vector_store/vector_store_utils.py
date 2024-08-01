@@ -10,8 +10,12 @@ def insert_vectors(images_vector_data:list[dict], user_id:str)->int:
     user_id (str): The user id of the user.
   
   Returns:
-    # TODO: Change the return type to the response
     int: The total number of vectors stored.
   """
-  vector_store_instance = VectorStore(user_id=user_id)
-  return vector_store_instance.insert_vectors(images_vector_data=images_vector_data)
+  try:
+
+    vector_store_instance = VectorStore(user_id=user_id)
+    return vector_store_instance.insert_vectors(images_vector_data=images_vector_data)
+  except Exception as e:
+    # TODO: Add logging and change the error handling later on
+    return 0

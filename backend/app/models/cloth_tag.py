@@ -1,4 +1,4 @@
 from pydantic import BaseModel, Field
 
 class Cloth_Image_Tag(BaseModel):
-  tag: str = Field(title="Tag",description="The tag of the clothing item in the image provided. Give the tag 'upperwear' for the items that are worn on the upper body and 'lowerwear' for the items that are worn on the lower body. Give the tag 'none' for the items that are not worn on the body. Clothing items like belts, ties, hats, and other accessories should be given the tag 'none'.")
+  tag: str = Field(title="Tag",description="Give a tag to the clothing item. Tag will be 'upperwear' if the item shown in the image is worn on the upper part of the body. The tag will be 'lowerwear' if the item shown in the image is worn on the bottom section of the body. The tag will be 'none' for the clothing accessories like ties, belts, purses, watch, etc. and other non clothing items.")

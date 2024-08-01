@@ -1,5 +1,5 @@
 from typing import Optional
-from langchain_google_vertexai import VertexAI
+from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 # Model class for structuring the output
@@ -20,23 +20,25 @@ async def get_image_tag(image_url:str) -> Optional[Cloth_Image_Tag]:
     """
     try:
         
-        model = VertexAI(model_name=FLASH_MODEL_001)
+        # Model with the gemini-1.5-flash-001 model
+        model = ChatGoogleGenerativeAI(model=FLASH_MODEL_001, temperature=0.6)
 
         parser = JsonOutputParser(pydantic_object=Cloth_Image_Tag) 
+
 
         prompt = ChatPromptTemplate.from_messages([
             ("system", "Return the requested response object by following the below instructions\n'{format_instructions}'\n"),
             ("human", [
                 {
                 "type": "image_url",
-                "image_url": image_url, 
+                "image_url": {"url":image_url}, 
                 },
             ]),
         ])
 
         chain = prompt | model | parser 
         
-        chain_resp = await chain.invoke({"format_instructions": parser.get_format_instructions()})
+        chain_resp = chain.invoke({"format_instructions": parser.get_format_instructions()})
         return chain_resp
     except Exception as e:
         # TODO: Add logging and change the error handling later on

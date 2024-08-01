@@ -1,0 +1,1 @@
+from .embeddings_router import router as embeddings_router

@@ -1,6 +1,6 @@
-from models.image_data import ImageData
+from uuid import uuid4
 
-def format_image_data(image_url:str,image_tag:dict,image_vector:list)->ImageData:
+def format_image_data(image_url:str,image_tag:dict,image_vector:list)->dict[str,any]:
   """
   Formats image data into a dictionary containing a unique ID, image vector, and metadata.
 
@@ -18,4 +18,8 @@ def format_image_data(image_url:str,image_tag:dict,image_vector:list)->ImageData
       "tag":image_tag["tag"],
   }
   
-  return ImageData(values=image_vector,metadata=image_metadata)
+  return ({
+    "id":str(uuid4()),
+    "values": image_vector,
+    "metadata": image_metadata
+  })
