@@ -41,9 +41,6 @@ app.add_middleware(BaseHTTPMiddleware, dispatch=configure_logger_middleware)
 Routers
 """
 
-@app.get("/")
-def hello(name: str):
-  return {"message": f"Hello World {name}!"}
 
 # Include the routers TODO: will add separate comments for each router
 app.include_router(embeddings_router)
