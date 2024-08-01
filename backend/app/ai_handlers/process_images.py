@@ -30,11 +30,10 @@ async def process_images(images: list[dict]) -> dict:
             image_url = image["url"]
 
             image_tag = await get_image_tag(image_url=image_url)
-            
+
             is_valid_tag = validate_tag(tag=image_tag)
             
             if not is_valid_tag:
-                print(f"Item is of {image_tag} and validate tag is {is_valid_tag}")
                 continue
 
             image_vector = get_image_vector(image_url=image_url)
@@ -48,7 +47,7 @@ async def process_images(images: list[dict]) -> dict:
 
             # Append the formatted data into the images_data list
             images_data.append(formatted_data)
-        print(f"images_data is {images_data}")
+            
         # Check if the images_vector_list is empty
         if not images_data:
             # TODO: will handle this differently later on

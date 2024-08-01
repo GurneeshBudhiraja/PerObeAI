@@ -31,13 +31,13 @@ async def get_image_tag(image_url:str) -> Optional[Cloth_Image_Tag]:
             ("human", [
                 {
                 "type": "image_url",
-                "image_url": {"url":image_url}, 
+                "image_url": image_url, 
                 },
             ]),
         ])
 
         chain = prompt | model | parser 
-        
+
         chain_resp = chain.invoke({"format_instructions": parser.get_format_instructions()})
         return chain_resp
     except Exception as e:
