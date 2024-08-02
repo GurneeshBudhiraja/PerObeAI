@@ -7,11 +7,6 @@ from .image_tag import get_image_tag
 # Utility functions for the image tag validation and formatting the image data into a dictionary
 from utils import validate_tag, format_image_data
 
-# Model for the Image URL
-from models.image_url import ImageURL
-
-# Utility function for the vector store insertion
-from vector_store import insert_vectors
 
 async def process_images(images: list[dict]) -> dict:
     """

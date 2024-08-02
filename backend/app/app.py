@@ -8,7 +8,7 @@ from starlette.middleware.base import BaseHTTPMiddleware
 load_dotenv()
 
 # Import routers and middlewares
-from routers.web_apis.v1 import embeddings_router
+from routers.web_apis.v1 import embeddings_router, recommendation_router
 from middlewares import configure_cors_middleware, configure_logger_middleware, configure_trusted_host_middleware, configure_gzip_middleware
 
 
@@ -44,7 +44,7 @@ Routers
 
 # Include the routers TODO: will add separate comments for each router
 app.include_router(embeddings_router)
-# app.include_router(recommendation_router.router)
+app.include_router(recommendation_router)
 
 # Entry point of the application
 if __name__=="__main__":
