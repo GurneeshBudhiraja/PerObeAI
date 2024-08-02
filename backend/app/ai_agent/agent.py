@@ -14,7 +14,7 @@ def agent(user_id:str, user_prompt:str)->list:
 
     tools = [retrieve_upperwear, retrieve_lowerwear, invalid_request, format_return_data]
 
-    llm = ChatVertexAI(model_name=FLASH_MODEL_001,temperature=0.15)
+    llm = ChatVertexAI(model_name=FLASH_MODEL_001,temperature=0.10)
 
     agent = create_tool_calling_agent(prompt=prompt, tools=tools, llm=llm)
 
