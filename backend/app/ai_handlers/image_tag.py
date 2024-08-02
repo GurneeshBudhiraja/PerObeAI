@@ -20,7 +20,7 @@ async def get_image_tag(image_url:str) -> Optional[Cloth_Image_Tag]:
     """
     try:
         
-        # Model with the gemini-1.5-flash-001 model
+        # Initialize model with the gemini-1.5-flash-001 model
         model = ChatGoogleGenerativeAI(model=FLASH_MODEL_001, temperature=0.6)
 
         parser = JsonOutputParser(pydantic_object=Cloth_Image_Tag) 
@@ -38,8 +38,8 @@ async def get_image_tag(image_url:str) -> Optional[Cloth_Image_Tag]:
 
         chain = prompt | model | parser 
 
-        chain_resp = chain.invoke({"format_instructions": parser.get_format_instructions()})
-        return chain_resp
+        tag_data = chain.invoke({"format_instructions": parser.get_format_instructions()})
+        return tag_data
     except Exception as e:
         # TODO: Add logging and change the error handling later on
         return {"error": f"Error in _get_image_tag: {str(e)}"}
