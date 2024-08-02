@@ -2,9 +2,35 @@ from langchain_core.tools import tool, ToolException
 from ai_handlers import embed_text
 from vector_store import VectorStore
 from .agent_utils import format_collection_data
+from constants import BASE_URL
+import requests
+import os
+
 
 upperwear_collection_data = []
 lowerwear_collection_data = []
+
+
+
+@tool
+def get_temperature_by_city(city:str)->dict:
+  """
+  Gets the temperature by city name
+
+  Args:
+    city : str : The city name.
+
+  Returns:
+    dict : The temperature data
+  """
+  try:
+    URL = BASE_URL + "q=" + city + "&appid=" + os.getenv("WEATHER_API_KEY")
+    weather_data =  requests.get(URL).json()
+    return weather_data  
+  except Exception:
+    #TODO: will handle the error later on with proper logging and custom class
+    raise ToolException("Error in get_temperature_by_city tool")
+  
 
 @tool
 def retrieve_upperwear(user_id:str, user_prompt:str)->bool:
