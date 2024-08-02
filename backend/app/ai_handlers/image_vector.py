@@ -14,7 +14,7 @@ def get_image_vector(image_url: str) -> list[float]:
     """
     try:
         embedding_model = VertexAIEmbeddings(model_name=MULTIMODAL_EMBEDDING_MODEL)
-        image_vector = embedding_model.embed_image(image_path=image_url)
-        return image_vector
+        image_embedding = embedding_model.embed_image(image_path=image_url)
+        return image_embedding
     except Exception as e:
         return []

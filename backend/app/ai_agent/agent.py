@@ -1,11 +1,8 @@
 from langchain_google_vertexai import ChatVertexAI
-from .cloth_retrieval_agent import ClothesRetrievalAgent
 from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.tools import tool
 from langchain.agents import create_tool_calling_agent, AgentExecutor
 from .agent_tools import retrieve_upperwear, retrieve_lowerwear,invalid_request, format_return_data
-
-
+from constants import FLASH_MODEL_001
 def agent(user_id:str, user_prompt:str)->list:
   try:
 
@@ -17,17 +14,18 @@ def agent(user_id:str, user_prompt:str)->list:
 
     tools = [retrieve_upperwear, retrieve_lowerwear, invalid_request, format_return_data]
 
-    llm = ChatVertexAI(model_name="gemini-1.5-flash-001",temperature=0.15)
+    llm = ChatVertexAI(model_name=FLASH_MODEL_001,temperature=0.15)
 
     agent = create_tool_calling_agent(prompt=prompt, tools=tools, llm=llm)
 
+    # TODO: remove verbose=True later on
     agent_executor = AgentExecutor(agent=agent, tools=tools, verbose=True)
 
 
     agent_response = agent_executor.invoke({"user_prompt": user_prompt,"user_id":user_id})
 
-    print(f"Agent response: \n {agent_response}")
-    return agent_response
+    return agent_response["output"]
+  
   except Exception as e:
     # TODO: will handle the error later on with proper logging and custom class
     return f"Exception in agent: {str(e)}"
