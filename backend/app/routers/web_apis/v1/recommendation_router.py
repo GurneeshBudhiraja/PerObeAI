@@ -11,7 +11,7 @@ def get_recommendation(user_id:str, user_prompt:str=Body(...), accessibility:str
   try:
     agent_response = agent(user_id=user_id,user_prompt=user_prompt)
     # TODO: will send the data to the recommendation model here
-    recommended_clothes = generate_recommendation(cloth_collections_data=agent_response,user_prompt=user_prompt,)
+    # recommended_clothes = generate_recommendation(cloth_collections_data=agent_response,user_prompt=user_prompt,)
     if not agent_response:
       return JSONResponse(content={"response":False},status_code=status.HTTP_404_NOT_FOUND)
     return JSONResponse(content={"response":agent_response},status_code=status.HTTP_200_OK)

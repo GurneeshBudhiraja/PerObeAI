@@ -2,6 +2,7 @@ from langchain_core.tools import tool, ToolException
 from ai_handlers import embed_text
 from vector_store import VectorStore
 from .agent_utils import format_collection_data
+
 upperwear_collection_data = []
 lowerwear_collection_data = []
 
@@ -15,11 +16,12 @@ def retrieve_upperwear(user_id:str, user_prompt:str)->bool:
     user_id : str : The user id.
   
   Returns:
-    dict : The upperwear collection
+    True : bool 
   """
   try:
-    global upperwear_collection_data
     
+    global upperwear_collection_data
+
     text_embedding = embed_text(text=user_prompt)
     
     filter_criteria = {"tag":"upperwear"}
@@ -45,7 +47,7 @@ def retrieve_lowerwear(user_id:str, user_prompt:str)->bool:
     user_id : str : The user id.
 
   Returns:
-    dict : The lowerwear collection.
+    True : bool
   """
   try:
     
@@ -85,7 +87,7 @@ def format_return_data()->dict:
   Formats the upperwear and lowerwear collections data fetched from the vector store
 
   Returns:
-    dict : The formatted data
+    dict : The data has been formatted in a list of dictionaries format to return back to the user.
   """
   try:
     
@@ -93,7 +95,7 @@ def format_return_data()->dict:
     
     prepared_upperwear_data = format_collection_data(upperwear_collection_data)
     prepared_lowerwear_data = format_collection_data(lowerwear_collection_data)
-
+    print("DATA HAS BEEN FORMATTED...SENDING BACK TO THE USER")
     return {"upperwear":prepared_upperwear_data,"lowerwear":prepared_lowerwear_data}
   
   except Exception:

@@ -11,7 +11,7 @@ def format_collection_data(collection_data:list[dict])->list[dict]:
   try:
     collection_list = collection_data["matches"]
 
-    formatted_collection = [{"image_url":collection["metadata"]["url"]} for collection in collection_list ]
+    formatted_collection = [{"type":"image_url","image_url":collection["metadata"]["url"]} for collection in collection_list ]
 
     return formatted_collection
   except Exception:
