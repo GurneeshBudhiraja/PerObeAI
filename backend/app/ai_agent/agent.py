@@ -8,7 +8,7 @@ def agent(user_id:str, user_prompt:str)->list:
   try:
 
     prompt = ChatPromptTemplate.from_messages([
-        ("system", "You are a fashion agent which uses the available tools to complete the user's request. Anything asked beyond the scope of the tools will be considered invalid. Also, for the output use the proper tool to format the data."),
+        ("system", "You are a fashion agent which uses the available tools to complete the user's request. Anything asked beyond the scope of the tools will be considered invalid. Also, the output should be formatted using the proper tool in order to maintain the consistency in the output."),
         ("human", "{user_prompt} and user_id is {user_id}"),
         ("placeholder","{agent_scratchpad}")
     ])

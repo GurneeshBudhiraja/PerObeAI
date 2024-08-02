@@ -84,7 +84,8 @@ def invalid_request()->bool:
 @tool(return_direct=True)
 def format_return_data()->dict:
   """
-  Formats the upperwear and lowerwear collections data fetched from the vector store
+  Format the upperwear/lowerwear or both collections data fetched from the vector store
+
 
   Returns:
     dict : The data has been formatted in a list of dictionaries format to return back to the user.
@@ -95,7 +96,7 @@ def format_return_data()->dict:
     
     prepared_upperwear_data = format_collection_data(upperwear_collection_data)
     prepared_lowerwear_data = format_collection_data(lowerwear_collection_data)
-    print("DATA HAS BEEN FORMATTED...SENDING BACK TO THE USER")
+    
     return {"upperwear":prepared_upperwear_data,"lowerwear":prepared_lowerwear_data}
   
   except Exception:
