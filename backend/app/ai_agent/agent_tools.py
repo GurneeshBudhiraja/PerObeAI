@@ -94,13 +94,13 @@ def retrieve_lowerwear(user_id:str, user_prompt:str)->bool:
 
 
 @tool(return_direct=True)
-def format_return_data()->dict:
+def format_return_data(user_prompt:str)->dict:
   """
   Format the upperwear/lowerwear or both collections data fetched from the vector store
 
 
   Returns:
-    dict : The data has been formatted in a list of dictionaries format to return back to the user.
+    dict : The data has been formatted in a list of dictionaries with the additional data to format to return back to the user.
   """
   try:
     
@@ -109,7 +109,7 @@ def format_return_data()->dict:
     prepared_upperwear_data = format_collection_data(upperwear_collection_data)
     prepared_lowerwear_data = format_collection_data(lowerwear_collection_data)
     
-    return {"upperwear":prepared_upperwear_data,"lowerwear":prepared_lowerwear_data}
+    return {"upperwear_collection":prepared_upperwear_data,"lowerwear_collection":prepared_lowerwear_data}
   
   except Exception:
     raise ToolException("Error in format_return_data tool")

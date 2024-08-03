@@ -32,7 +32,7 @@ def agent(user_id:str, user_prompt:str, city:str, preferred_fashion_style:str|No
 
     agent_response = agent_executor.invoke({"user_prompt": user_prompt,"user_id":user_id,"city":city,"preferred_fashion_style":preferred_fashion_style})
 
-    return agent_response
+    return agent_response["output"]
   
   except Exception as e:
     # TODO: will handle the error later on with proper logging and custom class

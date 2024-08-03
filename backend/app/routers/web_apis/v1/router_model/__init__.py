@@ -1,0 +1,1 @@
+from .recommendation_request import RecommendationBody
