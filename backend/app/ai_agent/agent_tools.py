@@ -94,20 +94,6 @@ def retrieve_lowerwear(user_id:str, user_prompt:str)->bool:
 
 
 @tool(return_direct=True)
-def invalid_request()->bool:
-  """
-  Custom response for invalid requests
-  Returns:
-    bool : False
-  
-  """
-  try:
-    return False
-  except Exception:
-    raise ToolException("Error in invalid_request tool")
-
-
-@tool(return_direct=True)
 def format_return_data()->dict:
   """
   Format the upperwear/lowerwear or both collections data fetched from the vector store
