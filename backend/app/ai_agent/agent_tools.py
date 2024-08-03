@@ -5,7 +5,7 @@ from .agent_utils import format_collection_data
 from constants import BASE_URL
 import requests
 import os
-
+from ai_handlers import generate_recommendation
 
 upperwear_collection_data = []
 lowerwear_collection_data = []
@@ -73,7 +73,7 @@ def retrieve_lowerwear(user_id:str, user_prompt:str)->bool:
     user_id : str : The user id.
 
   Returns:
-    True : bool
+    True : bool = A boolean value to indicate the success of the tool
   """
   try:
     
@@ -93,23 +93,43 @@ def retrieve_lowerwear(user_id:str, user_prompt:str)->bool:
     raise ToolException("Error in get_lowerwear_collection tool")  
 
 
-@tool(return_direct=True)
-def format_return_data(user_prompt:str)->dict:
+@tool
+def format_return_data()->dict:
   """
   Format the upperwear/lowerwear or both collections data fetched from the vector store
 
 
   Returns:
-    dict : The data has been formatted in a list of dictionaries with the additional data to format to return back to the user.
+    True : bool = A boolean value to indicate the success of the tool
   """
   try:
     
     global upperwear_collection_data, lowerwear_collection_data
     
-    prepared_upperwear_data = format_collection_data(upperwear_collection_data)
-    prepared_lowerwear_data = format_collection_data(lowerwear_collection_data)
+    upperwear_collection_data = format_collection_data(upperwear_collection_data)
+    lowerwear_collection_data = format_collection_data(lowerwear_collection_data)
     
-    return {"upperwear_collection":prepared_upperwear_data,"lowerwear_collection":prepared_lowerwear_data}
+    # return True
+    return {"upperwear_collection":upperwear_collection_data, "lowerwear_collection":lowerwear_collection_data}
   
   except Exception:
     raise ToolException("Error in format_return_data tool")
+  
+
+
+@tool(return_direct=True)
+def gemini_recommendation(user_prompt:str, accessibility:str)->dict:
+  """
+  Function to get the final recommendation based on the upperwear and lowerwear data fetched
+
+
+  Args:
+    user_prompt : str : The user prompt
+    accessibility : str : The accessibility of the user like 'blind', 'some type of color blindness', or any other type of visual impairment
+
+  Returns:
+    dict : The final recommendation based on the upperwear and lowerwear data
+  """
+  
+  
+  return generate_recommendation(upperwer_collection=upperwear_collection_data, lowerwear_collection=lowerwear_collection_data, user_prompt=user_prompt, accessibility=accessibility)

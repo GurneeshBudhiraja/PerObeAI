@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from dotenv import load_dotenv
 import os
 from starlette.middleware.base import BaseHTTPMiddleware
-
 # Load the environment variables
 load_dotenv()
 
@@ -45,6 +44,7 @@ Routers
 # Include the routers TODO: will add separate comments for each router
 app.include_router(embeddings_router)
 app.include_router(recommendation_router)
+
 
 # Entry point of the application
 if __name__=="__main__":
