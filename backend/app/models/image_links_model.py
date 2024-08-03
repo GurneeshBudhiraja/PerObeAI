@@ -1,5 +1,5 @@
 from pydantic import BaseModel, Field
 
 class ImageLinks(BaseModel):
-  # images_urls: list[str] = Field(...,title="Get Image URLs",description="Go through the description. Consider every attribute of the description and go through the image URLs. The images in the image urls would be considered valid to return if they exactly match the item in the description. For instance if the description says that it is a brown pants then you should return the brown pants. Also, note that the number of image urls can not be more than the number of items mentioned in the description.")
+  
   images_urls: list[str] = Field(...,title="Get Image URLs",description="Give me the list of images that matches with the description. The number of images should be equal to the number of items mentioned in the description.")
