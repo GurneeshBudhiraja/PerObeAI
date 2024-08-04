@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, Depends, status
 from firebase_utils import verify_firebase_uid
-from models.image_url import ImageURL
 from ai_handlers import process_images
 from vector_store import VectorStore
 from fastapi.responses import (
@@ -13,7 +12,7 @@ router = APIRouter(prefix="/api/web/v1", tags=["embeddings_router"])
 
 @router.post("/image-embeddings")
 async def create_image_embeddings(
-    images: list[ImageURL], user_id: str  # TODO: will add the depends after debug
+    images: list[dict[str, str]], user_id: str  # TODO: will add the depends after debug
 ) -> None:  # TODO: will change the return type later on
     """
     Route to process the images, generate the multimodal embeddings and formats the data in the required format and stores them in the vector store

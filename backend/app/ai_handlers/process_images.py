@@ -22,6 +22,7 @@ async def process_images(images: list[dict]) -> dict:
         images_data = []
 
         for image in images:
+
             image_url = image["url"]
 
             image_tag = await get_image_tag(image_url=image_url)

@@ -1,6 +1,7 @@
 from pinecone.grpc import PineconeGRPC as Pinecone
 import os
 from constants import PINECONE_INDEX_NAME
+from ai_handlers import get_image_vector
 
 
 class VectorStore:
@@ -66,5 +67,48 @@ class VectorStore:
             )
             return similar_vectors
 
+        def delete_vector(self, image_url: str):
+            """
+            Deletes the vector from the vector store
+
+            Args:
+              image_url: str: The image url for which the vector is to be deleted
+
+            # TODO: Add the return type later on
+            """
+            try:
+
+                image_embedding = get_image_vector(image_url=image_url)
+
+                filter_criteria = {"url": image_url}
+
+                vector_data = self.fetch_similar_vectors(
+                    vector_list=image_embedding,
+                    filter=filter_criteria,
+                    include_metadata=True,
+                )["matches"]
+
+                if not vector_data:
+                    # TODO: will handle the return type later on
+                    return {"response": True}
+
+                vector_id = [vector["id"] for vector in vector_data]
+
+                delete_response = self.index.delete(
+                    ids=vector_id, namespace=self.user_id
+                )
+
+                # TODO: will handle the return type later on
+                return {"response": True}
+
+            except Exception as e:
+
+                # TODO: will handle the error later on with proper logging and custom class
+
+                print(str(e))
+
+                return {"response": False}
+
     except Exception as e:
-        raise Exception(f"Error in PineconeClass: {str(e)}")
+        # TODO: will handle the error later on with proper logging and custom class
+        print(str(e))
