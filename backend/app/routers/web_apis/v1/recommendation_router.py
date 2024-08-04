@@ -1,6 +1,6 @@
 from fastapi import APIRouter, HTTPException, status, Body, Depends
 from fastapi.responses import JSONResponse
-from ai_agent import agent
+from ai_agents import clothes_recommendation_agent
 from .router_model import RecommendationBody
 from firebase_utils import verify_firebase_uid
 
@@ -21,7 +21,7 @@ def get_recommendation(user_id:str, body: RecommendationBody = Body(...)) -> JSO
     
     accessibility = body.accessibility
 
-    agent_response = agent(user_id=user_id, user_prompt=user_prompt, city=city, preferred_fashion_style=preferred_fashion_style, accessibility=accessibility)
+    agent_response = clothes_recommendation_agent(user_id=user_id, user_prompt=user_prompt, city=city, preferred_fashion_style=preferred_fashion_style, accessibility=accessibility)
     
     return JSONResponse(content={"response":agent_response},status_code=status.HTTP_200_OK)
 
