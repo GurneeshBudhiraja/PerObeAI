@@ -1,9 +1,13 @@
 .env
+
 node_modules/
-text_embeddings
-*/__pycache__/
-perobe_ai_venv/
+
 *.pyc
-text_embeddings.py
+
+testing.ipynb
+
 application_default_credentials.json
+
 firebase_admin_credentials.json
+
+*.ipynb
