@@ -5,7 +5,12 @@ from constants import FLASH_MODEL_001
 from models.recommend_outfit import RecommendOutfit
 
 
-def generate_recommendation(upperwer_clothes : list[dict],lowerwear_clothes:list[dict],user_prompt:str, accessibility)->RecommendOutfit:
+def generate_recommendation(
+    upperwer_clothes : list[dict],
+    lowerwear_clothes:list[dict],
+    user_prompt:str,
+    accessibility:str=""
+  )->RecommendOutfit:
   """
   Function to generate the recommendation based on the user prompt and cloth collection data fetched from the vector store
 
