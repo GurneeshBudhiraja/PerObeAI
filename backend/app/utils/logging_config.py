@@ -2,6 +2,7 @@ import logging
 import os
 from logtail import LogtailHandler
 
+
 def get_logger():
     """
     Configures and returns a logger instance with LogtailHandler.
@@ -15,9 +16,9 @@ def get_logger():
     """
     logs_token = os.getenv("LOGS_TOKEN")
     if not logs_token:
-        #TODO: Will handle this case later
+        # TODO: Will handle this case later
         return
-    
+
     handler = LogtailHandler(source_token=logs_token)
     logger = logging.getLogger(__name__)
 
@@ -28,6 +29,7 @@ def get_logger():
     logger.handlers = []
     logger.addHandler(handler)
     return logger
+
 
 # Initialize the logger
 logger = get_logger()

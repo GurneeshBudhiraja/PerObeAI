@@ -1,8 +1,10 @@
 from enum import Enum
 
+
 class TagType(Enum):
     UPPERWEAR = "upperwear"
     LOWERWEAR = "lowerwear"
+
 
 def validate_tag(tag: dict) -> bool:
     """

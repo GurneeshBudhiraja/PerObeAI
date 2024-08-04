@@ -6,49 +6,54 @@ from models.recommend_outfit import RecommendOutfit
 
 
 def generate_recommendation(
-    upperwer_clothes : list[dict],
-    lowerwear_clothes:list[dict],
-    user_prompt:str,
-    accessibility:str=""
-  )->RecommendOutfit:
-  """
-  Function to generate the recommendation based on the user prompt and cloth collection data fetched from the vector store
+    upperwer_clothes: list[dict],
+    lowerwear_clothes: list[dict],
+    user_prompt: str,
+    accessibility: str = "",
+) -> RecommendOutfit:
+    """
+    Function to generate the recommendation based on the user prompt and cloth collection data fetched from the vector store
 
-  Args:
-  upperwear_clothes : list[dict] : The list of upperwear clothes
-  lowerwear_clothes : list[dict] : The list of lowerwear clothes
+    Args:
+    upperwear_clothes : list[dict] : The list of upperwear clothes
+    lowerwear_clothes : list[dict] : The list of lowerwear clothes
 
-  user_prompt : str : The user prompt
+    user_prompt : str : The user prompt
 
-  accessibility : str : The accessibility of the user like 'blind', 'some type of color blindness', or any other type of visual impairment
-  """
+    accessibility : str : The accessibility of the user like 'blind', 'some type of color blindness', or any other type of visual impairment
+    """
 
-  try:
-    parser = JsonOutputParser(pydantic_object=RecommendOutfit)
+    try:
+        parser = JsonOutputParser(pydantic_object=RecommendOutfit)
 
-    prompt = ChatPromptTemplate.from_messages([
-      
-      ("system", "Return the requested response object by following the below instructions\n'{format_instructions}'\n"),
+        prompt = ChatPromptTemplate.from_messages(
+            [
+                (
+                    "system",
+                    "Return the requested response object by following the below instructions\n'{format_instructions}'\n",
+                ),
+                ("human", upperwer_clothes),
+                ("human", lowerwear_clothes),
+                (
+                    "human",
+                    "user prompt is {user_prompt} user's accessibility type is {accessibility}",
+                ),
+            ]
+        )
 
-      ("human", upperwer_clothes),
+        model = ChatGoogleGenerativeAI(model=FLASH_MODEL_001, temperature=0.75)
 
-      ("human", lowerwear_clothes),
-      
-      ("human", "user prompt is {user_prompt} user's accessibility type is {accessibility}"),
-    ])
+        chain = prompt | model | parser
 
-    model = ChatGoogleGenerativeAI(model=FLASH_MODEL_001, temperature=0.75)
+        recommendation_response = chain.invoke(
+            {
+                "format_instructions": parser.get_format_instructions(),
+                "user_prompt": user_prompt,
+                "accessibility": accessibility,
+            }
+        )
 
-    chain = prompt | model | parser 
-    
-    recommendation_response = chain.invoke({
-      "format_instructions": parser.get_format_instructions(),
-      "user_prompt": user_prompt,
-      "accessibility":accessibility
-    })
+        return recommendation_response
 
-
-    return recommendation_response
-  
-  except Exception as e:
-    return {"error": f"Exception in generate_recommendation {str(e)}"}
+    except Exception as e:
+        return {"error": f"Exception in generate_recommendation {str(e)}"}
