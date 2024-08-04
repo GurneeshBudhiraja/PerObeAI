@@ -1,18 +1,11 @@
-"""
-Verifies the Firebase ID token sent in the Authorization header of the request.
-"""
-
 from fastapi import Depends, HTTPException, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
-
-# Firebase admin 
 import firebase_admin
 from firebase_admin import auth, credentials
-import firebase_admin.auth
 
 
-# Initialize Firebase Admin with service account credentials 
+
 cred = credentials.Certificate(os.getenv("FIREBASE_SERVICE_ACCOUNT_KEY"))
 firebase_admin.initialize_app(cred)
 
@@ -34,6 +27,7 @@ def verify_firebase_uid(request: Request, credentials: HTTPAuthorizationCredenti
         return uid
     
     except ValueError:
+        # TODO: will handle the error later on with proper logging and custom class
         # For invalid tokens
         raise HTTPException(status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden: Invalid ID token")
     

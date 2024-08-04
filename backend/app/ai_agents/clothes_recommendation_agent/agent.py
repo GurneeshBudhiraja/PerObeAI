@@ -4,6 +4,7 @@ from langchain.agents import create_tool_calling_agent, AgentExecutor
 
 from .agent_tools import retrieve_upperwear, retrieve_lowerwear, get_temperature_by_city, generate_outfit_recommendation
 from constants import FLASH_MODEL_001
+
 # Custom package to store the prompts
 from ai_prompts import AGENT_SYSTEM_PROMPT
 

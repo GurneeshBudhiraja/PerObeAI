@@ -1,10 +1,7 @@
-
-# for type hinting
 from fastapi import FastAPI
-# Middleware to compress the response
 from fastapi.middleware.gzip import GZipMiddleware
 
-# Function to configure the GZip middleware
+
 def configure_gzip_middleware(app:FastAPI):
   """
   Add the GZip middleware to the FastAPI application to compress the response of the FastAPI application.

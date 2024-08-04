@@ -1,28 +1,26 @@
-"""
-The logger middleware is used to log the requests and responses of the FastAPI application.
-"""
 from fastapi import Request
+from typing import Callable
 import time
-# Logger object for logging
 from utils import logger
 
+async def configure_logger_middleware(request:Request,call_next:Callable):
+  """
+  Add the configure_logger_middleware to the FastAPI application for logging the request and time taken to process the request
 
+  Args:
+    request (Request): The Request instance
+    call_next (Callable): The next middleware in the chain
 
-# Middleware to log requests
-async def configure_logger_middleware(request:Request,call_next):
-  # Request receive time
+  """  
   receive_time = time.time()
+  
   try:
-    # Call the next middleware or route handler
     response = await call_next(request)
+  
   except Exception as e:
-    # Request end time
     end_time = time.time()
-
-    # Total time taken by the request
     process_time = end_time - receive_time
     
-    # Logging the error
     logger.error({
         "path": request.url.path,
         "method": request.method,
@@ -30,17 +28,14 @@ async def configure_logger_middleware(request:Request,call_next):
         "error": str(e)
     })
   else:
-    # Request end time
     end_time = time.time()
-
-    # Total time taken by the request
     process_time = end_time-receive_time
     
-    # Log info dictionary
     logger.info({
       "path":request.url.path,
       "method":request.method,
       "process_time":process_time,
     })
+
     return response
 
