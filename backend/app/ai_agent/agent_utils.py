@@ -1,6 +1,7 @@
-def format_collection_data(collection_data:list[dict])->list[dict]:
+
+def format_clothes_data(clothes_data:dict)->list[dict]:
   """
-  Formats the collection data to a proper format
+  Formats the clothes collection data to a proper format
 
   Args:
     collection_data : list[dict] : The collection data either upperwear or lowerwear.
@@ -9,12 +10,15 @@ def format_collection_data(collection_data:list[dict])->list[dict]:
     list[dict] : The formatted collection data.
   """
   try:
-    collection_list = collection_data["matches"]
+    if "matches" not in clothes_data:
+      # TODO: will add logs here later on
+      return [{}]    
+    
+    clothes_list = clothes_data["matches"]
 
-    formatted_collection = [{"type":"image_url","image_url":collection["metadata"]["url"]} for collection in collection_list ]
-
-    return formatted_collection
+    return [{"type":"image_url","image_url":collection["metadata"]["url"]} for collection in clothes_list ]
+  
+  
   except Exception as e:
     # TODO: will handle the error later on with proper logging and custom class
-    print("Error in format_collection_data agent_utils")
-    return []
+    return [{}]
