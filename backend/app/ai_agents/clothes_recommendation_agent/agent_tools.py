@@ -6,9 +6,9 @@ from constants import BASE_URL, TOP_K
 import requests
 import os
 
-# Global variables to store the upperwear and lowerwear collection data fetched from the vector store
-UPPERWEAR_COLLECTION = []
-LOWERWEAR_COLLECTION = []
+# Global variables to store the upperwear and lowerwear clothes data fetched from the vector store
+UPPERWEAR_CLOTHES = []
+LOWERWEAR_CLOTHES = []
 
 
 
@@ -40,7 +40,7 @@ def get_temperature_by_city(city:str)->dict:
 @tool
 def retrieve_upperwear(user_id:str, user_prompt:str)->bool:
   """
-  Retrieves the list of upperwear collection based on the user prompt, formats the data to the proper format and assings to the global variable UPPERWEAR_COLLECTION
+  Retrieves the list of upperwear clothes based on the user prompt, formats the data to the proper format and assings to the global variable UPPERWEAR_COLLECTION
 
   Args:
     user_prompt : str : The user prompt.
@@ -51,7 +51,7 @@ def retrieve_upperwear(user_id:str, user_prompt:str)->bool:
   """
   try:
     
-    global UPPERWEAR_COLLECTION
+    global UPPERWEAR_CLOTHES
 
     text_embedding = embed_text(text=user_prompt)
     
@@ -61,7 +61,7 @@ def retrieve_upperwear(user_id:str, user_prompt:str)->bool:
 
     upperwear_data = vector_store_instance.fetch_similar_vectors(vector_list=text_embedding, top_k=TOP_K, filter=filter_criteria, include_metadata=True)
 
-    UPPERWEAR_COLLECTION = format_clothes_data(clothes_data=upperwear_data)
+    UPPERWEAR_CLOTHES = format_clothes_data(clothes_data=upperwear_data)
 
     return True
   
@@ -73,7 +73,7 @@ def retrieve_upperwear(user_id:str, user_prompt:str)->bool:
 @tool
 def retrieve_lowerwear(user_id:str, user_prompt:str)->bool:
   """
-  Retrieves the list of lowerwear collection based on the user prompt, formats the data to the proper format and assings to the global variable LOWERWEAR_COLLECTION
+  Retrieves the list of lowerwear clothes based on the user prompt, formats the data to the proper format and assings to the global variable LOWERWEAR_COLLECTION
 
   Args:
     user_prompt : str : The user prompt.
@@ -84,7 +84,7 @@ def retrieve_lowerwear(user_id:str, user_prompt:str)->bool:
   """
   try:
     
-    global LOWERWEAR_COLLECTION
+    global LOWERWEAR_CLOTHES
 
     text_embedding = embed_text(text=user_prompt)
 
@@ -94,7 +94,7 @@ def retrieve_lowerwear(user_id:str, user_prompt:str)->bool:
 
     lowerwear_data = vector_store_instance.fetch_similar_vectors(vector_list=text_embedding, top_k=TOP_K, filter=filter_criteria, include_metadata=True)
 
-    LOWERWEAR_COLLECTION = format_clothes_data(clothes_data=lowerwear_data)
+    LOWERWEAR_CLOTHES = format_clothes_data(clothes_data=lowerwear_data)
 
     return True 
 
@@ -113,12 +113,15 @@ def generate_outfit_recommendation(user_prompt:str, accessibility:str)->dict:
     accessibility : str : The accessibility of the user like 'blind', 'color blindness of some type', or any other type of visual impairment
 
   Returns:
-    dict : The final recommendation based on the upperwear and lowerwear data otherwise a dictionary with error message
+    dict : The final recommendation based on the upperwear and lowerwear clothes data otherwise a dictionary with error message 
   """
+  #TODO: may need to change the retrun type and will also need to update in the docstring too as mentioned above 👆
 
   try:
-    return generate_recommendation(upperwer_collection=UPPERWEAR_COLLECTION, lowerwear_collection=LOWERWEAR_COLLECTION, user_prompt=user_prompt, accessibility=accessibility)
+  
+    return generate_recommendation(upperwer_clothes=UPPERWEAR_CLOTHES, lowerwear_clothes=LOWERWEAR_CLOTHES, user_prompt=user_prompt, accessibility=accessibility)
   
   except Exception: 
+  
     #TODO: will handle the error later on with proper logging and custom class
     return {"error":"Error in generating recommendation"}
