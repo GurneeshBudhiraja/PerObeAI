@@ -49,5 +49,6 @@ def generate_recommendation(
 
 
     return recommendation_response
+  
   except Exception as e:
     return {"error": f"Exception in generate_recommendation {str(e)}"}
