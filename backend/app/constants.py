@@ -6,6 +6,7 @@ ALLOWED_HOSTS = ["*"]
 
 # Vector store constants
 PINECONE_INDEX_NAME = "perobe-ai"
+TOP_K=4
 
 # Gemini model constants
 MULTIMODAL_EMBEDDING_MODEL = "multimodalembedding"

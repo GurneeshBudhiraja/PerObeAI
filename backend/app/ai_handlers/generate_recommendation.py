@@ -32,14 +32,13 @@ def generate_recommendation(upperwer_collection : list[dict],lowerwear_collectio
 
     chain = prompt | model | parser 
     
-    chain_response = chain.invoke({
+    recommendation_response = chain.invoke({
       "format_instructions": parser.get_format_instructions(),
       "user_prompt": user_prompt,
       "accessibility":accessibility
     })
 
-    print(f"chain_response: {chain_response}")
 
-    return chain_response
+    return recommendation_response
   except Exception as e:
     return {"error": f"Exception in generate_recommendation {str(e)}"}

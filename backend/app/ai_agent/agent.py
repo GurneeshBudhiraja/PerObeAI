@@ -1,7 +1,7 @@
 from langchain_google_vertexai import ChatVertexAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.agents import create_tool_calling_agent, AgentExecutor
-from .agent_tools import retrieve_upperwear, retrieve_lowerwear, format_return_data, get_temperature_by_city, gemini_recommendation
+from .agent_tools import retrieve_upperwear, retrieve_lowerwear, format_return_data, get_temperature_by_city, generate_outfit_recommendation
 from constants import FLASH_MODEL_001
 
 def agent(user_id:str, user_prompt:str, city:str, accessibility:str, preferred_fashion_style:str|None=None)->list:
@@ -20,7 +20,7 @@ def agent(user_id:str, user_prompt:str, city:str, accessibility:str, preferred_f
       ("placeholder","{agent_scratchpad}")
     ])
 
-    tools = [get_temperature_by_city ,retrieve_upperwear, retrieve_lowerwear,format_return_data, gemini_recommendation]
+    tools = [get_temperature_by_city ,retrieve_upperwear, retrieve_lowerwear,format_return_data, generate_outfit_recommendation]
 
     llm = ChatVertexAI(model_name=FLASH_MODEL_001,temperature=0)
 
