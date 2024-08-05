@@ -1,7 +1,7 @@
 from utils import logger
 
 
-def response_format(
+def format_response(
     status_code: int = None,
     message: str = None,
     details: dict = None,
@@ -26,6 +26,7 @@ def response_format(
     """
 
     try:
+
         return {
             "status_code": status_code or "",
             "message": message or "",
@@ -39,13 +40,4 @@ def response_format(
         logger.error(
             f"An error occurred while formatting the response object: {str(e)}"
         )
-        return {
-            "status_code": "",
-            "message": "",
-            "details": {
-                "error": "An error occurred while formatting the response object"
-            },
-            "url": "",
-            "path": "",
-            "method": "",
-        }
+        raise Exception("Error occurred while formatting the response object")

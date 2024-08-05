@@ -1,5 +1,6 @@
 import uvicorn
 from fastapi import FastAPI
+from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from dotenv import load_dotenv
 import os
@@ -28,9 +29,9 @@ from routers.web_apis.v1 import (
 
 from middlewares import (
     configure_cors_middleware,
-    configure_logger_middleware,
     configure_trusted_host_middleware,
     configure_gzip_middleware,
+    configure_response_format_middleware,
 )
 
 """
@@ -62,9 +63,7 @@ configure_cors_middleware(app)
 
 configure_trusted_host_middleware(app)
 
-app.add_middleware(BaseHTTPMiddleware, dispatch=configure_logger_middleware)
-
-app.add_exception_handler(404, not_found_exception_handler)
+app.add_middleware(BaseHTTPMiddleware, dispatch=configure_response_format_middleware)
 
 """
 Routers
@@ -72,6 +71,11 @@ Routers
 app.include_router(embedding_router)
 app.include_router(recommendation_router)
 app.include_router(vector_store_router)
+
+
+@app.get("/testing")
+def testing():
+    return JSONResponse(status_code=200, content={"message": "Testing successful"})
 
 
 # Entry point of the application

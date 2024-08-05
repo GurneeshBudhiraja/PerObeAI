@@ -8,7 +8,7 @@ class VectorStore:
     try:
 
         def __init__(self, user_id: str) -> None:
-            
+
             # Initializes the Pinecone vector store for a specific user.
             # The user_id is used to create the namespace and query vectors in the store.
             # A Pinecone instance is created using the API key from environment variables.

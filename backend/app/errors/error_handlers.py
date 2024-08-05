@@ -2,7 +2,7 @@ from fastapi.responses import JSONResponse
 from fastapi import Request
 from utils import logger
 from .custom_exception import CustomException
-from utils import response_format
+from utils import format_response
 
 
 def not_found_exception_handler(request: Request, exc) -> JSONResponse:
@@ -25,7 +25,7 @@ def not_found_exception_handler(request: Request, exc) -> JSONResponse:
             f"Exception occurred: {exc}. Method: {request.method}. URL: {request.url}"
         )
 
-        error_response = response_format(
+        error_response = format_response(
             status_code=404,
             message="Not Found",
             details={"error": "The requested resource was not found"},
@@ -64,7 +64,7 @@ def internal_server_error_handler(request: Request, exc) -> JSONResponse:
             f"Exception occurred: {exc}. Method: {request.method}. URL: {request.url}"
         )
 
-        error_response = response_format(
+        error_response = format_response(
             status_code=500,
             message="Internal Server Error",
             details={"error": "An error occurred while processing the request"},
@@ -103,7 +103,7 @@ def validation_exception_handler(request: Request, exc) -> JSONResponse:
             f"Exception occurred: {exc}. Method: {request.method}. URL: {request.url}"
         )
 
-        error_response = response_format(
+        error_response = format_response(
             status_code=422,
             message="Unprocessable Entity",
             details={"error": f"The request is invalid", "error_details": str(exc)},
@@ -142,7 +142,7 @@ def method_not_allowed_handler(request: Request, exc) -> JSONResponse:
             f"Exception occurred: {exc}. Method: {request.method}. URL: {request.url}"
         )
 
-        error_response = response_format(
+        error_response = format_response(
             status_code=405,
             message="Method Not Allowed",
             details={"error": "The requested method is not allowed"},
@@ -181,7 +181,7 @@ def custom_exception_handler(request: Request, exc) -> JSONResponse:
             f"Exception occurred: {exc}. Method: {request.method}. URL: {request.url}"
         )
 
-        error_response = response_format(
+        error_response = format_response(
             status_code=exc.status_code,
             message=exc.message,
             details={"error": exc.details},
