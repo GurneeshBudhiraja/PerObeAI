@@ -14,11 +14,17 @@ def format_image_data(
 
     Returns:
         Instance of ImageData class containing the unique ID, image vector, and metadata.
+
+    Raises:
+        Exception: If an error occurs while formatting the image data.
     """
+    try:
 
-    image_metadata = {
-        "url": image_url,
-        "tag": image_tag["tag"],
-    }
+        image_metadata = {
+            "url": image_url,
+            "tag": image_tag["tag"],
+        }
 
-    return {"id": str(uuid4()), "values": image_vector, "metadata": image_metadata}
+        return {"id": str(uuid4()), "values": image_vector, "metadata": image_metadata}
+    except Exception:
+        raise Exception

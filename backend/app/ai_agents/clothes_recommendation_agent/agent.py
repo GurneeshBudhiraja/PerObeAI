@@ -9,6 +9,7 @@ from .agent_tools import (
     generate_outfit_recommendation,
 )
 from constants import FLASH_MODEL_001
+from utils import logger
 
 # Custom package to store the prompts
 from ai_prompts import AGENT_SYSTEM_PROMPT
@@ -36,7 +37,6 @@ def clothes_recommendation_agent(
           dict : The outfit recommendation otherwise an error.
 
         """
-
         prompt = ChatPromptTemplate.from_messages(
             [
                 ("system", AGENT_SYSTEM_PROMPT),
@@ -75,5 +75,4 @@ def clothes_recommendation_agent(
         return agent_response["output"]
 
     except Exception as e:
-        # TODO: will handle the error later on with proper logging and custom class
-        return {"error": str(e)}
+        raise Exception(f"Agent Error: {e}")

@@ -5,9 +5,10 @@ from dotenv import load_dotenv
 import os
 from fastapi.exceptions import RequestValidationError
 
-# Custom error class and error handlers
+# Custom error package
 from errors.custom_exception import CustomException
-from errors.handlers import (
+
+from errors.error_handlers import (
     not_found_exception_handler,
     internal_server_error_handler,
     method_not_allowed_handler,

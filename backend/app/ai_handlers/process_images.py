@@ -1,11 +1,6 @@
-# Get the image vector of the image from the image URL
 from .image_vector import get_image_vector
-
-# Get the tag of the image from the image URL
 from .image_tag import get_image_tag
-
-# Utility functions for the image tag validation and formatting the image data into a dictionary
-from utils import validate_tag, format_image_data
+from utils import validate_tag, format_image_data, logger
 
 
 async def process_images(images: list[dict]) -> dict:
@@ -17,6 +12,9 @@ async def process_images(images: list[dict]) -> dict:
 
     Returns:
         dict: A dictionary
+
+    Raises:
+        Exception: If an error occurs while processing the images.
     """
     try:
         images_data = []
@@ -35,24 +33,18 @@ async def process_images(images: list[dict]) -> dict:
             image_vector = get_image_vector(image_url=image_url)
 
             if not image_vector:
-                # TODO: Will handle the error later on with different approach
-                raise ValueError("Error in generating the image description")
+                continue
 
-            # Format the image vector and metadata into a dictionary
             formatted_data = format_image_data(
                 image_url=image_url, image_tag=image_tag, image_vector=image_vector
             )
 
-            # Append the formatted data into the images_data list
             images_data.append(formatted_data)
 
-        # Check if the images_vector_list is empty
         if not images_data:
-            # TODO: will handle this differently later on
             return []
 
         return images_data
 
     except Exception as e:
-        # TODO: Add logging and change the error handling later on
-        return []
+        raise Exception(f"Process Images Error: {e}")

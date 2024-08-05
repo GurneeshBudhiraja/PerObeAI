@@ -3,7 +3,7 @@ from fastapi.responses import JSONResponse
 from ai_agents import clothes_recommendation_agent
 from models.recommendation_request_body import RecommendationRequestBody
 from firebase_utils import verify_firebase_uid
-
+from errors.custom_exception import CustomException
 
 router = APIRouter(prefix="/api/web/v1", tags=["outfit_recommendation"])
 
@@ -35,7 +35,11 @@ def get_recommendation(
         )
 
     except Exception as e:
-        print(f"Error in get_recommendation: {str(e)}")
-        raise HTTPException(
-            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR, detail=str(e)
+
+        raise CustomException(
+            status_code=500,
+            message=str(e),
+            details={
+                "description": "An error occurred while generating the outfit recommendation"
+            },
         )

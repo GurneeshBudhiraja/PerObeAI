@@ -29,12 +29,19 @@ class VectorStore:
             Returns:
               int: The number of vectors inserted
             """
-            insert_response = self.index.upsert(
-                vectors=images_vector_data,
-                namespace=self.user_id,
-            )
+            try:
 
-            return insert_response.upserted_count
+                insert_response = self.index.upsert(
+                    vectors=images_vector_data,
+                    namespace=self.user_id,
+                )
+
+                return insert_response.upserted_count
+
+            except Exception as e:
+                raise Exception(
+                    f"Error while inserting the vectors into the vector store: {str(e)}"
+                )
 
         def fetch_similar_vectors(
             self,
@@ -57,15 +64,24 @@ class VectorStore:
             Returns:
               TODO: Add the return type
             """
-            similar_vectors = self.index.query(
-                namespace=self.user_id,
-                vector=vector_list,
-                filter=filter,
-                top_k=top_k,
-                include_values=include_values,
-                include_metadata=include_metadata,
-            )
-            return similar_vectors
+            try:
+
+                similar_vectors = self.index.query(
+                    namespace=self.user_id,
+                    vector=vector_list,
+                    filter=filter,
+                    top_k=top_k,
+                    include_values=include_values,
+                    include_metadata=include_metadata,
+                )
+
+                return similar_vectors
+
+            except Exception as e:
+
+                raise Exception(
+                    f"Error while fetching the similar vectors from the vector store: {str(e)}"
+                )
 
         def delete_vector(self, image_url: str):
             """
@@ -103,12 +119,9 @@ class VectorStore:
 
             except Exception as e:
 
-                # TODO: will handle the error later on with proper logging and custom class
-
-                print(str(e))
-
-                return {"response": False}
+                raise Exception(
+                    f"Error while deleting the vector from the vector store: {str(e)}"
+                )
 
     except Exception as e:
-        # TODO: will handle the error later on with proper logging and custom class
-        print(str(e))
+        raise Exception

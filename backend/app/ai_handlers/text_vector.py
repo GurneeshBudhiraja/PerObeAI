@@ -1,5 +1,6 @@
 from langchain_google_vertexai import VertexAIEmbeddings
 from constants import MULTIMODAL_EMBEDDING_MODEL
+from utils import logger
 
 
 def embed_text(text: str) -> list[float]:
@@ -13,9 +14,15 @@ def embed_text(text: str) -> list[float]:
       list[float] : The text vector.
     """
     try:
+
         embedding_model = VertexAIEmbeddings(model_name=MULTIMODAL_EMBEDDING_MODEL)
+
         text_embedding = embedding_model.embed_query(text=text)
+
         return text_embedding
+
     except Exception as e:
-        # TODO: will handle this later on
-        return []
+
+        logger.error(f"embed_text error: {e}")
+
+        raise Exception

@@ -15,10 +15,11 @@ async def get_image_tag(image_url: str) -> ClothImageTag:
 
     Returns:
         Cloth_Image_Tag: Image tag of the image generated from the model
+
+    Raises:
+        Exception: If an error occurs while generating the image tag
     """
     try:
-
-        # Initialize model with the gemini-1.5-flash-001 model
         model = ChatGoogleGenerativeAI(model=FLASH_MODEL_001, temperature=0.6)
 
         parser = JsonOutputParser(pydantic_object=ClothImageTag)
@@ -48,6 +49,5 @@ async def get_image_tag(image_url: str) -> ClothImageTag:
         )
         return tag_data
 
-    except Exception as e:
-        # TODO: Add logging and change the error handling later on
-        return {"error": f"Error in _get_image_tag: {str(e)}"}
+    except Exception:
+        raise Exception

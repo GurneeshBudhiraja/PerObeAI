@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from fastapi.exceptions import HTTPException
+from errors.custom_exception import CustomException
 from models.vector_store_operations import DeleteVectorRequest
 from vector_store import VectorStore
 
@@ -33,9 +33,16 @@ def delete_vector(image_data: DeleteVectorRequest, user_id: str):
                 status_code=200, content={"response": delete_response["response"]}
             )
 
-        return HTTPException(status_code=400, detail="The vector could not be deleted")
+        else:
+            # TODO: will handle the custom response here later on
+            return JSONResponse(
+                status_code=404,
+                content={"response": "No vector found for the given image"},
+            )
 
     except Exception as e:
-        # TODO: will handle the error later on with proper logging and custom class
-        print(str(e))
-        return []
+        raise CustomException(
+            status_code=500,
+            message=str(e),
+            details={"description": "An error occurred while deleting the vector"},
+        )

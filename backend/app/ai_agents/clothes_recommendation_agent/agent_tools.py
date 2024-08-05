@@ -1,10 +1,12 @@
-from langchain_core.tools import tool
+from langchain_core.tools import tool, ToolException
 from ai_handlers import embed_text, generate_recommendation
 from vector_store import VectorStore
 from .agent_utils import format_clothes_data
 from constants import BASE_URL, TOP_K
 import requests
 import os
+from utils import logger
+from errors.custom_exception import CustomException
 
 # Global variables to store the upperwear and lowerwear clothes data fetched from the vector store
 UPPERWEAR_CLOTHES = []
@@ -21,6 +23,7 @@ def get_temperature_by_city(city: str) -> dict:
 
     Returns:
       dict : The temperature data is successfully fetched from the API otherwise an empty dictionary
+
     """
 
     try:
@@ -31,9 +34,9 @@ def get_temperature_by_city(city: str) -> dict:
 
         return weather_data
 
-    except Exception:
-        # TODO: will handle the error later on with proper logging and custom class
-        return {}
+    except Exception as e:
+
+        raise ToolException(f"get_temperature_by_city agent tool error: {e}")
 
 
 @tool
@@ -46,7 +49,7 @@ def retrieve_upperwear(user_id: str, user_prompt: str) -> bool:
       user_id : str : The user id.
 
     Returns:
-      True : bool = A boolean value to indicate the success of the tool otherwise False
+      True : bool = A boolean value to indicate the success of the tool
     """
     try:
 
@@ -67,11 +70,9 @@ def retrieve_upperwear(user_id: str, user_prompt: str) -> bool:
 
         UPPERWEAR_CLOTHES = format_clothes_data(clothes_data=upperwear_data)
 
-        return True
-
     except Exception as e:
-        # TODO: will handle the error later on with proper logging and custom class
-        return False
+
+        raise ToolException(f"retrieve_upperwear agent tool error: {e}")
 
 
 @tool
@@ -108,12 +109,14 @@ def retrieve_lowerwear(user_id: str, user_prompt: str) -> bool:
         return True
 
     except Exception as e:
-        # TODO: will handle the error later on with proper logging and custom class
-        return False
+
+        raise ToolException(f"retrieve_lowerwear agent tool error: {e}")
 
 
 @tool(return_direct=True)
-def generate_outfit_recommendation(user_prompt: str, accessibility: str) -> dict:
+def generate_outfit_recommendation(
+    user_prompt: str, accessibility: str
+) -> dict | CustomException:
     """
     Get the final recommendation based on the upperwear and lowerwear data fetched from the vector store
 
@@ -122,9 +125,8 @@ def generate_outfit_recommendation(user_prompt: str, accessibility: str) -> dict
       accessibility : str : The accessibility of the user like 'blind', 'color blindness of some type', or any other type of visual impairment
 
     Returns:
-      dict : The final recommendation based on the upperwear and lowerwear clothes data otherwise a dictionary with error message
+      dict : The final recommendation based on the upperwear and lowerwear clothes data otherwise a dictionary otherwise a custom exception
     """
-    # TODO: may need to change the retrun type and will also need to update in the docstring too as mentioned above 👆
 
     try:
 
@@ -135,7 +137,6 @@ def generate_outfit_recommendation(user_prompt: str, accessibility: str) -> dict
             accessibility=accessibility,
         )
 
-    except Exception:
+    except Exception as e:
 
-        # TODO: will handle the error later on with proper logging and custom class
-        return {"error": "Error in generating recommendation"}
+        raise ToolException(f"generate_outfit_recommendation agent tool error: {e}")

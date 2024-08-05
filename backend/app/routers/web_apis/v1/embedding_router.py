@@ -1,11 +1,11 @@
-from fastapi import APIRouter, HTTPException, Depends, status
+from fastapi import APIRouter, Depends, status
 from firebase_utils import verify_firebase_uid
 from ai_handlers import process_images
 from vector_store import VectorStore
 from fastapi.responses import (
     JSONResponse,
 )  # TODO: will remove this later on after centralizing the response and error handling
-
+from errors.custom_exception import CustomException
 
 router = APIRouter(prefix="/api/web/v1", tags=["embeddings_router"])
 
@@ -43,6 +43,13 @@ async def create_image_embeddings(
             status_code=status.HTTP_200_OK,
             content={"message": f"Embeddings count is {embeddings_count}"},
         )
+
     except Exception as e:
-        # TODO: handle the error later on with proper logging and custom class
-        raise HTTPException(status_code=500, detail=str("Error in :: " + str(e)))
+
+        raise CustomException(
+            status_code=500,
+            message=str(e),
+            details={
+                "description": "An error occurred while generating/storing the embeddings"
+            },
+        )

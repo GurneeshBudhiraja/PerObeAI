@@ -4,6 +4,8 @@ from langchain_core.output_parsers import JsonOutputParser
 from constants import FLASH_MODEL_001
 from models.recommend_outfit import RecommendOutfit
 
+from errors.custom_exception import CustomException
+
 
 def generate_recommendation(
     upperwer_clothes: list[dict],
@@ -45,7 +47,7 @@ def generate_recommendation(
 
         chain = prompt | model | parser
 
-        recommendation_response = chain.invoke(
+        return chain.invoke(
             {
                 "format_instructions": parser.get_format_instructions(),
                 "user_prompt": user_prompt,
@@ -53,7 +55,5 @@ def generate_recommendation(
             }
         )
 
-        return recommendation_response
-
-    except Exception as e:
-        return {"error": f"Exception in generate_recommendation {str(e)}"}
+    except Exception:
+        raise Exception

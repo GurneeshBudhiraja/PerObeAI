@@ -1,3 +1,6 @@
+from utils import logger
+
+
 def format_clothes_data(clothes_data: dict) -> list[dict]:
     """
     Formats the clothes collection data to a proper format
@@ -10,9 +13,7 @@ def format_clothes_data(clothes_data: dict) -> list[dict]:
     """
     try:
         if "matches" not in clothes_data:
-            # TODO: will add logs here later on
             return [{}]
-
         clothes_list = clothes_data["matches"]
 
         return [
@@ -21,5 +22,7 @@ def format_clothes_data(clothes_data: dict) -> list[dict]:
         ]
 
     except Exception as e:
-        # TODO: will handle the error later on with proper logging and custom class
+
+        logger.error(f"Error in formatting the clothes data {e} in {function.__name__}")
+
         return [{}]

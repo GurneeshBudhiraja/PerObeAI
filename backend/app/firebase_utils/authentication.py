@@ -1,9 +1,9 @@
-from fastapi import Depends, HTTPException, Request, status
+from fastapi import Depends, Request, status
 from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
 import firebase_admin
 from firebase_admin import auth, credentials
-
+from errors.custom_exception import CustomException
 
 cred = credentials.Certificate(os.getenv("FIREBASE_SERVICE_ACCOUNT_KEY"))
 firebase_admin.initialize_app(cred)
@@ -31,25 +31,34 @@ def verify_firebase_uid(
     except ValueError:
         # TODO: will handle the error later on with proper logging and custom class
         # For invalid tokens
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden: Invalid ID token"
+        raise CustomException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            message=str(e),
+            details={"description": "Forbidden: Invalid ID token"},
         )
 
     except firebase_admin.auth.ExpiredIdTokenError:
         # For expired tokens
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden: Expired ID token"
+        raise CustomException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            message=str(e),
+            details={"description": "Forbidden: Expired ID token"},
         )
 
     except firebase_admin.auth.RevokedIdTokenError:
         # For revoked tokens
-        raise HTTPException(
-            status_code=status.HTTP_403_FORBIDDEN, detail="Forbidden: Revoked ID token"
+        raise CustomException(
+            status_code=status.HTTP_403_FORBIDDEN,
+            message=str(e),
+            details={"description": "Forbidden: Revoked ID token"},
         )
 
     except Exception as e:
         # Other exceptions
-        raise HTTPException(
+        raise CustomException(
             status_code=status.HTTP_403_FORBIDDEN,
-            detail=f"Forbidden: Authentication failed: {str(e)}",
+            message=str(e),
+            details={
+                "description": "An error occurred while verifying the Firebase ID token"
+            },
         )

@@ -40,10 +40,9 @@ def not_found_exception_handler(request: Request, exc) -> JSONResponse:
 
         raise CustomException(
             status_code=500,
-            message="Internal Server Error",
+            message=str(e),
             details={
-                "error": str(e),
-                "description": f"An error occurred while handling the exception in {function.__name__}",
+                "description": f"An error occurred while handling the not found error",
             },
         )
 
@@ -80,10 +79,9 @@ def internal_server_error_handler(request: Request, exc) -> JSONResponse:
 
         raise CustomException(
             status_code=500,
-            message="Internal Server Error",
+            message=str(e),
             details={
-                "error": str(e),
-                "description": f"An error occurred while handling the exception in {function.__name__}",
+                "description": f"An error occurred while handling the internal server error",
             },
         )
 
@@ -120,10 +118,9 @@ def validation_exception_handler(request: Request, exc) -> JSONResponse:
 
         raise CustomException(
             status_code=500,
-            message="Internal Server Error",
+            message=str(e),
             details={
-                "error": str(e),
-                "description": f"An error occurred while handling the exception in {function.__name__}",
+                "description": "An error occurred while handling the validation error",
             },
         )
 
@@ -160,10 +157,9 @@ def method_not_allowed_handler(request: Request, exc) -> JSONResponse:
 
         raise CustomException(
             status_code=500,
-            message="Internal Server Error",
+            message=str(e),
             details={
-                "error": str(e),
-                "description": f"An error occurred while handling the exception in {function.__name__}",
+                "description": "An error occurred while handling the method not allowed error",
             },
         )
 
