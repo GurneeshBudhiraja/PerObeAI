@@ -1,8 +1,19 @@
 import uvicorn
 from fastapi import FastAPI
+from starlette.middleware.base import BaseHTTPMiddleware
 from dotenv import load_dotenv
 import os
-from starlette.middleware.base import BaseHTTPMiddleware
+from fastapi.exceptions import RequestValidationError
+
+from errors.custom_exception import CustomException
+
+from errors.handlers import (
+    not_found_exception_handler,
+    internal_server_error_handler,
+    method_not_allowed_handler,
+    validation_exception_handler,
+    custom_exception_handler,
+)
 
 # Load the environment variables
 load_dotenv()
@@ -21,12 +32,23 @@ from middlewares import (
     configure_gzip_middleware,
 )
 
+# Exception handlers
+
+EXCEPTION_HANDLERS = {
+    404: not_found_exception_handler,
+    500: internal_server_error_handler,
+    405: method_not_allowed_handler,
+    RequestValidationError: validation_exception_handler,
+    CustomException: custom_exception_handler,
+}
+
 
 # Initialize the FastAPI application
 app = FastAPI(
     title="PerObeAI - Personal Wardrobe AI",
     description="This is the backend for the PerObeAI project",
     version="1.0.0",
+    exception_handlers=EXCEPTION_HANDLERS,
 )
 
 
@@ -41,6 +63,7 @@ configure_trusted_host_middleware(app)
 
 app.add_middleware(BaseHTTPMiddleware, dispatch=configure_logger_middleware)
 
+app.add_exception_handler(404, not_found_exception_handler)
 
 """
 Routers
