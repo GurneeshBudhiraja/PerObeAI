@@ -1,6 +1,8 @@
 import logging
 import os
 from logtail import LogtailHandler
+from errors.custom_exception import CustomException
+from fastapi import status
 
 
 def get_logger():
@@ -14,21 +16,31 @@ def get_logger():
     Returns:
         logging.Logger: A configured logger instance.
     """
-    logs_token = os.getenv("LOGS_TOKEN")
-    if not logs_token:
-        # TODO: Will handle this case later
-        return
+    try:
 
-    handler = LogtailHandler(source_token=logs_token)
-    logger = logging.getLogger(__name__)
+        logs_token = os.getenv("LOGS_TOKEN")
 
-    # Set log level from environment variable, default to INFO
-    log_level = os.getenv("LOG_LEVEL", "INFO").upper()
-    logger.setLevel(getattr(logging, log_level, logging.INFO))
+        handler = LogtailHandler(source_token=logs_token)
 
-    logger.handlers = []
-    logger.addHandler(handler)
-    return logger
+        logger = logging.getLogger(__name__)
+
+        log_level = os.getenv("LOG_LEVEL", "INFO").upper()
+
+        logger.setLevel(getattr(logging, log_level, logging.INFO))
+
+        logger.handlers = []
+
+        logger.addHandler(handler)
+
+        return logger
+
+    except Exception as e:
+
+        raise CustomException(
+            status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+            message=str(e),
+            details={"description": "An error occurred while configuring the logger"},
+        )
 
 
 # Initialize the logger

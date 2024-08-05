@@ -29,7 +29,6 @@ def verify_firebase_uid(
         return uid
 
     except ValueError:
-        # TODO: will handle the error later on with proper logging and custom class
         # For invalid tokens
         raise CustomException(
             status_code=status.HTTP_403_FORBIDDEN,

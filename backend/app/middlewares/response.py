@@ -26,9 +26,6 @@ async def configure_response_format_middleware(
 
         response = await call_next(request)
 
-        if response.media_type != "application/json":
-            return response
-
         response_body = b""
 
         async for chunk in response.body_iterator:

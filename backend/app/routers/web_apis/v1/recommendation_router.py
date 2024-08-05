@@ -1,4 +1,4 @@
-from fastapi import APIRouter, HTTPException, status, Body, Depends
+from fastapi import APIRouter, status, Body, Depends
 from fastapi.responses import JSONResponse
 from ai_agents import clothes_recommendation_agent
 from models.recommendation_request_body import RecommendationRequestBody
@@ -8,11 +8,21 @@ from errors.custom_exception import CustomException
 router = APIRouter(prefix="/api/web/v1", tags=["outfit_recommendation"])
 
 
-@router.get("/recommend")
+@router.post("/recommend")
 # TODO: will add the firebase uid verification
 def get_recommendation(
     user_id: str, body: RecommendationRequestBody = Body(...)
 ) -> JSONResponse:
+    """
+    Route to get the outfit recommendation based on the user's preferences
+
+    Args:
+        user_id (str): The user id of the user
+        body (RecommendationRequestBody): The request body
+
+    Returns:
+        JSONResponse: The JSON response object
+    """
     try:
         user_prompt = body.user_prompt
 
@@ -31,7 +41,8 @@ def get_recommendation(
         )
 
         return JSONResponse(
-            content={"response": agent_response}, status_code=status.HTTP_200_OK
+            status_code=status.HTTP_200_OK,
+            content={"response": agent_response["description"]},
         )
 
     except Exception as e:

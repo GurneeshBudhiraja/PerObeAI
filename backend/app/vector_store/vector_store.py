@@ -2,6 +2,8 @@ from pinecone.grpc import PineconeGRPC as Pinecone
 import os
 from constants import PINECONE_INDEX_NAME
 from ai_handlers import get_image_vector
+from fastapi.responses import JSONResponse
+from fastapi import status
 
 
 class VectorStore:
@@ -25,10 +27,10 @@ class VectorStore:
             Inserts the vectors into the vector store
 
             Args:
-              images_vector_data (list): The list of vectors to be inserted
+                images_vector_data (list): The list of vectors to be inserted
 
             Returns:
-              int: The number of vectors inserted
+                int: The number of vectors inserted
             """
             try:
 
@@ -56,14 +58,14 @@ class VectorStore:
             Fetches the similar vectors from the vector store
 
             Args:
-              vector_list (list): The vector for which the similar vectors are to be fetched
-              top_k (int, optional): The number of similar vectors to be fetched. Defaults to 3.
-              include_values (bool, optional): Whether to include the vector values. Defaults to False.
-              filter (dict, optional): The filter(metadata) to be applied to the query. Defaults to {}.
-              include_metadata (bool, optional): Whether to include the metadata in the response. Defaults to False.
+                vector_list (list): The vector for which the similar vectors are to be fetched
+                top_k (int, optional): The number of similar vectors to be fetched. Defaults to 3.
+                include_values (bool, optional): Whether to include the vector values. Defaults to False.
+                filter (dict, optional): The filter(metadata) to be applied to the query. Defaults to {}.
+                include_metadata (bool, optional): Whether to include the metadata in the response. Defaults to False.
 
             Returns:
-              TODO: Add the return type
+
             """
             try:
 
@@ -84,14 +86,15 @@ class VectorStore:
                     f"Error while fetching the similar vectors from the vector store: {str(e)}"
                 )
 
-        def delete_vector(self, image_url: str):
+        def delete_vector(self, image_url: str) -> dict:
             """
             Deletes the vector from the vector store
 
             Args:
-              image_url: str: The image url for which the vector is to be deleted
+                image_url: str: The image url for which the vector is to be deleted
 
-            # TODO: Add the return type later on
+            Returns:
+                dict: The response
             """
             try:
 
@@ -106,17 +109,13 @@ class VectorStore:
                 )["matches"]
 
                 if not vector_data:
-                    # TODO: will handle the return type later on
-                    return {"response": True}
+                    return {"vectors_deleted": 0}
 
                 vector_id = [vector["id"] for vector in vector_data]
 
-                delete_response = self.index.delete(
-                    ids=vector_id, namespace=self.user_id
-                )
+                self.index.delete(ids=vector_id, namespace=self.user_id)
 
-                # TODO: will handle the return type later on
-                return {"response": True}
+                return {"vectors_deleted": len(vector_id)}
 
             except Exception as e:
 

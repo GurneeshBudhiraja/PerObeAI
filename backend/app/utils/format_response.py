@@ -36,6 +36,7 @@ def format_response(
             "method": method or "",
             "additional_info": kwargs,
         }
+
     except Exception as e:
         logger.error(
             f"An error occurred while formatting the response object: {str(e)}"

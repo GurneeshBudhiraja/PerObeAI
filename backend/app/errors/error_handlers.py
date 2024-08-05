@@ -15,9 +15,6 @@ def not_found_exception_handler(request: Request, exc) -> JSONResponse:
 
     Returns:
       JSONResponse: The JSON response object
-
-    Exceptions:
-      CustomException: If an error occurs while handling the exception
     """
 
     try:

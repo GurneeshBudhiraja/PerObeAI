@@ -3,7 +3,7 @@ from .image_tag import get_image_tag
 from utils import validate_tag, format_image_data, logger
 
 
-async def process_images(images: list[dict]) -> dict:
+async def process_images(images: list[dict]) -> list:
     """
     Processes a list of image URLs, validates their tags, generates vectors, and stores them in the vector store.
 
@@ -11,17 +11,16 @@ async def process_images(images: list[dict]) -> dict:
         images_url (list[dict]): List of dictionaries containing image URLs.
 
     Returns:
-        dict: A dictionary
+        list: List of dictionaries containing image data.
 
     Raises:
         Exception: If an error occurs while processing the images.
     """
     try:
         images_data = []
-
         for image in images:
 
-            image_url = image["url"]
+            image_url = str(image.url)
 
             image_tag = await get_image_tag(image_url=image_url)
 
@@ -40,9 +39,6 @@ async def process_images(images: list[dict]) -> dict:
             )
 
             images_data.append(formatted_data)
-
-        if not images_data:
-            return []
 
         return images_data
 

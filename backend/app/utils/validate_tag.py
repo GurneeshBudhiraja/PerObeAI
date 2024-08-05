@@ -16,11 +16,16 @@ def validate_tag(tag: dict) -> bool:
     Returns:
         bool: True if the tag is either 'upperwear' or 'lowerwear', False otherwise.
     """
-    if "tag" not in tag:
-        return False
+    try:
 
-    tag_value = tag["tag"]
-    if tag_value not in [tag.value for tag in TagType]:
-        return False
+        if "tag" not in tag:
+            return False
 
-    return True
+        tag_value = tag["tag"]
+        if tag_value not in [tag.value for tag in TagType]:
+            return False
+
+        return True
+
+    except Exception as e:
+        raise Exception("An error occurred while validating the tag")
