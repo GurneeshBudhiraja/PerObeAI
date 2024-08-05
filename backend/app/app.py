@@ -5,8 +5,8 @@ from dotenv import load_dotenv
 import os
 from fastapi.exceptions import RequestValidationError
 
+# Custom error class and error handlers
 from errors.custom_exception import CustomException
-
 from errors.handlers import (
     not_found_exception_handler,
     internal_server_error_handler,
@@ -32,8 +32,9 @@ from middlewares import (
     configure_gzip_middleware,
 )
 
-# Exception handlers
-
+"""
+Exception handlers
+"""
 EXCEPTION_HANDLERS = {
     404: not_found_exception_handler,
     500: internal_server_error_handler,
@@ -43,7 +44,6 @@ EXCEPTION_HANDLERS = {
 }
 
 
-# Initialize the FastAPI application
 app = FastAPI(
     title="PerObeAI - Personal Wardrobe AI",
     description="This is the backend for the PerObeAI project",
@@ -75,6 +75,5 @@ app.include_router(vector_store_router)
 
 # Entry point of the application
 if __name__ == "__main__":
-    # Get the PORT from the env variable, default to 8000 if PORT not found
     port = int(os.getenv("PORT", 8000))
     uvicorn.run("app:app", port=port, reload=True)
