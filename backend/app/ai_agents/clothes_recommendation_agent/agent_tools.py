@@ -1,12 +1,11 @@
 from langchain_core.tools import tool, ToolException
-from ai_handlers import embed_text, generate_recommendation
-from vector_store import VectorStore
+from app.ai_handlers import embed_text, generate_recommendation
+from app.vector_store import VectorStore
 from .agent_utils import format_clothes_data
 from app.constants import BASE_URL, TOP_K
 import requests
 import os
-from utils import logger
-from errors.custom_exception import CustomException
+from app.errors.custom_exception import CustomException
 
 # Global variables to store the upperwear and lowerwear clothes data fetched from the vector store
 UPPERWEAR_CLOTHES = []

@@ -11,3 +11,5 @@ application_default_credentials.json
 firebase_admin_credentials.json
 
 *.ipynb
+
+*.egg-info

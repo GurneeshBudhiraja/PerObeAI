@@ -1,8 +1,8 @@
 from typing import Callable
 from fastapi import Request, Response
 import json
-from errors.custom_exception import CustomException
-from utils import format_response, logger
+from app.errors.custom_exception import CustomException
+from app.utils import format_response, logger
 import time
 
 
@@ -41,16 +41,16 @@ async def configure_response_format_middleware(
                 media_type=response.media_type,
             )
 
-        formatted_response = {"success" : format_response(
-            status_code=response.status_code,
-            message="success",
-            details=json_response,
-            url=str(request.url),
-            path=str(request.url.path),
-            method=request.method,
-        )}
-
-        
+        formatted_response = {
+            "success": format_response(
+                status_code=response.status_code,
+                message="success",
+                details=json_response,
+                url=str(request.url),
+                path=str(request.url.path),
+                method=request.method,
+            )
+        }
 
         modified_response = json.dumps(formatted_response).encode("utf-8")
 

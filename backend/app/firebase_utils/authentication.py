@@ -3,7 +3,7 @@ from fastapi.security import HTTPBearer, HTTPAuthorizationCredentials
 import os
 import firebase_admin
 from firebase_admin import auth, credentials
-from errors.custom_exception import CustomException
+from app.errors.custom_exception import CustomException
 
 cred = credentials.Certificate(os.getenv("FIREBASE_SERVICE_ACCOUNT_KEY"))
 firebase_admin.initialize_app(cred)

@@ -1,7 +1,7 @@
 import logging
 import os
 from logtail import LogtailHandler
-from errors.custom_exception import CustomException
+from app.errors.custom_exception import CustomException
 from fastapi import status
 
 

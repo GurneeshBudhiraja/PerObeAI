@@ -1,6 +1,6 @@
 from .image_vector import get_image_vector
 from .image_tag import get_image_tag
-from utils import validate_tag, format_image_data, logger
+from app.utils import validate_tag, format_image_data
 
 
 async def process_images(images: list[dict]) -> list:

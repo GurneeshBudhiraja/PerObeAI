@@ -1,6 +1,6 @@
 from langchain_google_vertexai import VertexAIEmbeddings
 from app.constants import MULTIMODAL_EMBEDDING_MODEL
-from utils import logger
+from app.utils import logger
 
 
 def get_image_vector(image_url: str) -> list[float]:

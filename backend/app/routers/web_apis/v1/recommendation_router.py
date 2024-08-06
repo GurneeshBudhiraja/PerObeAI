@@ -1,10 +1,10 @@
 from fastapi import APIRouter, status, Body, Depends
 from fastapi.responses import JSONResponse
-from ai_agents import clothes_recommendation_agent
-from ai_handlers import validate
-from models.recommendation_request_body import RecommendationRequestBody
-from firebase_utils import verify_firebase_uid
-from errors.custom_exception import CustomException
+from app.ai_agents import clothes_recommendation_agent
+from app.ai_handlers import validate
+from app.models.recommendation_request_body import RecommendationRequestBody
+from app.firebase_utils import verify_firebase_uid
+from app.errors.custom_exception import CustomException
 
 router = APIRouter(prefix="/api/web/v1", tags=["outfit_recommendation"])
 
@@ -37,7 +37,7 @@ def get_recommendation(
         is_valid_user_prompt = validate(user_prompt=user_prompt)
 
         if not is_valid_user_prompt["is_valid"]:
-            
+
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={"response": is_valid_user_prompt["reply"]},

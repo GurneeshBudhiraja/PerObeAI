@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends
 from fastapi.responses import JSONResponse
-from errors.custom_exception import CustomException
-from models.image_url import ImageURL
-from vector_store import VectorStore
+from app.errors.custom_exception import CustomException
+from app.models.image_url import ImageURL
+from app.vector_store import VectorStore
 
 router = APIRouter(prefix="/api/web/v1/vector", tags=["vector store operations"])
 

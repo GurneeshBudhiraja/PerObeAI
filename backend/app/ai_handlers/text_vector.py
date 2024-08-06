@@ -1,6 +1,6 @@
 from langchain_google_vertexai import VertexAIEmbeddings
 from app.constants import MULTIMODAL_EMBEDDING_MODEL
-from utils import logger
+from app.utils import logger
 
 
 def embed_text(text: str) -> list[float]:

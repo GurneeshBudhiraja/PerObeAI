@@ -4,9 +4,9 @@ from dotenv import load_dotenv
 from fastapi.exceptions import RequestValidationError
 
 # Custom error package
-from errors.custom_exception import CustomException
+from app.errors.custom_exception import CustomException
 
-from errors.error_handlers import (
+from app.errors.error_handlers import (
     not_found_exception_handler,
     internal_server_error_handler,
     method_not_allowed_handler,
@@ -18,13 +18,13 @@ from errors.error_handlers import (
 load_dotenv()
 
 # Import routers and middlewares
-from routers.web_apis.v1 import (
+from app.routers.web_apis.v1 import (
     embedding_router,
     recommendation_router,
     vector_store_router,
 )
 
-from middlewares import (
+from app.middlewares import (
     configure_cors_middleware,
     configure_trusted_host_middleware,
     configure_gzip_middleware,
@@ -72,7 +72,8 @@ app.include_router(vector_store_router)
 
 @app.get("/testing")
 def testing():
-    return  
+    return
+
 
 if __name__ == "__main__":
     pass

@@ -1,8 +1,7 @@
 from fastapi.responses import JSONResponse
 from fastapi import Request
-from utils import logger
+from app.utils import logger, format_response
 from .custom_exception import CustomException
-from utils import format_response
 
 
 def not_found_exception_handler(request: Request, exc) -> JSONResponse:

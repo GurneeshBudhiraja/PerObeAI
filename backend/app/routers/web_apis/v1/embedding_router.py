@@ -1,12 +1,13 @@
 from fastapi import APIRouter, Depends, status
-from firebase_utils import verify_firebase_uid
-from ai_handlers import process_images
-from vector_store import VectorStore
 from fastapi.responses import (
     JSONResponse,
 )
-from errors.custom_exception import CustomException
-from models.image_url import ImageURL
+
+from app.firebase_utils import verify_firebase_uid
+from app.ai_handlers import process_images
+from app.vector_store import VectorStore
+from app.errors.custom_exception import CustomException
+from app.models.image_url import ImageURL
 
 
 router = APIRouter(prefix="/api/web/v1", tags=["embeddings_router"])

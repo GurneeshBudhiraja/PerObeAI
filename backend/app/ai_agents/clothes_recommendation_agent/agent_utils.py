@@ -1,4 +1,4 @@
-from utils import logger
+from app.utils import logger
 
 
 def format_clothes_data(clothes_data: dict) -> list[dict]:

@@ -2,9 +2,9 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from app.constants import FLASH_MODEL_001
-from models.recommend_outfit import RecommendOutfit
+from app.models.recommend_outfit import RecommendOutfit
 
-from errors.custom_exception import CustomException
+from app.errors.custom_exception import CustomException
 
 
 def generate_recommendation(
