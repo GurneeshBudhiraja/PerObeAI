@@ -1,6 +1,7 @@
 from fastapi import APIRouter, status, Body, Depends
 from fastapi.responses import JSONResponse
 from ai_agents import clothes_recommendation_agent
+from ai_handlers import validate
 from models.recommendation_request_body import RecommendationRequestBody
 from firebase_utils import verify_firebase_uid
 from errors.custom_exception import CustomException
@@ -24,6 +25,7 @@ def get_recommendation(
         JSONResponse: The JSON response object
     """
     try:
+        # Getting the data from the request body
         user_prompt = body.user_prompt
 
         city = body.city
@@ -31,6 +33,14 @@ def get_recommendation(
         preferred_fashion_style = body.preferred_fashion_style
 
         accessibility = body.accessibility
+
+        is_valid_user_prompt = validate(user_prompt=user_prompt)
+
+        if not is_valid_user_prompt["is_valid"]:
+            return JSONResponse(
+                status_code=status.HTTP_200_OK,
+                content={"response": is_valid_user_prompt["reply"]},
+            )
 
         agent_response = clothes_recommendation_agent(
             user_id=user_id,
