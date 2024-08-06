@@ -25,7 +25,7 @@ def get_recommendation(
         JSONResponse: The JSON response object
     """
     try:
-        # Getting the data from the request body
+
         user_prompt = body.user_prompt
 
         city = body.city
@@ -37,6 +37,7 @@ def get_recommendation(
         is_valid_user_prompt = validate(user_prompt=user_prompt)
 
         if not is_valid_user_prompt["is_valid"]:
+            
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
                 content={"response": is_valid_user_prompt["reply"]},
