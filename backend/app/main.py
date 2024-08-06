@@ -73,12 +73,8 @@ app.include_router(recommendation_router)
 app.include_router(vector_store_router)
 
 
-@app.get("/testing")
-def testing():
-    return JSONResponse(status_code=200, content={"message": "Testing successful"})
 
 
-# Entry point of the application
+
 if __name__ == "__main__":
-    port = int(os.getenv("PORT", 8000))
-    uvicorn.run("main:app", port=port, reload=True)
+    pass

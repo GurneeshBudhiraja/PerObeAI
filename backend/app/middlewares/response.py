@@ -41,14 +41,16 @@ async def configure_response_format_middleware(
                 media_type=response.media_type,
             )
 
-        formatted_response = format_response(
+        formatted_response = {"success" : format_response(
             status_code=response.status_code,
             message="success",
             details=json_response,
             url=str(request.url),
             path=str(request.url.path),
             method=request.method,
-        )
+        )}
+
+        
 
         modified_response = json.dumps(formatted_response).encode("utf-8")
 
