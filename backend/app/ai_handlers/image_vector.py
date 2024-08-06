@@ -1,5 +1,5 @@
 from langchain_google_vertexai import VertexAIEmbeddings
-from constants import MULTIMODAL_EMBEDDING_MODEL
+from app.constants import MULTIMODAL_EMBEDDING_MODEL
 from utils import logger
 
 

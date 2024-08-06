@@ -2,13 +2,13 @@ from langchain_google_vertexai import ChatVertexAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain.agents import create_tool_calling_agent, AgentExecutor
 
-from .agent_tools import (
+from ai_agents.clothes_recommendation_agent.agent_tools import (
     retrieve_upperwear,
     retrieve_lowerwear,
     get_temperature_by_city,
     generate_outfit_recommendation,
 )
-from constants import FLASH_MODEL_001
+from app.constants import FLASH_MODEL_001
 from utils import logger
 
 # Custom package to store the prompts

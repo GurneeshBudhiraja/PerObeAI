@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.trustedhost import TrustedHostMiddleware
-from constants import ALLOWED_HOSTS
+from app.constants import ALLOWED_HOSTS
 
 
 def configure_trusted_host_middleware(app: FastAPI):

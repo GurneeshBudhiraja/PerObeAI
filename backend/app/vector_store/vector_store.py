@@ -1,6 +1,6 @@
 from pinecone.grpc import PineconeGRPC as Pinecone
 import os
-from constants import PINECONE_INDEX_NAME
+from app.constants import PINECONE_INDEX_NAME
 from ai_handlers import get_image_vector
 from fastapi.responses import JSONResponse
 from fastapi import status

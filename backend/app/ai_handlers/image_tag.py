@@ -3,7 +3,7 @@ from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from models.cloth_tag import ClothImageTag
-from constants import FLASH_MODEL_001
+from app.constants import FLASH_MODEL_001
 
 
 async def get_image_tag(image_url: str) -> ClothImageTag:

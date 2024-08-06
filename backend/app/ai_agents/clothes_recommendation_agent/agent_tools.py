@@ -2,7 +2,7 @@ from langchain_core.tools import tool, ToolException
 from ai_handlers import embed_text, generate_recommendation
 from vector_store import VectorStore
 from .agent_utils import format_clothes_data
-from constants import BASE_URL, TOP_K
+from app.constants import BASE_URL, TOP_K
 import requests
 import os
 from utils import logger

@@ -1,7 +1,7 @@
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
 from langchain_google_vertexai import ChatVertexAI
-from constants import FLASH_MODEL_001
+from app.constants import FLASH_MODEL_001
 from models.validate_prompt import ValidatePrompt
 
 

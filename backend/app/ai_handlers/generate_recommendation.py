@@ -1,7 +1,7 @@
 from langchain_google_genai import ChatGoogleGenerativeAI
 from langchain_core.prompts import ChatPromptTemplate
 from langchain_core.output_parsers import JsonOutputParser
-from constants import FLASH_MODEL_001
+from app.constants import FLASH_MODEL_001
 from models.recommend_outfit import RecommendOutfit
 
 from errors.custom_exception import CustomException

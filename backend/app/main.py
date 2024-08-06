@@ -81,4 +81,4 @@ def testing():
 # Entry point of the application
 if __name__ == "__main__":
     port = int(os.getenv("PORT", 8000))
-    uvicorn.run("app:app", port=port, reload=True)
+    uvicorn.run("main:app", port=port, reload=True)
