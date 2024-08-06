@@ -1,9 +1,6 @@
-import uvicorn
 from fastapi import FastAPI
-from fastapi.responses import JSONResponse
 from starlette.middleware.base import BaseHTTPMiddleware
 from dotenv import load_dotenv
-import os
 from fastapi.exceptions import RequestValidationError
 
 # Custom error package
@@ -73,8 +70,9 @@ app.include_router(recommendation_router)
 app.include_router(vector_store_router)
 
 
-
-
+@app.get("/testing")
+def testing():
+    return  
 
 if __name__ == "__main__":
     pass
