@@ -43,7 +43,7 @@ def generate_recommendation(
             ]
         )
 
-        model = ChatGoogleGenerativeAI(model=FLASH_MODEL_001, temperature=0.75)
+        model = ChatGoogleGenerativeAI(model=FLASH_MODEL_001, temperature=0.65)
 
         chain = prompt | model | parser
 

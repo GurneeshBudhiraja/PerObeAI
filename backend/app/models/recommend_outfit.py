@@ -5,15 +5,18 @@ class RecommendOutfit(BaseModel):
     description: str = Field(
         None,
         title="The description of the outfit",
-        description=""" 
-      You will recommend an outfit based on the cloth urls provided to you. You will account the weather condition, user prompt, preferred style. You will then select the clothes which when paired together makes a great outfit. You will then provide a brief description of the outfit selected such that when paired together (atleast one from the clothing type 'upperwear' and other of type 'lowerwear'), they form a great outfit. Do not discriminate while selecting the outfit for the user irrespective of any visual impairments or not.
-      
-      If the user has no sort of visual impairements i.e., has normal vision you will explain the image in a normal like pointing to a specific thing that will help the user know what has been referred to. Make sure the description is no longer than 3 lines and should be helpful, easy to understand,and can include a positive/friendly message that brings the smile to the user (and can use emojis wherever required). 
-      
-      If the user is blind : Generate a highly detailed clothing description tailored for a visually impaired individual. Prioritize tactile and sensory elements over visual aspects. Describe clothing items using terms related to texture, material, fit, and overall style. Avoid color-centric descriptions unless essential for understanding the item's overall appearance. Ensure the description is positive, empathetic, and easy to comprehend. The goal is to create a vivid mental image through touch and imagination.
+        description="""         
+          
+          Given a list of clothing items and user-specific preferences (including visual impairment status, preferred style, weather, and any additional requirements), generate outfit recommendations. The type of accessibility would not decide the outfit recommendations but would decide how the outfit recommendations are presented to the user. Always use the given clothing data to generate an outfit recommendation for the user. Never recommend clothing items of same category like two upperwear items or two lowerwear items. 
 
-      If the user is color blind, there is no limit on the lenght of the description. The description is in such a way that the color blind person able to understand the color of the clothing item. Make sure the description helps the user identify the clothing items by seeing it as you will be mentioning the colors in the same way those colors are perceived by the color blind user. Make sure the description should be helpful, empathetic, easy to understand and can include a positive/friendly message that brings the smile to the user (and can use emojis wherever required).  
+          For a person with no visual impairments, the outfit recommendations should be explained in such a way that the user can visualize the outfit. The user should able to get an idea which clothing items are being recommended and how they can be combined to form an outfit. Make sure the description of outfit recommendations are concise, engaging, empathetic and positive. The description should be clear so that the user is able to get which clothing items are being recommended and how they can be combined to form an outfit. The description should not be more than 3 sentences.
+          
 
-      At last, if you fail to find any good recommendations, return a simple message to the user mentioning about that and can give some tips from your end).
-    """,
+          For a person with visual impairment of color blindness, the descriptions will include explaining the recommended outfit by mentioning unique patterns, textures, logos, attributes and less of colors. But, you can still mention the colors  whereever required. Make sure the description of the outfit recommendations are descriptive, engaging, empathetic, concise and should only be made from the clothing data provided.
+
+          For a person with visual impairment of blindness, provide a detailed description of the outfit recommendations. The description should be clear and concise. Make sure the descriptions of the outfit recommendations are descriptive, engaging, empathetic, concise and should only be made from the clothing data provided. Make sure to provide a description of the outfit recommendations mentioning the ways a blind person can identify the recommended clothing items. The description can include mentioning of the unique patterns, textures, logos, attributes that could be felt by touch.
+
+
+          Make sure the tone should be friendly and engaging. The description should be clear and concise, and the outfit recommendations should be tailored to the user's preferences, provided factors from the user and should only be selected from the clothing data provided. If you are not able to recommend an outfit return a positive message mentioning that you are not able to find something and can mention some short tips from your end. If the request is irrelevant or inappropriate and not related to the outfit recommendations, return a positive message mentioning that the request is irrelevant and inappropriate and not related to the outfit recommendations. 
+        """,
     )
