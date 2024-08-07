@@ -1,4 +1,4 @@
-const keys={
+const keys = {
   firebaseAPIKey: import.meta.env.VITE_FIREBASE_API_KEY,
   firebaseAuthDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
   firebaseProjectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,

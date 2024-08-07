@@ -6,6 +6,7 @@ import {
   signInWithPopup,
   onAuthStateChanged,
 } from "firebase/auth";
+
 import firebaseConfig from "./firebaseConfig.js";
 
 class FirebaseAuth {
