@@ -3,10 +3,7 @@ import {
   getFirestore,
   setDoc,
   getDoc,
-  where,
-  query,
   doc,
-  collection
 } from "firebase/firestore";
 import keys from "../keys/keys.js";
 import firebaseConfig from "./firebaseConfig.js";
@@ -39,7 +36,7 @@ class FireStore{
       return {};
     } catch (error) {
       console.log("Error", error.message)
-      return null;
+      return {};
     }
   }
 }

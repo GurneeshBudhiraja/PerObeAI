@@ -1,42 +1,38 @@
 import React,{ useState } from 'react';
 import { useForm, Controller } from "react-hook-form";
 import { Input, SignInGoogle } from '../components.js';
-import {auth,fireStore} from "../../firebase/firebaseServices.js";
-import { useDispatch } from 'react-redux'
-import { setUser } from "../../store/authSlice/authSlice.js";
+import {auth, fireStore } from "../../firebase/firebaseServices.js";
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { setUser } from '../../store/authSlice/authSlice.js';
 
-function Login() {
+function SignUp() {
   const { handleSubmit, control,formState:{errors} } = useForm();
-  const dispatch = useDispatch()
   const navigate = useNavigate()
 
-  const loginUser =  async (data,method)=>{
+  const signUpUser =  async (data,method)=>{
     try {
       let userCredentials = undefined;
       
+
       if(method==="google"){
         userCredentials = await auth.logInWithGoogle()
       } else{
-        userCredentials = await auth.logInWithEmail(data.email, data.password)
+        userCredentials = await auth.signUpWithEmail({email:data.email, password:data.password})
       }
       const user = userCredentials.user;
       
+      // TODO: WILL CHANGE THE NAVIGATION FLOW
+
       const uid = user.uid;
-      const email = user.email;
-
-      const userData = await fireStore.getData({uid})
-      
-      const dispatchData = {uid, email, preferredStyle:userData.preferred_fashion_style, accessibility:userData.accessibility, city:userData.city}
-
-      dispatch(setUser({...dispatchData}))
-      
-      console.log(user)
+      if(method!=="google"){
+        // TODO: WILL CHECK WHETHER IS THERE ANY DATA EXITING IN THE FIRESTORE  FOR THE GOOGLE ACCOUNTS
+        navigate("/login")
+      }
       navigate("/")
-
       
     } catch (error) {
-      console.log("Not able to fetch user", error.message)
+      console.log("Not able to create user", error.message)
     }
 
     
@@ -46,9 +42,9 @@ function Login() {
     <div className="h-screen w-screen bg-gradient-to-r from-[#beaae6] via-[#a7b8f3] to-[#B9C4ED] flex flex-col justify-center items-center">
         <div className='max-w-prose w-1/5 flex flex-col items-center justify-center space-y-20'>
           <p>
-            Log in to your account
+            Create an account
           </p>
-          <form onSubmit={handleSubmit(loginUser)}>
+          <form onSubmit={handleSubmit(signUpUser)}>
             <Controller 
             control={control}
             name="email"
@@ -74,20 +70,18 @@ function Login() {
                 />
               )}
             />
-            <input type="submit" value="Login" />
+            <input type="submit" value="Sign up" />
           </form>
           <div>OR</div>
           <div>
             <SignInGoogle 
-            onClick={()=>{loginUser({},"google")}}
-            signin={true}
+            onClick={()=>{signUpUser({},"google")}}
             />
           </div>
         </div>
       
 
     </div>
-  )
-}
-
-export default Login
+    )
+  }
+export default SignUp

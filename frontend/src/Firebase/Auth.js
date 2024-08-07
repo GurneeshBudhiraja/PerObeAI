@@ -70,7 +70,7 @@ class FirebaseAuth {
     }
   }
 
-  createNewUserAccount = (email, password)=>{
+  signUpWithEmail = ({email, password})=>{
     try {
       return createUserWithEmailAndPassword(this.auth, email, password)
     } catch (error) {

@@ -1,6 +1,6 @@
 import "./signInGoogle.css";
 
-function SignInGoogle({onClick}) {
+function SignInGoogle({onClick, signin}) {
   return (
     <div onClick={onClick}>
       <button className="gsi-material-button">
@@ -34,7 +34,7 @@ function SignInGoogle({onClick}) {
             </svg>
           </div>
           <span className="gsi-material-button-contents">
-            Sign in with Google
+            {signin ? "Sign in with Google" : "Sign up with Google"}
           </span>
           <span style={{display: "none"}}>Sign in with Google</span>
         </div>
