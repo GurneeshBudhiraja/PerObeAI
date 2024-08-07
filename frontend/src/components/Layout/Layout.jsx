@@ -1,21 +1,20 @@
-import React from "react";
 import { Outlet } from "react-router-dom";
-import { Header, Footer } from "../components.js";
-import { Provider } from "react-redux";
-import store from "../../store/store.js";
+import { Header } from "../components.js";
+import { Provider } from 'react-redux'
+import {store} from "../../store/store.js"
 
 function Layout() {
   return (
     // will add store here
     <Provider store={store}>
-      <div className="flex flex-col justify-between h-screen">
+      <div className="h-screen w-screen">
         <Header />
-        <div className="bg-[#131314] h-full overflow-scroll text-white">
+        <div>
           <Outlet />
         </div>
-        <Footer />
       </div>
     </Provider>
+    
   );
 }
 

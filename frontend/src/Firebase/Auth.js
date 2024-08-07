@@ -5,6 +5,8 @@ import {
   GoogleAuthProvider,
   signInWithPopup,
   onAuthStateChanged,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword,
 } from "firebase/auth";
 
 import firebaseConfig from "./firebaseConfig.js";
@@ -20,20 +22,20 @@ class FirebaseAuth {
 
   // getting the current user
   currentUser = () => {
-   return new Promise((resolve, reject) => {
-     try {
-       onAuthStateChanged(this.auth, (user) => {
-         if (user) {
-           resolve(user);
-         } else {
-           resolve(null);
-         }
-       });
-     } catch (error) {
-       reject(error.message);
-     }
-   });
- };
+  return new Promise((resolve, reject) => {
+    try {
+      onAuthStateChanged(this.auth, (user) => {
+        if (user) {
+          resolve(user);
+        } else {
+          resolve(null);
+        }
+      });
+    } catch (error) {
+      reject(error.message);
+    }
+  });
+};
 
   // logging out the user
   logOut = () => {
@@ -55,6 +57,28 @@ class FirebaseAuth {
       throw new Error(error.message);
     }
   };
+
+
+  // logging in the user with email and password
+  logInWithEmail= (email, password)=>{
+    try {
+      return signInWithEmailAndPassword(this.auth, email, password)
+
+    } catch (error) {
+      console.log("Error", error.message)
+      return {}  
+    }
+  }
+
+  createNewUserAccount = (email, password)=>{
+    try {
+      return createUserWithEmailAndPassword(this.auth, email, password)
+    } catch (error) {
+      console.log("Error", error)
+      return {}
+    }
+  }
+
 }
 
 const authClass = new FirebaseAuth();

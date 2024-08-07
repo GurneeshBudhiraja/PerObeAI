@@ -5,5 +5,6 @@ const keys = {
   firebaseStorageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
   firebaseMessagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   firebaseAppId: import.meta.env.VITE_FIREBASE_APP_ID,
+  firebaseFirestoreId: import.meta.env.VITE_FIREBASE_FIRESTORE_ID,
 };
 export default keys;
