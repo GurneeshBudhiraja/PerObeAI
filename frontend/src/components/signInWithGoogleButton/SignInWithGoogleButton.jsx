@@ -1,9 +1,9 @@
-import "./signInGoogle.css";
+import "./signInWithGoogleButton.css";
 
-function SignInGoogle({onClick, signin}) {
+function SignInWithGoogleButton({ onClick }) {
   return (
-    <div onClick={onClick}>
-      <button className="gsi-material-button">
+    <div onClick={onClick} >
+      <button className="gsi-material-button" style={{ width: '400px' }}>
         <div className="gsi-material-button-state"></div>
         <div className="gsi-material-button-content-wrapper">
           <div className="gsi-material-button-icon">
@@ -33,14 +33,12 @@ function SignInGoogle({onClick, signin}) {
               <path fill="none" d="M0 0h48v48H0z"></path>
             </svg>
           </div>
-          <span className="gsi-material-button-contents">
-            {signin ? "Sign in with Google" : "Sign up with Google"}
-          </span>
-          <span style={{display: "none"}}>Sign in with Google</span>
+          <span className="gsi-material-button-contents">Sign in with Google</span>
+          <span style={{ display: 'none' }}>Sign in with Google</span>
         </div>
       </button>
     </div>
   );
 }
 
-export default SignInGoogle;
+export default SignInWithGoogleButton;

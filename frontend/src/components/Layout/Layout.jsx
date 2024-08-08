@@ -7,11 +7,9 @@ function Layout() {
   return (
     // will add store here
     <Provider store={store}>
-      <div className="h-screen w-screen">
-        <Header />
-        <div>
+      <div className="w-screen h-screen flex flex-col overflow-auto">
+          <Header />
           <Outlet />
-        </div>
       </div>
     </Provider>
     

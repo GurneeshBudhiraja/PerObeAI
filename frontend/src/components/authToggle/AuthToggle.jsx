@@ -1,23 +1,23 @@
-import React from 'react'
+
 import { Link } from 'react-router-dom'
-import { ArrowRight } from "@phosphor-icons/react"
+import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 
 function AuthToggle({type}) {
   return (
     type === 'login' ? (
-      <div className='inline-flex gap-2 tracking-wider'>
+      <div className='flex gap-2 items-center'>
         <p> Don&#39;t have an account?</p>
-        <Link to={"signup"} className='inline-flex items-center justify-center font-semibold  '>
+        <Link to={"/signup"} className='font-semibold tracking-widest cursor-pointer'>
           Sign up
-          <ArrowRight size={24} weight='bold' />
+          <ArrowRightAltIcon />
         </Link>
       </div>
     ) : (
-      <div>
+      <div className='flex gap-2 items-center'>
         Have an account? 
-        <Link to={"signup"} className='inline-flex items-center justify-center'>
+        <Link to={"/login"} className='font-semibold tracking-wider'>
           Log in
-          <ArrowRight size={24} weight='bold' />
+          <ArrowRightAltIcon />
         </Link>
       </div>
       )

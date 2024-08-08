@@ -25,8 +25,8 @@ def verify_firebase_uid(
     firebase_id_token = credentials.credentials
     try:
         # Verify the ID token and retrieve the uid
-        uid = auth.verify_id_token(firebase_id_token)
-        return uid
+        user_info = auth.verify_id_token(firebase_id_token)
+        return user_info["user_id"]
 
     except ValueError:
         # For invalid tokens

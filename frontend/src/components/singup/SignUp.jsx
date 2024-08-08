@@ -1,6 +1,6 @@
 import React,{ useState } from 'react';
 import { useForm, Controller } from "react-hook-form";
-import { Input, SignInGoogle } from '../components.js';
+import { Input, SignInWithGoogleButton } from '../components.js';
 import {auth, fireStore } from "../../firebase/firebaseServices.js";
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
@@ -39,21 +39,23 @@ function SignUp() {
   }
 
   return (
-    <div className="h-screen w-screen bg-gradient-to-r from-[#beaae6] via-[#a7b8f3] to-[#B9C4ED] flex flex-col justify-center items-center">
+    <div className="flex flex-col items-center justify-center gap-2">
         <div className='max-w-prose w-1/5 flex flex-col items-center justify-center space-y-20'>
           <p>
             Create an account
           </p>
           <form onSubmit={handleSubmit(signUpUser)}>
-            <Controller 
+          <Controller 
             control={control}
             name="email"
             render={({ field: { onChange, onBlur, value } }) => (
                 <Input 
-                isRequired={true}
                 type={"email"}
                 labelName={"Email"}
-                props={{onChange, onBlur, selected:value, }}
+                isRequired={true}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
                 />
               )}
             />
@@ -66,7 +68,9 @@ function SignUp() {
                 type={"password"}
                 labelName={"Password"}
                 isRequired={true}
-                props={{onChange, onBlur, selected:value, }}
+                onChange={onChange}
+                onBlur={onBlur}
+                value={value}
                 />
               )}
             />
@@ -74,7 +78,7 @@ function SignUp() {
           </form>
           <div>OR</div>
           <div>
-            <SignInGoogle 
+            <SignInWithGoogleButton 
             onClick={()=>{signUpUser({},"google")}}
             />
           </div>

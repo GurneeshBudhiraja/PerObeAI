@@ -69,10 +69,12 @@ app.include_router(embedding_router)
 app.include_router(recommendation_router)
 app.include_router(vector_store_router)
 
-
+from fastapi import Depends
+from app.firebase_utils import verify_firebase_uid
 @app.get("/testing")
-def testing():
-    return
+def testing(user_id: str = Depends(verify_firebase_uid)):
+    print(user_id)
+    return {"message": f"user_id is {user_id} "}
 
 
 if __name__ == "__main__":
