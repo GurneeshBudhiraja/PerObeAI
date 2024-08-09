@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Input, SignInWithGoogleButton, FormSubmitButton } from "../components.js";
+import { Input, SignInWithGoogleButton, FormSubmitButton } from "../../components/components.js";
 import { auth, fireStore } from "../../firebase/firebaseServices.js";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/authSlice/authSlice.js";
@@ -51,8 +51,8 @@ function Login() {
 
   return (
     <div className="flex flex-col items-center justify-center gap-2 ">
-      <span className="text-[1.4rem] tracking-widest -mt-16 mb-9 ">
-        Log in to your account
+      <span className="text-[1.5rem] tracking-widest font-semibold -mt-16 mb-9">
+      Log In to Your Account
       </span>
       <form
         onSubmit={handleSubmit(loginUser)}
@@ -96,7 +96,7 @@ function Login() {
         />
       </form>
       <div >
-        <div className="flex items-center justify-center w-full mb-4 ">
+        <div className="flex items-center justify-center w-full mb-6 ">
           <div className="flex-grow border-t border-gray-300"></div>
           <span className="mx-4 text-gray-500">or</span>
           <div className="flex-grow border-t border-gray-300"></div>

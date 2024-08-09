@@ -1,8 +1,8 @@
-import React from 'react'
+
 import { TextField } from '@mui/material';
 
 
-function Input({ labelName, type, className,isRequired,name,error,...props   }) {
+function Input({ labelName, type, className,isRequired,name,error,...props   }) {  
   return (
     <TextField
     name={name}
@@ -10,7 +10,7 @@ function Input({ labelName, type, className,isRequired,name,error,...props   }) 
     label={labelName}
     error={error}
     type={type}
-    className={className}
+    className={`${className} bg-[#edf2f65c]`}
     {...props}
     />
   )

@@ -6,7 +6,7 @@ function AuthToggle({type}) {
   return (
     type === 'login' ? (
       <div className='flex gap-2 items-center'>
-        <p> Don&#39;t have an account?</p>
+        <p className='text-[#2D3748] '> Don&#39;t have an account?</p>
         <Link to={"/signup"} className='font-semibold tracking-widest cursor-pointer'>
           Sign up
           <ArrowRightAltIcon />
@@ -14,8 +14,8 @@ function AuthToggle({type}) {
       </div>
     ) : (
       <div className='flex gap-2 items-center'>
-        Have an account? 
-        <Link to={"/login"} className='font-semibold tracking-wider'>
+        <p className='text-[#2D3748]'>Have an account? </p>
+        <Link to={"/login"} className='font-semibold tracking-widest cursor-pointer'>
           Log in
           <ArrowRightAltIcon />
         </Link>

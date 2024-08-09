@@ -4,6 +4,7 @@ import {
   signOut,
   GoogleAuthProvider,
   signInWithPopup,
+  // TODO: may add the redirect sign in with google
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,

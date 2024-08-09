@@ -18,7 +18,7 @@ export const authSlice = createSlice({
       state.email = action.payload.email;
       state.uid = action.payload.uid;
       state.city = action.payload.city;
-      state.preferred_fashion_style = action.payload.preferredStyle;
+      state.preferred_fashion_style = action.payload.preferred_fashion_style;
       state.accessibility = action.payload.accessibility;
       state.isAuth = true; 
     },
