@@ -36,9 +36,9 @@ function Home() {
         setUser({ uid, email, preferred_fashion_style, accessibility, city })
       );
     };
-    setTimeout(()=>{
-      setShow(true)
-    },500)
+    setTimeout(() => {
+      setShow(true);
+    }, 500);
     getCurrentUser();
   }, []);
 
@@ -104,10 +104,14 @@ function Home() {
             );
           })}
         </div>
-        <div className={`mb-3 w-full ${show?"opacity-100":"opacity-0"} transition-all duration-200 ease-in`}>
+        <div
+          className={`mb-9 w-full ${
+            show ? "opacity-100" : "opacity-0"
+          } transition-all duration-200 ease-in`}
+        >
           {isAuth ? (
             <button
-              className="poppins-regular  bg-white text-black border-[1px] border-[#747674] rounded w-[400px] text-sm py-[0.57rem]  hover:bg-gray-200 hover:shadow-gray-800 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
+              className="poppins-regular  bg-white text-black border-[1px] border-[#747674] rounded w-[400px] text-sm py-[0.57rem]  hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
               onClick={() => {
                 navigate("/chat");
               }}
@@ -115,7 +119,17 @@ function Home() {
               Chat
             </button>
           ) : (
-            <SignInWithGoogleButton onClick={googleSignInWrapper} />
+            <div className="flex flex-col gap-7">
+              <SignInWithGoogleButton onClick={googleSignInWrapper} />
+              <button
+                className="poppins-regular  bg-white text-black border-[1px] border-[#747674] rounded w-[400px] text-sm py-[0.57rem]  hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
+                onClick={() => {
+                  navigate("/login");
+                }}
+              >
+                Access Testing Account
+              </button>
+            </div>
           )}
         </div>
       </div>

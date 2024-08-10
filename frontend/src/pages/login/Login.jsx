@@ -6,7 +6,7 @@ import { useDispatch } from "react-redux";
 import { setUser } from "../../store/authSlice/authSlice.js";
 import { useNavigate } from "react-router-dom";
 
-function Login() {
+function Login({email}) {
   const {
     handleSubmit,
     control,
@@ -66,8 +66,9 @@ function Login() {
             <Input
               // TODO: will add the error here
               isRequired={true}
+              value={"testingaccount@gmail.com"}
               type={"email"}
-              labelName={"Email"}
+              disabled={true} 
               onBlur={onBlur}
               onChange={onChange}
               selected={value}
@@ -86,6 +87,7 @@ function Login() {
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
+              autofocus
             />
           )}
         />
@@ -95,21 +97,7 @@ function Login() {
           }
         />
       </form>
-      <div >
-        <div className="flex items-center justify-center w-full mb-6 ">
-          <div className="flex-grow border-t border-gray-300"></div>
-          <span className="mx-4 text-gray-500">or</span>
-          <div className="flex-grow border-t border-gray-300"></div>
-        </div>
-        <div>
-          <SignInWithGoogleButton
-            onClick={() => {
-              loginUser({}, "google");
-            }}
-          />
-        </div>
       </div>
-    </div>
   );
 }
 
