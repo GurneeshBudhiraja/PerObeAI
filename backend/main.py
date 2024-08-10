@@ -60,7 +60,7 @@ configure_cors_middleware(app)
 
 configure_trusted_host_middleware(app)
 
-app.add_middleware(BaseHTTPMiddleware, dispatch=configure_response_format_middleware)
+# app.add_middleware(BaseHTTPMiddleware, dispatch=configure_response_format_middleware)
 
 """
 Routers

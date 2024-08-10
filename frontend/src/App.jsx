@@ -15,9 +15,7 @@ function App() {
           <Route path="/login" element={<Login />}  />
           <Route path="/signup" element={<SignUp />}  />
           <Route path="/get-started" element={<GetStarted />}  />
-          <Route element={<ProtectedRoutes />}>
-            <Route path="/chat/:id?" element={<Chat />}  />
-          </Route>
+          <Route path="/chat/:id?" element={<Chat />}  />
           <Route path="/*" element={<NotFound />}  />
         </Route>
       </Routes>

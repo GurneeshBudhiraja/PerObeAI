@@ -1,14 +1,40 @@
+import React from "react";
 import {
   HeroPoints,
   SignInWithGoogleButton,
 } from "../../components/components.js";
 import googleSignIn from "../../utils/googleSignIn.js";
-import { useNavigate } from "react-router-dom";
+import {auth, fireStore} from "../../firebase/firebaseServices.js";
+import { redirect, useNavigate } from "react-router-dom";
 
 
 
 function Home() {
+  const [userData, setUserData] = React.useState({});
+  const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
+  React.useEffect(()=>{
+    try {
+      setLoading(true);
+      const getCurrentUser = async () => {
+        const {uid, email} = await auth.currentUser();
+        setUserData({...userData, uid, email});
+        const firestoreData = await fireStore.getData({uid});
+        if(!Object.keys(firestoreData).length){
+          return;
+        } else{
+          navigate("/chat");
+        }
+      };
+      getCurrentUser();
+      
+    } catch (error) {
+      console.log("Not able to fetch user", error.message);
+    } finally{
+      setLoading(false);
+    }
+  },[navigate, setLoading, setUserData]);
+
   const googleSignInWrapper = async () =>{
     const userData = await googleSignIn();
     if(userData.isNewUser){
@@ -37,6 +63,7 @@ function Home() {
 
   return (
     <div className="bg-[#131313] h-screen w-screen text-zinc-100 flex text-white">
+      {loading && <div>Loading...</div>}
       <div className="" id="hero-section-left">
         <div>PerObe AI - Your Personal Wardrobe A.I.</div>
         <div className="max-w-md">

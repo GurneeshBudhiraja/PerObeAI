@@ -32,10 +32,10 @@ class Storage{
     const listRef = ref(this.storage, uid); // Reference to the file
 
     const response = await listAll(listRef)
-    console.log(response);
+
     for (const item of response.items){
       const url = await getDownloadURL(item);
-      pictures.push(url);
+      pictures.push({url});
     }
     return pictures;
   } catch(error){

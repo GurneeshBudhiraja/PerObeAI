@@ -16,7 +16,7 @@ export const authSlice = createSlice({
   reducers:{
     setUser:(state,action)=>{
       state.email = action.payload.email;
-      state.uid = action.payload.uid;
+      state.uid = action.payload.uid; 
       state.city = action.payload.city;
       state.preferred_fashion_style = action.payload.preferred_fashion_style;
       state.accessibility = action.payload.accessibility;

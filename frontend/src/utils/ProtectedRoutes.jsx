@@ -3,8 +3,9 @@ import { useSelector } from "react-redux";
 import { Outlet, Navigate } from "react-router-dom";
 
 function ProtectedRoutes() {
-  const user = null;
-  return user ? <Outlet /> : <Navigate to="/" />
+  const user = useSelector((state) => state.auth);
+  
+  return user.uid ? <Outlet /> : <Navigate to="/" />
 }
 
 export default ProtectedRoutes;

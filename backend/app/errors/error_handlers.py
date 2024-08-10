@@ -1,4 +1,5 @@
 from fastapi.responses import JSONResponse
+from fastapi.exceptions import HTTPException
 from fastapi import Request
 from app.utils import logger, format_response
 from .custom_exception import CustomException
@@ -33,14 +34,14 @@ def not_found_exception_handler(request: Request, exc) -> JSONResponse:
         return JSONResponse(status_code=404, content={"error": error_response})
 
     except Exception as e:
-
-        raise CustomException(
-            status_code=500,
-            message=str(e),
-            details={
-                "description": f"An error occurred while handling the not found error",
-            },
-        )
+        raise HTTPException(status_code=500, detail=str(e))
+        # raise CustomException(
+        #     status_code=500,
+        #     message=str(e),
+        #     details={
+        #         "description": f"An error occurred while handling the not found error",
+        #     },
+        # )
 
 
 def internal_server_error_handler(request: Request, exc) -> JSONResponse:
@@ -72,14 +73,16 @@ def internal_server_error_handler(request: Request, exc) -> JSONResponse:
         return JSONResponse(status_code=500, content={"error": error_response})
 
     except Exception as e:
-
-        raise CustomException(
-            status_code=500,
-            message=str(e),
-            details={
-                "description": f"An error occurred while handling the internal server error",
-            },
-        )
+        
+        raise HTTPException(status_code=500, detail=str(e))
+    
+        # raise CustomException(
+        #     status_code=500,
+        #     message=str(e),
+        #     details={
+        #         "description": f"An error occurred while handling the internal server error",
+        #     },
+        # )
 
 
 def validation_exception_handler(request: Request, exc) -> JSONResponse:
@@ -111,14 +114,15 @@ def validation_exception_handler(request: Request, exc) -> JSONResponse:
         return JSONResponse(status_code=400, content={"error": error_response})
 
     except Exception as e:
-
-        raise CustomException(
-            status_code=500,
-            message=str(e),
-            details={
-                "description": "An error occurred while handling the validation error",
-            },
-        )
+        raise HTTPException(status_code=500, detail=str(e))
+    
+        # raise CustomException(
+        #     status_code=500,
+        #     message=str(e),
+        #     details={
+        #         "description": "An error occurred while handling the validation error",
+        #     },
+        # )
 
 
 def method_not_allowed_handler(request: Request, exc) -> JSONResponse:
@@ -150,14 +154,14 @@ def method_not_allowed_handler(request: Request, exc) -> JSONResponse:
         return JSONResponse(status_code=405, content={"error": error_response})
 
     except Exception as e:
-
-        raise CustomException(
-            status_code=500,
-            message=str(e),
-            details={
-                "description": "An error occurred while handling the method not allowed error",
-            },
-        )
+        raise HTTPException(status_code=500, detail=str(e))
+        # raise CustomException(
+        #     status_code=500,
+        #     message=str(e),
+        #     details={
+        #         "description": "An error occurred while handling the method not allowed error",
+        #     },
+        # )
 
 
 def custom_exception_handler(request: Request, exc) -> JSONResponse:
@@ -203,7 +207,4 @@ def custom_exception_handler(request: Request, exc) -> JSONResponse:
             }
         )
 
-        return JSONResponse(
-            status_code=500,
-            content={"error": "An error occurred while processing the request"},
-        )
+        raise HTTPException(status_code=500, detail=str(e))

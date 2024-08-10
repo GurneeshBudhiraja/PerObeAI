@@ -8,6 +8,7 @@ import {
   onAuthStateChanged,
   createUserWithEmailAndPassword,
   signInWithEmailAndPassword,
+  deleteUser,
 } from "firebase/auth";
 
 import firebaseConfig from "./firebaseConfig.js";
@@ -36,8 +37,22 @@ class FirebaseAuth {
       reject(error.message);
     }
   });
-};
-
+  };
+  deleteUserAccount = async () => {
+    try {
+      const auth = getAuth();
+      const user = auth.currentUser;
+  
+      if (user) {
+        return deleteUser(user);
+      } else {
+        return {}
+      }
+    } catch (error) {
+      console.error("Error deleting user:", error.message);
+      return error.message;
+    }
+  };
   // logging out the user
   logOut = () => {
     try {
