@@ -31,9 +31,13 @@ function HomeHeader() {
         fontWeight: 600,
         letterSpacing: "0.15rem",
       },
+      onClick: "googleSignIn",
       variant: "text",
     },
   ];
+  const googleSignIn = () =>{
+       
+  }
   return (
     <div className="h-[6rem] bg-[#18191a] text-zinc-100 border-b-[0.1rem] border-zinc-600 flex items-center relative px-12 w-full">
       <Link to={"/"} className="items-center">

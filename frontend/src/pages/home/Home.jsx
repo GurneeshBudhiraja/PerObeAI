@@ -2,8 +2,24 @@ import {
   HeroPoints,
   SignInWithGoogleButton,
 } from "../../components/components.js";
-import { auth } from "../../firebase/firebaseServices.js";
+import googleSignIn from "../../utils/googleSignIn.js";
+import { useNavigate } from "react-router-dom";
+
+
+
 function Home() {
+  const navigate = useNavigate();
+  const googleSignInWrapper = async () =>{
+    const userData = await googleSignIn();
+    if(userData.isNewUser){
+      console.log("New User");
+      return navigate("/get-started",{state: {userData, fromHomePage: true}});
+    } else {
+      console.log("Existing User");
+    }
+    return
+  }
+  // TODO: WILL IMPORT IT FROM SOMEWHERE ELSE
   const bulletPoints = [
     {
       text: "Carry your wardrobe in your pocket",
@@ -18,13 +34,9 @@ function Home() {
       keypoints: ["testing3"],
     },
   ];
-  const gogleSignIn = async () => {
-    const userData = await auth.logInWithGoogle();
-    const user = userData.user;
-    console.log(user);
-  };
+
   return (
-    <div className="bg-[#131313] h-screen w-screen text-zinc-100 flex ">
+    <div className="bg-[#131313] h-screen w-screen text-zinc-100 flex text-white">
       <div className="" id="hero-section-left">
         <div>PerObe AI - Your Personal Wardrobe A.I.</div>
         <div className="max-w-md">
@@ -38,7 +50,7 @@ function Home() {
             );
           })}
         </div>
-        <SignInWithGoogleButton onClick={gogleSignIn} />
+        <SignInWithGoogleButton onClick={googleSignInWrapper} />
       </div>
 
       <div id="hero-section-right">

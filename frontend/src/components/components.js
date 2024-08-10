@@ -8,6 +8,9 @@ import Email from "./email/Email";
 import SignInWithGoogleButton from "./signInWithGoogleButton/SignInWithGoogleButton";
 import FormSubmitButton from "./formSubmitButton/FormSubmitButton";
 import HeroPoints from "./heroPoints/HeroPoints";
+import FirstStepperContent from "./stepperContent/FirstStepperContent";
+import SecondStepperContent from "./stepperContent/SecondStepperContent";
+import ThirdStepperContent from "./stepperContent/ThirdStepperContent";
 
 // TODO: WILL NEED TO CHANGE SOME OF THE NAMES OF THE COMPONENTS
 export {
@@ -21,4 +24,7 @@ export {
   SignInWithGoogleButton,
   FormSubmitButton,
   HeroPoints,
+  FirstStepperContent,
+  SecondStepperContent,
+  ThirdStepperContent,
 };

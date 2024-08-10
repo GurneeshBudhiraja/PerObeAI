@@ -9,11 +9,17 @@ class Storage{
   this.storage = getStorage(app);
   }
 
-  uploadFile({uid,file,metaData={}}){
+  async uploadFile({uid,files,metaData={}}){
     try {
-      const fileName = file.name.split(".")[0] + uuidv4() + "." + file.name.split(".")[1];
-      const imageRef = ref(this.storage, `${uid}/${fileName}`);
-      return uploadBytes(imageRef, file,metaData);
+      const uploadPromises = files.map((file) => {
+        const dotIndex = file.name.lastIndexOf('.');
+        const extension = dotIndex !== -1 ? file.name.substring(dotIndex) : '';
+        const fileName = `${uuidv4()}${extension}`;
+        const imageRef = ref(this.storage, `${uid}/${fileName}`);
+        return uploadBytes(imageRef, file, metaData);
+      });
+      return await Promise.all(uploadPromises);
+
     }catch (error) {
       console.log(`Error in uploading pictures :: ${error.message}`);
       throw error;
