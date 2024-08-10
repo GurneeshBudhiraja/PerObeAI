@@ -98,7 +98,7 @@ function GetStarted() {
     }
   };
 
-  return location?.state?.fromProtectedRoute ? (
+  return location?.state?.fromHome ? (
     // TODO: create the signin flow
     <div className="w-full py-4 px-8">
       {isLoading && <div className=""> Processing the input.... </div>}

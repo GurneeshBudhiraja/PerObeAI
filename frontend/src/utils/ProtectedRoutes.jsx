@@ -10,14 +10,14 @@ const ProtectedRoutes = () => {
   const dispatch = useDispatch();
   const {isAuth} = useSelector((state) => state.auth);
   const navigate = useNavigate();
+  
   useEffect(()=>{
     const getCurrentUser = async () =>{
-      const user = true;
+      const user = await auth.currentUser();
       if(!user){
-        return navigate("/");
+        return;
       }
       const {uid, email} = user;
-      console.log(uid, email);
       setUserData({...userData, uid, email});
       // getting the user preferences from firestore
       const firestoreData = await fireStore.getData({uid});
@@ -34,15 +34,11 @@ const ProtectedRoutes = () => {
 
     }
     getCurrentUser();
-  },[navigate, dispatch, userData]);
+  },[setUserData, dispatch, navigate]);
   
-  return(
+  return (
     <div>
-      <button onClick={()=>{
-        console.log(userData);
-      }}>
-        Click
-      </button>
+      {isAuth ? <Outlet /> : <Navigate to="/" />}
     </div>
   )
   

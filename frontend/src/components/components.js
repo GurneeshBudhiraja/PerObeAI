@@ -10,6 +10,7 @@ import FormSubmitButton from "./formSubmitButton/FormSubmitButton";
 import HeroPoints from "./heroPoints/HeroPoints";
 import FirstStepperContent from "./stepperContent/FirstStepperContent";
 import SecondStepperContent from "./stepperContent/SecondStepperContent";
+import CheckAuth from "./checkAuth/CheckAuth";
 
 
 // TODO: WILL NEED TO CHANGE SOME OF THE NAMES OF THE COMPONENTS
@@ -26,4 +27,5 @@ export {
   HeroPoints,
   FirstStepperContent,
   SecondStepperContent,
+  CheckAuth
 };

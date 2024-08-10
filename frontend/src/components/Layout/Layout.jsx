@@ -6,6 +6,7 @@ import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
 function Layout() {
+
   return (
     // will add store here
     <Provider store={store}>
