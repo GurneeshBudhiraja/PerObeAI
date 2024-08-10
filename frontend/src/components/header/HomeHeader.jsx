@@ -4,21 +4,15 @@ import { useNavigate, Link } from "react-router-dom";
 import { BigLogo } from "../../../assets/assets";
 import GitHubIcon from "@mui/icons-material/GitHub";
 import Button from "@mui/material/Button";
+import { auth,fireStore } from "../../firebase/firebaseServices.js";
 
 function HomeHeader() {
-  const appState = useSelector((state) => state.auth);
+  const isAuthenticated = useSelector((state) => state.auth.isAuth);
   const navigate = useNavigate();
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
-
-  useEffect(() => {
-    setIsAuthenticated(appState.isAuth);
-  }, []);
+  const [userData, setUserData] = useState({});
+ 
 
   const headerOptions = [
-    {
-      show: isAuthenticated,
-      name: "userProfile",
-    },
     {
       show: !isAuthenticated,
       name: "Sign in",
@@ -35,9 +29,7 @@ function HomeHeader() {
       variant: "text",
     },
   ];
-  const googleSignIn = () =>{
-       
-  }
+
   return (
     <div className="h-[6rem] bg-[#18191a] text-zinc-100 border-b-[0.1rem] border-zinc-600 flex items-center relative px-12 w-full">
       <Link to={"/"} className="items-center">
@@ -55,7 +47,13 @@ function HomeHeader() {
             return (
               <div
                 key={index}
-                className={`${option.className} mx-4 w-[7rem] text-center py-1 ${option.name==="Sign Up"?"bg-gradient-to-br from-[#8993ee] via-[#9399e2] to-[#eab7da]": "bg-gradient-to-br"} border-2 border- rounded-full cursor-pointer active:opacity-90`}
+                className={`${
+                  option.className
+                } mx-4 w-[7rem] text-center py-1 ${
+                  option.name === "Sign Up"
+                    ? "bg-gradient-to-br from-[#8993ee] via-[#9399e2] to-[#eab7da]"
+                    : "bg-gradient-to-br"
+                } border-2 border- rounded-full cursor-pointer active:opacity-90`}
                 onClick={() => {
                   if (option.url) {
                     navigate(option.url);

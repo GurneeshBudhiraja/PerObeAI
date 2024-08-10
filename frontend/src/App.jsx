@@ -11,11 +11,13 @@ function App() {
       <BrowserRouter>
       <Routes>
         <Route path="/" element={<Layout />}>
-          <Route path="" element={<Home />} />
+          <Route element={<ProtectedRoutes />}>
+            <Route path="" element={<Home />} />
+            <Route path="/chat/:id?" element={<Chat />}  />
+          </Route>
           <Route path="/login" element={<Login />}  />
           <Route path="/signup" element={<SignUp />}  />
           <Route path="/get-started" element={<GetStarted />}  />
-          <Route path="/chat/:id?" element={<Chat />}  />
           <Route path="/*" element={<NotFound />}  />
         </Route>
       </Routes>

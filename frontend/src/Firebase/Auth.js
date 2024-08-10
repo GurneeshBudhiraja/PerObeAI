@@ -24,29 +24,31 @@ class FirebaseAuth {
 
   // getting the current user
   currentUser = () => {
-  return new Promise((resolve, reject) => {
-    try {
-      onAuthStateChanged(this.auth, (user) => {
-        if (user) {
-          resolve(user);
-        } else {
-          resolve(null);
-        }
-      });
-    } catch (error) {
-      reject(error.message);
-    }
-  });
+    return new Promise((resolve, reject) => {
+      try {
+        onAuthStateChanged(this.auth, (user) => {
+          if (user) {
+            resolve(user);
+          } else {
+            resolve(null);
+          }
+        });
+      } catch (error) {
+        reject(error.message);
+      }
+      
+    });
   };
+
   deleteUserAccount = async () => {
     try {
       const auth = getAuth();
       const user = auth.currentUser;
-  
+
       if (user) {
         return deleteUser(user);
       } else {
-        return {}
+        return {};
       }
     } catch (error) {
       console.error("Error deleting user:", error.message);
@@ -74,27 +76,24 @@ class FirebaseAuth {
     }
   };
 
-
   // logging in the user with email and password
-  logInWithEmail= (email, password)=>{
+  logInWithEmail = (email, password) => {
     try {
-      return signInWithEmailAndPassword(this.auth, email, password)
-
+      return signInWithEmailAndPassword(this.auth, email, password);
     } catch (error) {
-      console.log("Error", error.message)
-      return {}  
+      console.log("Error", error.message);
+      return {};
     }
-  }
+  };
 
-  signUpWithEmail = ({email, password})=>{
+  signUpWithEmail = ({ email, password }) => {
     try {
-      return createUserWithEmailAndPassword(this.auth, email, password)
+      return createUserWithEmailAndPassword(this.auth, email, password);
     } catch (error) {
-      console.log("Error", error)
-      return {}
+      console.log("Error", error);
+      return {};
     }
-  }
-
+  };
 }
 
 const authClass = new FirebaseAuth();

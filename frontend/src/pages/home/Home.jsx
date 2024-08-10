@@ -13,27 +13,7 @@ function Home() {
   const [userData, setUserData] = React.useState({});
   const [loading, setLoading] = React.useState(true);
   const navigate = useNavigate();
-  React.useEffect(()=>{
-    try {
-      setLoading(true);
-      const getCurrentUser = async () => {
-        const {uid, email} = await auth.currentUser();
-        setUserData({...userData, uid, email});
-        const firestoreData = await fireStore.getData({uid});
-        if(!Object.keys(firestoreData).length){
-          return;
-        } else{
-          navigate("/chat");
-        }
-      };
-      getCurrentUser();
-      
-    } catch (error) {
-      console.log("Not able to fetch user", error.message);
-    } finally{
-      setLoading(false);
-    }
-  },[navigate, setLoading, setUserData]);
+  
 
   const googleSignInWrapper = async () =>{
     const userData = await googleSignIn();
@@ -63,7 +43,6 @@ function Home() {
 
   return (
     <div className="bg-[#131313] h-screen w-screen text-zinc-100 flex text-white">
-      {loading && <div>Loading...</div>}
       <div className="" id="hero-section-left">
         <div>PerObe AI - Your Personal Wardrobe A.I.</div>
         <div className="max-w-md">
@@ -84,6 +63,7 @@ function Home() {
         {/* TODO: WILL ADD THE PICTURES LATER ON ONCE THE APP IS READY */}
       </div>
     </div>
+    
   );
 }
 
