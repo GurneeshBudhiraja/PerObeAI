@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
 import { CheckAuth, Layout } from "./components/components.js";
 import {
   Home,
@@ -9,7 +9,7 @@ import {
   GetStarted,
 } from "./pages/pages.js";
 import { HelmetProvider } from "react-helmet-async";
-import ProtectedRoutes from "./utils/ProtectedRoutes.jsx";
+
 
 function App() {
   return (

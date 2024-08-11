@@ -4,7 +4,6 @@ from langchain_core.output_parsers import JsonOutputParser
 from app.constants import FLASH_MODEL_001
 from app.models.recommend_outfit import RecommendOutfit
 
-from app.errors.custom_exception import CustomException
 
 
 def generate_recommendation(
@@ -55,5 +54,7 @@ def generate_recommendation(
             }
         )
 
-    except Exception:
-        raise Exception
+    except Exception as e:
+        #TODO: will remove the print statement after testing
+        print(f"Error in generating recommendation: {e}")
+        raise Exception("Error in generating recommendation")

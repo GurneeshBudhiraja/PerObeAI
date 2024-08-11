@@ -87,7 +87,7 @@ function Login({email}) {
               onChange={onChange}
               onBlur={onBlur}
               selected={value}
-              autofocus
+              autoFocus
             />
           )}
         />

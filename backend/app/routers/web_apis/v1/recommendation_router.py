@@ -57,7 +57,6 @@ def get_recommendation(
         )
 
     except Exception as e:
-
         raise CustomException(
             status_code=500,
             message=str(e),

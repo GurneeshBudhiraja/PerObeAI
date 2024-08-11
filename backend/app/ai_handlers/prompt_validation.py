@@ -3,7 +3,7 @@ from langchain_core.output_parsers import JsonOutputParser
 from langchain_google_vertexai import ChatVertexAI
 from app.constants import FLASH_MODEL_001
 from app.models.validate_prompt import ValidatePrompt
-
+from app.errors.error_handlers import CustomException
 
 def validate(user_prompt: str) -> ValidatePrompt:
     """
@@ -47,4 +47,4 @@ def validate(user_prompt: str) -> ValidatePrompt:
         return validation_response
 
     except Exception as e:
-        raise Exception(f"An error occurred while validating the user prompt: {str(e)}")
+        raise CustomException(status_code=500, message=str(e), details={"description": "Ask something valid related to the outfit recommendation"})

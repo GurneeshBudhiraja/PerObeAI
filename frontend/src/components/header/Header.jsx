@@ -2,6 +2,7 @@ import React from 'react';
 import { ReactHelmet } from '../components.js';
 import LoginHeader from "./LoginHeader.jsx";
 import HomeHeader from './HomeHeader.jsx';
+import ChatHeader from './ChatHeader.jsx';
 import { useLocation } from 'react-router-dom';
 
 function Header() {
@@ -13,11 +14,17 @@ function Header() {
         <LoginHeader />
       </div>
     );
-  } else if (location.pathname==="/"){
+  } else if (location.pathname==="/") {
     return (
       <div>
         <ReactHelmet title="Home - PerObe AI" />
         < HomeHeader/>
+      </div>
+    );
+  } else if (location.pathname==="/chat") {
+    return (
+      <div>
+        <ReactHelmet title="Chat - PerObe AI" />
       </div>
     );
   }

@@ -137,5 +137,4 @@ def generate_outfit_recommendation(
         )
 
     except Exception as e:
-
         raise ToolException(f"generate_outfit_recommendation agent tool error: {e}")
