@@ -6,5 +6,6 @@ const keys = {
   firebaseMessagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
   firebaseAppId: import.meta.env.VITE_FIREBASE_APP_ID,
   firebaseFirestoreId: import.meta.env.VITE_FIREBASE_FIRESTORE_ID,
+  alanKey: import.meta.env.VITE_ALAN_KEY,
 };
 export default keys;

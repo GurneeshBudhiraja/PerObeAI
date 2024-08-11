@@ -9,7 +9,7 @@ function MenuComponent() {
     <Menu
       menuButton={
         <MenuButton>
-          <img src={MenuLogo} alt="Menu" className="w-8 h-8 " />
+          <img src={MenuLogo} alt="Menu" className={`w-8 h-8 `}  />
         </MenuButton>
       }
       transition
