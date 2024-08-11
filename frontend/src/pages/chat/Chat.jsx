@@ -26,9 +26,8 @@ function Chat() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   useEffect(() => {
-    if (!location?.state?.fromHomePage || !userData?.isAuth) {
-      // navigate("/");
-    }
+    // TODO: will get the user data and add it in the store if it is not present
+    
   }, []);
 
   const getRecommendation = async () => {

@@ -21,6 +21,7 @@ function GetStarted() {
   });
   React.useEffect(() => {
     setUserData({ ...userData, ...location?.state?.userData });
+    console.log("Location state", location?.state?.userData);
   }, []);
   // TODO: will turn to false once the code is done
   const [canProceed, setCanProceed] = React.useState(true);
@@ -71,7 +72,8 @@ function GetStarted() {
         if(Object.keys(vector_db_resp_json).length){
           navigate("/chat");
         } else {
-          alert("Error in vector_db_resp");
+          console.log("Error in vector_db_resp_json", vector_db_resp_json);
+          navigate("/");
         }
       }
     } catch (error) {

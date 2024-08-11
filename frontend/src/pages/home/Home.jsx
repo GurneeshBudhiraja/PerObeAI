@@ -23,11 +23,12 @@ function Home() {
         return;
       }
       const { uid, email } = user;
+      console.log("User", user);
+
       setUserData({ uid, email });
       const firestoreData = await fireStore.getData({ uid });
-
       if (!Object.keys(firestoreData).length) {
-        // return navigate("/get-started",{state: {userData, fromHome: true}});
+        return navigate("/get-started",{state: {userData, fromHome: true}});
       }
 
       const { preferred_fashion_style, accessibility, city } =
