@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { VoiceChat } from "../pages.js";
 // components and icons
@@ -11,9 +11,11 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Menu } from "../../components/components.js";
 import { Dropdown } from "primereact/dropdown";
+import { setUser } from "../../store/authSlice/authSlice.js";
 
 function Chat() {
   const location = useLocation();
+  const dispatch = useDispatch();
   const [unmountRecommendation, setUnmountRecommendation] = useState(false);
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({});
@@ -33,6 +35,7 @@ function Chat() {
     }
     const { uid, accessibility, city, preferred_fashion_style } =
       location?.state;
+    dispatch(setUser({ uid, accessibility, city, preferred_fashion_style }));
     setUserData({ uid, accessibility, city, preferred_fashion_style });
   }, []);
 
@@ -50,6 +53,7 @@ function Chat() {
         preferred_fashion_style: userData?.preferred_fashion_style,
         accessibility: userData?.accessibility,
       });
+
       // todo: remove this after testing
       console.log("REQUEST BODY", requestBody);
 
