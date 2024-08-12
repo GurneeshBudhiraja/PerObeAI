@@ -1,10 +1,5 @@
 from fastapi.responses import JSONResponse
 from app.errors.custom_exception import CustomException
-from langchain_google_genai import ChatGoogleGenerativeAI
-from langchain_core.prompts import ChatPromptTemplate
-from langchain_core.output_parsers import JsonOutputParser
-from app.models.image_urls import ImageURLs
-from app.constants import FLASH_MODEL_001, PRO_MODEL_001
 from app.ai_handlers.text_vector import embed_text
 from app.vector_store import VectorStore
 

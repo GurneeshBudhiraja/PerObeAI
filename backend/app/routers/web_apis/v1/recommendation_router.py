@@ -91,6 +91,7 @@ def get_images(user_id: str, body: GetImages) -> JSONResponse:
             status_code=status.HTTP_200_OK,
             content={"response": "Success", "image_urls": image_urls},
         )
+
     except Exception as e:
         raise CustomException(
             status_code=500,
