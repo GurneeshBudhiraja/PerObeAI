@@ -39,7 +39,7 @@ function MenuComponent() {
         {/* ACCOUNT SETTINGS */}
         <MenuItem
           onClick={() => {
-            return navigate("/account-settings");
+            return navigate("/settings");
           }}
           className={"text-gray-800 "}
         >

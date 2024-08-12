@@ -7,6 +7,7 @@ import {
   NotFound,
   Chat,
   GetStarted,
+  AccountSettings,
 } from "./pages/pages.js";
 import { HelmetProvider } from "react-helmet-async";
 
@@ -21,6 +22,7 @@ function App() {
             <Route exact path="chat" element={<Chat />} />            
             <Route exact path="login" element={<Login />} />
             <Route exact path="get-started" element={<GetStarted />} />
+            <Route exact path="settings" element={<AccountSettings />} />
             <Route exact path="/*" element={<Navigate to={"/"} />} />
           </Route>
         </Routes>

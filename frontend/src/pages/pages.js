@@ -5,5 +5,15 @@ import NotFound from "./notFound/NotFound.jsx";
 import Chat from "./chat/Chat.jsx";
 import GetStarted from "./getStarted/GetStarted.jsx";
 import VoiceChat from "./voiceChat/VoiceChat.jsx";
+import AccountSettings from "./accountSettings/AccountSettings.jsx";
 
-export { Login, SignUp, Home, NotFound, Chat, GetStarted, VoiceChat };
+export {
+  Login,
+  SignUp,
+  Home,
+  NotFound,
+  Chat,
+  GetStarted,
+  VoiceChat,
+  AccountSettings,
+};
