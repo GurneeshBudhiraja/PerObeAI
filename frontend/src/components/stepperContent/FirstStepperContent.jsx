@@ -29,13 +29,10 @@ function FirstStepperContent({ uid, canProceed }) {
       multiple
       accept="image/*"
       previewWidth={50}
-      
       contentClassName={`max-h-[11rem] mt-3 overflow-auto ${
         isImages ? "border-2 border-black border-dotted" : ""
       } p-2`}
-      
       headerClassName="flex gap-4 items-center justify-center mb-2"
-      
       emptyTemplate={
         <div className="flex flex-col items-center justify-center text-center p-4 border-2 border-dashed border-gray-300 rounded-lg bg-white/60 shadow-inner ">
           <p className="text-gray-500 font-medium mb-2">
