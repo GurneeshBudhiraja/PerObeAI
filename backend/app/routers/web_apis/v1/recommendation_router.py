@@ -3,8 +3,11 @@ from fastapi.responses import JSONResponse
 from app.ai_agents import clothes_recommendation_agent
 from app.ai_handlers import validate
 from app.models.recommendation_request_body import RecommendationRequestBody
+from app.models.get_images import GetImages
 from app.firebase_utils import verify_firebase_uid
 from app.errors.custom_exception import CustomException
+from app.ai_handlers import get_images_urls
+
 
 router = APIRouter(prefix="/api/web/v1", tags=["outfit_recommendation"])
 
@@ -56,6 +59,38 @@ def get_recommendation(
             content={"response": agent_response["description"]},
         )
 
+    except Exception as e:
+        raise CustomException(
+            status_code=500,
+            message=str(e),
+            details={
+                "description": "An error occurred while generating the outfit recommendation"
+            },
+        )
+
+
+@router.post("/get-images")
+def get_images(user_id: str, body: GetImages) -> JSONResponse:
+    """
+    Route to get the image URLs from the outfit description
+
+    Args:
+        user_id (str): The user id of the user
+        body (outfit_description): The request body
+
+    Returns:
+        JSONResponse: The JSON response object
+    """
+
+    try:
+        image_urls = get_images_urls.get_images_from_description(
+            user_id=user_id, outfit_description=body.outfit_description
+        )
+
+        return JSONResponse(
+            status_code=status.HTTP_200_OK,
+            content={"response": "Success", "image_urls": image_urls},
+        )
     except Exception as e:
         raise CustomException(
             status_code=500,

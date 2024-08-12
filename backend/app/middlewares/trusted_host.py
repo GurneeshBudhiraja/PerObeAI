@@ -10,4 +10,7 @@ def configure_trusted_host_middleware(app: FastAPI):
     Args:
       app (FastAPI): The FastAPI application instance
     """
-    app.add_middleware(TrustedHostMiddleware,allowed_hosts=ALLOWED_HOSTS, )
+    app.add_middleware(
+        TrustedHostMiddleware,
+        allowed_hosts=ALLOWED_HOSTS,
+    )

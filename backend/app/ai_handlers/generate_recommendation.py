@@ -5,7 +5,6 @@ from app.constants import FLASH_MODEL_001
 from app.models.recommend_outfit import RecommendOutfit
 
 
-
 def generate_recommendation(
     upperwer_clothes: list[dict],
     lowerwear_clothes: list[dict],
@@ -55,6 +54,6 @@ def generate_recommendation(
         )
 
     except Exception as e:
-        #TODO: will remove the print statement after testing
+        # TODO: will remove the print statement after testing
         print(f"Error in generating recommendation: {e}")
         raise Exception("Error in generating recommendation")

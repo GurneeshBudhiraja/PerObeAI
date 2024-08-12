@@ -72,6 +72,8 @@ app.include_router(vector_store_router)
 
 from fastapi import Depends
 from app.firebase_utils import verify_firebase_uid
+
+
 @app.get("/testing")
 def testing(user_id: str = Depends(verify_firebase_uid)):
     print(user_id)

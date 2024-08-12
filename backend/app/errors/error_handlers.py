@@ -73,9 +73,9 @@ def internal_server_error_handler(request: Request, exc) -> JSONResponse:
         return JSONResponse(status_code=500, content={"error": error_response})
 
     except Exception as e:
-        
+
         raise HTTPException(status_code=500, detail=str(e))
-    
+
         # raise CustomException(
         #     status_code=500,
         #     message=str(e),
@@ -115,7 +115,7 @@ def validation_exception_handler(request: Request, exc) -> JSONResponse:
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
-    
+
         # raise CustomException(
         #     status_code=500,
         #     message=str(e),

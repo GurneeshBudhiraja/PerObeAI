@@ -5,6 +5,7 @@ from app.constants import FLASH_MODEL_001
 from app.models.validate_prompt import ValidatePrompt
 from app.errors.error_handlers import CustomException
 
+
 def validate(user_prompt: str) -> ValidatePrompt:
     """
     Validate the user prompt
@@ -47,4 +48,10 @@ def validate(user_prompt: str) -> ValidatePrompt:
         return validation_response
 
     except Exception as e:
-        raise CustomException(status_code=500, message=str(e), details={"description": "Ask something valid related to the outfit recommendation"})
+        raise CustomException(
+            status_code=500,
+            message=str(e),
+            details={
+                "description": "Ask something valid related to the outfit recommendation"
+            },
+        )
