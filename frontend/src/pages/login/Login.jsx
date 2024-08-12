@@ -28,11 +28,19 @@ function Login() {
     try {
       setError("");
       setLoading(true);
+      
       const { userEmail = "testing@perobeai.com", password } = data;
+      
+      if(userEmail !== "testing@perobeai.com"){
+        setError("This is a testing account. Please use the testing account credentials to login.");
+        setLoading(false);
+        return;
+      }
       const user = await auth.logInWithEmail({ email: userEmail, password });
+
       console.log("user", user); //TODO: will remove after testing
       const { uid, email } = user.user;
-      console.log(uid)
+      console.log(uid);
       const firestoreUserData = await fireStore.getData({ uid });
       const { accessibility, city, preferred_fashion_style } =
         firestoreUserData;
@@ -40,7 +48,7 @@ function Login() {
         setUser({ uid, email, accessibility, city, preferred_fashion_style })
       );
       setSuccess(true);
-      
+
       setTimeout(() => {
         navigate("/chat");
       }, 1600);
@@ -116,6 +124,22 @@ function Login() {
             sx={{ width: "100%" }}
           >
             {"You have been logged in successfully!"}
+          </Alert>
+        </Snackbar>
+      )}
+      {error && (
+        <Snackbar
+          open={!!error}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          autoHideDuration={1800}
+          onClose={() => setError("")}
+        >
+          <Alert
+            onClose={() => setError("")}
+            severity="error"
+            sx={{ width: "100%" }}
+          >
+            {error}
           </Alert>
         </Snackbar>
       )}

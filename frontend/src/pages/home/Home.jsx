@@ -28,7 +28,7 @@ function Home() {
       const { uid, email } = user;
 
       setUserData({ uid, email });
-      
+
       const firestoreUserData = await fireStore.getData({ uid });
 
       if (!Object.keys(firestoreUserData).length) {
@@ -39,6 +39,7 @@ function Home() {
 
       const { preferred_fashion_style, accessibility, city } =
         firestoreUserData;
+
       dispatch(
         setUser({ uid, email, preferred_fashion_style, accessibility, city })
       );

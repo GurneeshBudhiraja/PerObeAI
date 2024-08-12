@@ -21,7 +21,7 @@ function App() {
             <Route path="/chat/:id?" element={<Chat />} />            
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
-            {/* <Route path="/get-started" element={<GetStarted />} /> */}
+            <Route path="/get-started" element={<GetStarted />} />
             <Route path="/*" element={<NotFound />} />
           </Route>
         </Routes>

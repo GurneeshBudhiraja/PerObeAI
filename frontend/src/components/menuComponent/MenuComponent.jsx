@@ -29,17 +29,29 @@ function MenuComponent() {
         direction="left"
         arrow
       >
-        {email && <div className="flex items-center px-3 text-sm border-b-[1px] border-gray-300 ">
-          Welcome, {email}
-        </div>}
+        {/* WELCOME MESSAGE */}
+        {email && (
+          <div className="flex items-center px-3 text-sm border-b-[1px] border-gray-300 ">
+            Welcome, {email}
+          </div>
+        )}
+
+        {/* ACCOUNT SETTINGS */}
         <MenuItem
           onClick={() => {
             return navigate("/account-settings");
           }}
-          className={"text-gray-800 " }
+          className={"text-gray-800 "}
         >
           Account Settings
         </MenuItem>
+
+        {/* WARDROBE COLLECTION */}
+        <MenuItem className={""} onClick={() => {navigate("/my-wardrobe")}}>
+          My Wardrobe
+        </MenuItem>
+
+        {/* LOGOUT */}
         <MenuItem
           className={"text-red-500"}
           onClick={async () => {

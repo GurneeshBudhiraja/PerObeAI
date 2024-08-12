@@ -79,7 +79,7 @@ class FirebaseAuth {
   // logging in the user with email and password
   logInWithEmail = async ({email, password}) => {
     try {
-      return await signInWithEmailAndPassword(this.auth, email, password);
+      return signInWithEmailAndPassword(this.auth, email, password);
     } catch (error) {
       console.log("Error", error.message);
       return {};

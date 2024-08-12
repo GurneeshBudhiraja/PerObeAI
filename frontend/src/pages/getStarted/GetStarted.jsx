@@ -100,38 +100,53 @@ function GetStarted() {
     }
   };
 
-  return location?.state?.fromHome ? (
-    // TODO: create the signin flow
-    <div className="w-full py-4 px-8">
-      {isLoading && <div className=""> Processing the input.... </div>}
-      <Stepper
-        activeStep={activeStep}
-        isLastStep={(value) => setIsLastStep(value)}
-        isFirstStep={(value) => setIsFirstStep(value)}
-      >
-        <Step onClick={() => setActiveStep(0)} readonly>
-          1
-        </Step>
-        <Step onClick={() => setActiveStep(1)}>2</Step>
-      </Stepper>
-      <div className="mt-8">{renderStepContent()}</div>
-      <div className="mt-16 flex justify-between">
-        <Button onClick={handlePrev} disabled={isFirstStep}>
-          Prev
-        </Button>
-        <Button
-          onClick={handleNext}
-          disabled={!canProceed}
-          className={`${isLastStep ? "bg-blue-300" : ""}`}
-        >
-          {!isLastStep ? "Next" : "Submit"}
-        </Button>
+  // will add the home route option only here
+  return (
+    <div className="w-full max-w-3xl mx-auto py-8 px-6 bg-white shadow-lg rounded-lg">
+    {isLoading && (
+      <div className="text-blue-600 font-medium text-center mb-4">
+        Processing the input...
       </div>
+    )}
+    <Stepper
+      activeStep={activeStep}
+      isLastStep={(value) => setIsLastStep(value)}
+      isFirstStep={(value) => setIsFirstStep(value)}
+      className="mb-8"
+    >
+      <Step onClick={() => setActiveStep(0)} readonly className="cursor-pointer">
+        <div className={`text-center font-semibold ${activeStep === 0 ? "text-blue-600" : "text-gray-600"}`}>
+          1
+        </div>
+      </Step>
+      <Step onClick={() => setActiveStep(1)} className="cursor-pointer">
+        <div className={`text-center font-semibold ${activeStep === 1 ? "text-blue-600" : "text-gray-600"}`}>
+          2
+        </div>
+      </Step>
+    </Stepper>
+    <div className="mt-8">
+      {renderStepContent()}
     </div>
-  ) : (
-    // TODO: will look for the redirect page later on
-    <Navigate to="/" />
-  );
+    <div className="mt-12 flex justify-between items-center">
+      <Button
+        onClick={handlePrev}
+        disabled={isFirstStep}
+        className={`px-6 py-2 rounded-lg transition-all duration-200 ease-in-out ${isFirstStep ? "bg-gray-300 cursor-not-allowed" : "bg-gray-600 text-white hover:bg-gray-700"}`}
+      >
+        Prev
+      </Button>
+      <Button
+        onClick={handleNext}
+        disabled={!canProceed}
+        className={`px-6 py-2 rounded-lg transition-all duration-200 ease-in-out ${canProceed ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gray-300 cursor-not-allowed"} ${isLastStep && "bg-green-600 hover:bg-green-700"}`}
+      >
+        {!isLastStep ? "Next" : "Submit"}
+      </Button>
+    </div>
+  </div>
+  
+  ) 
 }
 
 export default GetStarted;
