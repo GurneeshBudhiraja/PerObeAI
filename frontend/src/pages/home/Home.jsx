@@ -29,7 +29,9 @@ function Home() {
       setUserData({ uid, email });
       const firestoreData = await fireStore.getData({ uid });
       if (!Object.keys(firestoreData).length) {
-        return navigate("/get-started",{state: {userData, fromHome: true}});
+        return navigate("/get-started", {
+          state: { userData, fromHome: true },
+        });
       }
 
       const { preferred_fashion_style, accessibility, city } =
@@ -83,19 +85,21 @@ function Home() {
   ];
 
   return (
-    <div className="max-h-fit w-screen text-zinc-100 flex flex-wrap mt-[1.75rem] ">
+    <div className="max-h-fit w-screen text-zinc-100 lg:flex flex-wrap mt-[1.75rem] ">
       <div
-        className="flex flex-col gap-10 w-1/2 items-start pl-[5rem] flex-wrap "
+        className="flex flex-col gap-10 md:gap-10 w-1/2 items-start pl-7 lg:pl-[5rem] flex-wrap "
         id="hero-section-left"
       >
-        <div className="flex flex-col tracking-wider">
-          <span className="text-6xl  font-semibold bg-gradient-to-r from-pink-500 via-purple-400 to-indigo-500 text-transparent bg-clip-text ">
+        <div className="flex flex-col tracking-wider gap-1">
+          <span className="text-4xl md:text-5xl lg:text-6xl   font-semibold bg-gradient-to-r from-pink-500 via-purple-400 to-indigo-500 text-transparent bg-clip-text ">
             PerObe AI
           </span>
-          <span className="font-medium text-lg ">AI for Your Wardrobe</span>
+          <span className=" text-base  font-medium md:text-lg ">
+            AI for Your Wardrobe
+          </span>
         </div>
 
-        <div className="max-w-full ">
+        <div className="xs:text-nowrap md:text-wrapmax-w-full space-y-4">
           {heroFeaturePoints.map((point, index) => {
             return (
               <HeroPoints
@@ -107,15 +111,15 @@ function Home() {
           })}
         </div>
         <div
-          className={`mb-9 w-full ${
+          className={`mb-9 w-fit ${
             show ? "opacity-100" : "opacity-0"
-          } transition-all duration-200 ease-in`}
+          } transition-all duration-200 ease-in max-w-fit`}
         >
           {isAuth ? (
             <button
               className="poppins-regular  bg-white text-black border-[1px] border-[#747674] rounded w-[400px] text-sm py-[0.57rem]  hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
               onClick={() => {
-                navigate("/chat", { state: {fromHomePage: true} });
+                navigate("/chat", { state: { fromHomePage: true } });
               }}
             >
               Chat
@@ -136,7 +140,10 @@ function Home() {
         </div>
       </div>
 
-      <div className="w-1/2  flex justify-center" id="hero-section-right">
+      <div
+        className="w-1/2 hidden lg:flex lg:justify-center"
+        id="hero-section-right"
+      >
         {/* TODO: Add the pictures here once the app is ready */}
         <p className="text-gray-400">will add the image here</p>
       </div>
