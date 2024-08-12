@@ -6,7 +6,7 @@ import { MenuLogo } from "../../../assets/assets";
 import { auth as firebaseAuth } from "../../firebase/firebaseServices.js";
 import { Snackbar, Alert } from "@mui/material";
 import { useNavigate, Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { logoutUser } from "../../store/authSlice/authSlice.js";
 import GitHubIcon from "@mui/icons-material/GitHub";
 
@@ -15,7 +15,7 @@ function MenuComponent() {
   const [isLogout, setIsLogout] = useState(false);
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const { email } = useSelector((state) => state.auth);
   return (
     <>
       <Menu
@@ -29,10 +29,14 @@ function MenuComponent() {
         direction="left"
         arrow
       >
+        {email && <div className="flex items-center px-3 text-sm border-b-[1px] border-gray-300 ">
+          Welcome, {email}
+        </div>}
         <MenuItem
           onClick={() => {
             return navigate("/account-settings");
           }}
+          className={"text-gray-800 " }
         >
           Account Settings
         </MenuItem>
@@ -65,7 +69,6 @@ function MenuComponent() {
             <GitHubIcon
               fontSize="large"
               className="text-gray-800 hover:text-gray-600 transition-colors duration-200"
-
             />
           </Link>
         </MenuItem>

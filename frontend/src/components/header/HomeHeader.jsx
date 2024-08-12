@@ -13,7 +13,7 @@ function HomeHeader() {
   const headerOptions = [];
 
   return (
-    <div className="h-[6rem] border-b-[0.1rem] border-zinc-600 flex items-center  px-10 w-full text-black md:bg-transparent bg-red-100  ">
+    <div className="h-[6rem] border-b-[0.1rem] border-zinc-600 flex items-center  px-10 w-full text-black md:bg-transparent ">
       <div className="absolute inset-0 w-full h-full">
         <div className="fixed top-0 left-0 w-screen h-[25rem] bg-gradient-to-br from-[#78A3FC] via-[#DDCEEA] to-[#DD4A51] blur-[20rem] -z-10"></div>
       </div>

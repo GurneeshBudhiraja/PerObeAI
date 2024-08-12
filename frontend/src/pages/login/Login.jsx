@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useForm, Controller, set } from "react-hook-form";
 import {
   Input,
   SignInWithGoogleButton,
@@ -9,98 +9,117 @@ import { auth, fireStore } from "../../firebase/firebaseServices.js";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/authSlice/authSlice.js";
 import { useNavigate } from "react-router-dom";
+import { Snackbar, Alert } from "@mui/material";
 
-function Login({ email }) {
+function Login() {
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
+
   const dispatch = useDispatch();
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const [success, setSuccess] = useState(false);
 
-  const loginUser = async (data, method) => {
+  const loginUser = async (data) => {
     try {
-      let userCredentials = undefined;
-
-      if (method === "google") {
-        userCredentials = await auth.logInWithGoogle();
-      } else {
-        userCredentials = await auth.logInWithEmail(data.email, data.password);
-      }
-      const user = userCredentials.user;
-
-      const uid = user.uid;
-      const email = user.email;
-
-      const userData = await fireStore.getData({ uid });
-
-      const dispatchData = {
-        uid,
-        email,
-        preferredStyle: userData.preferred_fashion_style,
-        accessibility: userData.accessibility,
-        city: userData.city,
-      };
-
-      dispatch(setUser({ ...dispatchData }));
-
-      console.log(user);
-      navigate("/");
+      setError("");
+      setLoading(true);
+      const { userEmail = "testing@perobeai.com", password } = data;
+      const user = await auth.logInWithEmail({ email: userEmail, password });
+      console.log("user", user); //TODO: will remove after testing
+      const { uid, email } = user.user;
+      console.log(uid)
+      const firestoreUserData = await fireStore.getData({ uid });
+      const { accessibility, city, preferred_fashion_style } =
+        firestoreUserData;
+      dispatch(
+        setUser({ uid, email, accessibility, city, preferred_fashion_style })
+      );
+      setSuccess(true);
+      
+      setTimeout(() => {
+        navigate("/chat");
+      }, 1600);
     } catch (error) {
-      console.log("Not able to fetch user", error.message);
+      console.log(error);
+      setError("Failed to login. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-2 ">
-      <span className="text-[1.5rem] tracking-widest font-semibold">
-        Log In to Your Account
-      </span>
-      <form
-        onSubmit={handleSubmit(loginUser)}
-        className="flex flex-col gap-6 min-w-[25rem] mb-4 "
-      >
-        <Controller
-          control={control}
-          rules={{ required: "Email is required" }}
-          name="email"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              // TODO: will add the error here
-              isRequired={true}
-              value={"testing@perobeai.com"}
-              type={"email"}
-              disabled={true}
-              onBlur={onBlur}
-              onChange={onChange}
-              selected={value}
-            />
-          )}
-        />
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { onChange, onBlur, value } }) => (
-            <Input
-              // TODO: will add the error here
-              type={"password"}
-              labelName={"Password"}
-              isRequired={true}
-              onChange={onChange}
-              onBlur={onBlur}
-              selected={value}
-              autoFocus
-            />
-          )}
-        />
-        <FormSubmitButton
-          className={
-            " bg-black text-white py-2 text-center cursor-pointer rounded-full active:bg-gray-900"
-          }
-        />
-      </form>
-    </div>
+    <>
+      <div className="flex flex-col items-center justify-start gap-7 mt-5 w-full h-full p-5 md:p-0 ">
+        <span className="text-[1.35rem] tracking-wider poppins-medium md:text-[1.5rem] md:tracking-widest md:font-semibold">
+          Log in to the Testing Account
+        </span>
+        <form
+          onSubmit={handleSubmit(loginUser)}
+          className="flex flex-col justify-center items-center gap-6 mb-4 w-3/4"
+        >
+          <Controller
+            control={control}
+            name="userEmail"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                // TODO: will add the error here
+                isRequired={true}
+                value={"testing@perobeai.com"}
+                type={"email"}
+                disabled={true}
+                onBlur={onBlur}
+                onChange={onChange}
+                selected={value}
+              />
+            )}
+          />
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { onChange, onBlur, value } }) => (
+              <Input
+                // TODO: will add the error here
+                type={"password"}
+                labelName={"Password"}
+                isRequired={true}
+                onChange={onChange}
+                className={""}
+                onBlur={onBlur}
+                selected={value}
+                disabled={loading}
+                autoFocus
+              />
+            )}
+          />
+          <FormSubmitButton
+            className={`bg-black text-white py-2 text-center cursor-pointer rounded-full active:bg-gray-900 w-full max-w-md ${
+              loading ? "cursor-not-allowed" : "cursor-pointer"
+            } `}
+          />
+        </form>
+      </div>
+      {success && (
+        <Snackbar
+          open={!!success}
+          anchorOrigin={{ vertical: "top", horizontal: "right" }}
+          autoHideDuration={1200}
+          onClose={() => setSuccess(false)}
+        >
+          <Alert
+            onClose={() => setSuccess(false)}
+            severity="success"
+            sx={{ width: "100%" }}
+          >
+            {"You have been logged in successfully!"}
+          </Alert>
+        </Snackbar>
+      )}
+    </>
   );
 }
 

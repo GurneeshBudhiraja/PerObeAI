@@ -10,7 +10,7 @@ function Input({ labelName, type, className,isRequired,name,error,...props   }) 
     label={labelName}
     error={error}
     type={type}
-    className={`${className} bg-[#edf2f65c]`}
+    className={`${className} bg-[#edf2f65c] w-full max-w-md  `}
     {...props}
     />
   )
