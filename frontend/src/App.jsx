@@ -9,7 +9,7 @@ import {
   GetStarted,
   AccountSettings,
 } from "./pages/pages.js";
-import Layout from "./components/layout/Layout.jsx";
+
 import { HelmetProvider } from "react-helmet-async";
 
 
@@ -18,7 +18,7 @@ function App() {
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route exact path="/" element={<Layout />}>
+          <Route exact path="/" element={<Home />}>
             <Route exact path="" element={<Home />} />
             <Route exact path="chat" element={<Chat />} />            
             <Route exact path="login" element={<Login />} />
