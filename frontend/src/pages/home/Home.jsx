@@ -130,10 +130,10 @@ function Home() {
               Chat
             </button>
           ) : (
-            <div className="flex flex-col gap-7">
-              <SignInWithGoogleButton onClick={googleSignInWrapper} />
+            <div className="flex flex-col gap-7 ">
+                <SignInWithGoogleButton onClick={googleSignInWrapper} />
               <button
-                className="poppins-regular bg-white text-black border-[1px] border-[#747674] rounded w-full md:w-[300px] lg:w-[400px] text-sm py-3 hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
+                className="poppins-regular bg-white text-black border-[1px] border-[#747674] rounded w-[300px] sm:w-[300px] lg:w-[400px] text-sm py-3 hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
                 onClick={() => {
                   navigate("/login");
                 }}

@@ -3,8 +3,6 @@ import { CheckAuth } from "./components/components.js";
 import {
   Home,
   Login,
-  SignUp,
-  NotFound,
   Chat,
   GetStarted,
   AccountSettings,

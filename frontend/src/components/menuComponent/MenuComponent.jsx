@@ -45,12 +45,6 @@ function MenuComponent() {
         >
           Account Settings
         </MenuItem>
-
-        {/* WARDROBE COLLECTION */}
-        <MenuItem className={""} onClick={() => {navigate("/my-wardrobe")}}>
-          My Wardrobe
-        </MenuItem>
-
         {/* LOGOUT */}
         <MenuItem
           className={"text-red-500"}

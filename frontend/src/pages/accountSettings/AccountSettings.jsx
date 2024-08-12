@@ -6,6 +6,7 @@ import { FloatLabel } from "primereact/floatlabel";
 import { Button } from "@material-tailwind/react";
 import { useDispatch, useSelector } from "react-redux";
 import { Snackbar, Alert } from "@mui/material";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 function AccountSettings() {
   const navigate = useNavigate();
@@ -66,17 +67,11 @@ function AccountSettings() {
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8 px-4 md:px-8">
       <div className="flex items-center mb-8">
-        <button
+        <ArrowBackIosIcon
           onClick={() => navigate(-1)}
-          className="text-gray-600 hover:text-gray-900 focus:outline-none"
+          className="text-gray-900 hover:text-gray-700 focus:outline-none"
           aria-label="Go back to the previous menu"
-        >
-          <img
-            src="../../../assets/arrow_back.svg"
-            alt="Go back"
-            className="h-6 w-6"
-          />
-        </button>
+        />
         <p className="ml-4 text-3xl font-semibold text-gray-800">
           Account Settings
         </p>

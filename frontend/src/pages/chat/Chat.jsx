@@ -22,11 +22,43 @@ function Chat() {
   const [recommendation, setRecommendation] = useState("");
   const [error, setError] = useState("");
   const [prompt, setPrompt] = useState("");
+  const [images, setImages] = useState([]);
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
   const options = ["Chat", "Voice"];
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(options[0]);
+
+  const getImages = async () => {
+    try {
+      console.log("Getting images");
+      const uid = userData?.uid;
+      const outfit_description = recommendation;
+
+      const url = `https://perobeai-bhgx.onrender.com/api/web/v1/get-images?user_id=${uid}`;
+
+      const response = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ outfit_description }),
+      });
+
+      const imagesData = await response.json();
+      console.log(imagesData);
+
+      if (imagesData?.image_urls?.length) {
+        setImages(imagesData.image_urls);
+        setRecommendation("");
+      } else {
+        setError("No images found. Please try again.");
+      }
+      console.log(imagesData);
+    } catch (error) {
+      setError("Error in getting images. Please try again later.");
+    }
+  };
 
   useEffect(() => {
     // Get the user data and add it to the store if it is not present
@@ -41,6 +73,8 @@ function Chat() {
 
   const getRecommendation = async () => {
     try {
+      // for preventing the sample prompt from being shown
+      setImages([]);
       setLoading(true);
       if (!prompt.trim()) {
         setError("Please enter a prompt");
@@ -97,11 +131,11 @@ function Chat() {
     <>
       <div className="bg-[#131314] h-full w-full text-[#eeeeee] flex flex-col justify-center items-center relative">
         <div className="flex w-full items-center justify-between p-3 bg-white shadow-lg shadow-gray-800/30 z-10">
-          <Link to={"/"} className="">
+          <Link to={"/"} className="max-h-10 overflow-hidden">
             <img
-              src="../../../assets/favicon.svg"
+              src="../../../assets/perobeai-logo-small.svg"
               alt="PerobeAI Logo"
-              className="h-10 max-w-prose object-contain ml-7"
+              className="h-14 max-w-prose object-contain ml-7"
             />
           </Link>
           <div className="flex justify-center items-center text-end w-10 ">
@@ -124,25 +158,36 @@ function Chat() {
           <VoiceChat />
         ) : (
           <div className="h-full flex flex-col justify-center items-center transition-all duration-300 ease-out max-w-prose">
-            {recommendation && (
-              <div
-                className={`text-[#eeeeee] animate-slide-in-bottom flex flex-col items-start gap-5 px-8 ${
-                  !unmountRecommendation ? "opacity-100" : "opacity-0"
-                } transition-all duration-500 ease-in-out`}
-              >
-                {recommendation}
-                <button
-                  className="bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 text-gray-800 font-medium py-2 px-6 rounded-lg shadow transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg active:scale-95"
-                  onClick={() => {
-                    console.log("GET PICTURES");
-                  }}
-                >
-                  Get Pictures of the recommended outfit
-                </button>
+            {images.length > 0 ? (
+              <div className="grid grid-cols-2 gap-4 p-4 overflow-auto w-full sm:w-3/4 md:w-2/3 lg:w-1/2">
+                {images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={image.url}
+                    alt={`Outfit ${index + 1}`}
+                    className="w-full h-full object-cover rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"
+                  />
+                ))}
               </div>
+            ) : (
+              recommendation && (
+                <div
+                  className={`text-[#eeeeee] animate-slide-in-bottom flex flex-col items-start gap-5 px-8 ${
+                    !unmountRecommendation ? "opacity-100" : "opacity-0"
+                  } transition-all duration-500 ease-in-out`}
+                >
+                  {recommendation}
+                  <button
+                    className="bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 text-gray-800 font-medium py-2 px-6 rounded-lg shadow transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg active:scale-95"
+                    onClick={getImages}
+                  >
+                    Get Pictures of the recommended outfit
+                  </button>
+                </div>
+              )
             )}
 
-            {!recommendation && (
+            {!recommendation && !images.length && (
               <div className="space-y-4">
                 {[
                   "What should I wear to a summer wedding?",
