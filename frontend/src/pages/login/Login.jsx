@@ -22,17 +22,18 @@ function Login() {
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
-  const [success, setSuccess] = useState(false);
 
   const loginUser = async (data) => {
     try {
       setError("");
       setLoading(true);
-      
+
       const { userEmail = "testing@perobeai.com", password } = data;
-      
-      if(userEmail !== "testing@perobeai.com"){
-        setError("This is a testing account. Please use the testing account credentials to login.");
+
+      if (userEmail !== "testing@perobeai.com") {
+        setError(
+          "This is a testing account. Please use the testing account credentials to login."
+        );
         setLoading(false);
         return;
       }
@@ -47,11 +48,9 @@ function Login() {
       dispatch(
         setUser({ uid, email, accessibility, city, preferred_fashion_style })
       );
-      setSuccess(true);
-
       setTimeout(() => {
         navigate("/chat");
-      }, 1600);
+      }, 200);
     } catch (error) {
       console.log(error);
       setError("Failed to login. Please try again later.");
@@ -111,22 +110,6 @@ function Login() {
           />
         </form>
       </div>
-      {success && (
-        <Snackbar
-          open={!!success}
-          anchorOrigin={{ vertical: "top", horizontal: "right" }}
-          autoHideDuration={1200}
-          onClose={() => setSuccess(false)}
-        >
-          <Alert
-            onClose={() => setSuccess(false)}
-            severity="success"
-            sx={{ width: "100%" }}
-          >
-            {"You have been logged in successfully!"}
-          </Alert>
-        </Snackbar>
-      )}
       {error && (
         <Snackbar
           open={!!error}
