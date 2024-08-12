@@ -87,7 +87,7 @@ function Home() {
   return (
     <div className="max-h-fit w-screen text-zinc-100 lg:flex flex-wrap mt-[1.75rem] ">
       <div
-        className="flex flex-col gap-10 md:gap-10 w-1/2 items-start pl-7 lg:pl-[5rem] flex-wrap "
+        className="flex flex-col gap-10 w-1/2 items-start pl-7 lg:pl-[5rem] flex-wrap "
         id="hero-section-left"
       >
         <div className="flex flex-col tracking-wider gap-1">

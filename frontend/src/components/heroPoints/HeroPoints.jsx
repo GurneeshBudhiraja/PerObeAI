@@ -5,8 +5,8 @@ function HeroPoints({ text, keypoints }) {
   return (
     <div className="py-2 tracking-wide">
       <div className="flex items-start space-x-2">
-        <CheckCircleOutlineIcon className="text-[#4651B6] mt-1" />
-        <div className=" sm:text-nowrap md:text-lg font-semibold">
+        <CheckCircleOutlineIcon className="text-[#4651B6] mt-0 md:mt-1" />
+        <div className="text-base sm:text-nowrap md:text-lg font-semibold">
           {text}
         </div>
       </div>

@@ -41,7 +41,7 @@ function HomeHeader() {
             <Link
               to={"https://github.com/GurneeshBudhiraja/PerObeAI"}
               target="_blank"
-              className="mx-4 md:block hidden"
+              className={`mx-4 md:block ${isAuthenticated ? "hidden" : ""}`}
             >
               <GitHubIcon
                 fontSize="large"
