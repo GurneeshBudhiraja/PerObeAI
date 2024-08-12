@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { FileUpload } from "primereact/fileupload";
-import { storage } from "../../firebase/firebaseServices.js";
+import { storage } from "../../firebase/firebaseServices";
 
 function FirstStepperContent({ uid, canProceed }) {
   const [isImages, setIsImages] = useState(false);
