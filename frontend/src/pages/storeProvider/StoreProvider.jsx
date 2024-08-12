@@ -1,11 +1,11 @@
 import { Outlet } from "react-router-dom";
-import { Header } from "../components.js";
+import { Header } from "../../components/components.js";
 import { Provider } from 'react-redux'
 import {store} from "../../store/store.js"
 import { useEffect } from "react";
 import { useSelector } from "react-redux";
 
-function Layout() {
+function StoreProvider() {
 
   return (
     // will add store here
@@ -19,4 +19,4 @@ function Layout() {
   );
 }
 
-export default Layout;
+export default StoreProvider;
