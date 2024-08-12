@@ -29,7 +29,7 @@ function Chat() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   useEffect(() => {
-    // TODO: will get the user data and add it in the store if it is not present
+    // Get the user data and add it to the store if it is not present
     if (!location?.state?.fromHomePage) {
       return navigate("/");
     }
@@ -54,15 +54,9 @@ function Chat() {
         accessibility: userData?.accessibility,
       });
 
-      // todo: remove this after testing
-      console.log("REQUEST BODY", requestBody);
-
       const uid = userData?.uid;
-      // todo: remove this after testing
-      console.log("UID", uid);
-
       const url = `https://perobeai-bhgx.onrender.com/api/web/v1/recommend?user_id=${uid}`;
-      console.log("MAKING REQUEST TO THE URL ", url);
+
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -70,6 +64,7 @@ function Chat() {
         },
         body: requestBody,
       });
+
       const data = await response.json();
       if (!data?.response) {
         throw new Error("Something went wrong. Please try again later.");
@@ -92,7 +87,6 @@ function Chat() {
     }
   };
 
-  // handle enter key press input
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && prompt) {
       getRecommendation();
@@ -101,9 +95,9 @@ function Chat() {
 
   return (
     <>
-      <div className="bg-[#131314] h-full w-full text-[#eeeeee] flex flex-col justify-center items-center">
-        <div className="flex w-full items-center justify-between p-3 bg-white shadow-lg shadow-gray-800/30">
-          <Link to={"/"}>
+      <div className="bg-[#131314] h-full w-full text-[#eeeeee] flex flex-col justify-center items-center relative">
+        <div className="flex w-full items-center justify-between p-3 bg-white shadow-lg shadow-gray-800/30 z-10">
+          <Link to={"/"} className="">
             <img
               src="../../../assets/favicon.svg"
               alt="PerobeAI Logo"
@@ -114,16 +108,17 @@ function Chat() {
             <Menu className="ml-auto" />
           </div>
         </div>
-
-        <Dropdown
-          value={selectedOption}
-          onChange={(e) => setSelectedOption(e.value)}
-          options={options}
-          optionLabel="name"
-          checkmark={true}
-          className=" py-2 px-4 focus:ring-2 focus:ring-purple-500 transition-all duration-300 ease-in-out hover:bg-gray-700 absolute top-20 left-8 bg-gray-800 text-white border-[1px] border-gray-600 rounded-lg shadow-lg"
-          panelClassName="bg-gray-800 text-white"
-        />
+        <div className="z-20 mt-5 sm:mt-12 fixed top-14 left-4">
+          <Dropdown
+            value={selectedOption}
+            onChange={(e) => setSelectedOption(e.value)}
+            options={options}
+            optionLabel="name"
+            checkmark={true}
+            className="py-1 px-2 hover:bg-gray-700 bg-gray-800 text-white border-[1px] border-gray-600 rounded-lg shadow-lg tracking-widest z-20"
+            panelClassName="bg-gray-800 text-white border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50"
+          />
+        </div>
 
         {selectedOption === "Voice" ? (
           <VoiceChat />
@@ -131,7 +126,7 @@ function Chat() {
           <div className="h-full flex flex-col justify-center items-center transition-all duration-300 ease-out max-w-prose">
             {recommendation && (
               <div
-                className={`text-[#eeeeee] animate-slide-in-bottom flex flex-col items-start gap-5 ${
+                className={`text-[#eeeeee] animate-slide-in-bottom flex flex-col items-start gap-5 px-8 ${
                   !unmountRecommendation ? "opacity-100" : "opacity-0"
                 } transition-all duration-500 ease-in-out`}
               >
@@ -188,7 +183,7 @@ function Chat() {
             )}
 
             <div
-              className={`w-2/4 h-[3rem] flex items-center justify-center fixed bottom-10 left-1/2 -translate-x-1/2 ${
+              className={`w-4/5 md:w-3/4 lg:w-2/4 h-[3rem] flex items-center justify-center fixed bottom-10 left-1/2 -translate-x-1/2 ${
                 loading ? "cursor-not-allowed" : "cursor-auto"
               }`}
             >
@@ -197,7 +192,7 @@ function Chat() {
                 disabled={loading}
                 autoFocus
                 placeholder="Need outfit advice? Ask here..."
-                className="outline-none w-full bg-[#212121] border-[1px] border-gray-200 rounded-full p-4 focus:bg-[#343333c0] transition-all duration-100 ease-in-out tracking-normal poppins-regular hover:bg-[#3433338f] flex-grow pr-16"
+                className="outline-none w-full bg-[#212121] border-[1px] border-gray-200 rounded-full p-4 focus:bg-[#343333c0] transition-all duration-100 ease-in-out tracking-normal poppins-regular hover:bg-[#3433338f] flex-grow pr-16 "
                 value={prompt}
                 onChange={(e) => setPrompt(e.target.value)}
                 onKeyDown={handleKeyDown}

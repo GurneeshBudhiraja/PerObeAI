@@ -35,7 +35,7 @@ function HomeHeader() {
           </div>
         </Link>
         <div className=" flex-1 flex justify-end items-end w-full">
-          <div className="flex justify-end items-center w-full gap-6 flex-wrap">
+          <div className="flex justify-end items-center w-full gap-6 flex-wrap z-50">
             {isAuthenticated && <Menu />}
             <Link
               to={"https://github.com/GurneeshBudhiraja/PerObeAI"}
