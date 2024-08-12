@@ -1,12 +1,16 @@
 import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
-import { Input, SignInWithGoogleButton, FormSubmitButton } from "../../components/components.js";
+import {
+  Input,
+  SignInWithGoogleButton,
+  FormSubmitButton,
+} from "../../components/components.js";
 import { auth, fireStore } from "../../firebase/firebaseServices.js";
 import { useDispatch } from "react-redux";
 import { setUser } from "../../store/authSlice/authSlice.js";
 import { useNavigate } from "react-router-dom";
 
-function Login({email}) {
+function Login({ email }) {
   const {
     handleSubmit,
     control,
@@ -43,7 +47,6 @@ function Login({email}) {
 
       console.log(user);
       navigate("/");
-
     } catch (error) {
       console.log("Not able to fetch user", error.message);
     }
@@ -51,8 +54,8 @@ function Login({email}) {
 
   return (
     <div className="flex flex-col items-center justify-center gap-2 ">
-      <span className="text-[1.5rem] tracking-widest font-semibold -mt-16 mb-9">
-      Log In to Your Account
+      <span className="text-[1.5rem] tracking-widest font-semibold">
+        Log In to Your Account
       </span>
       <form
         onSubmit={handleSubmit(loginUser)}
@@ -66,9 +69,9 @@ function Login({email}) {
             <Input
               // TODO: will add the error here
               isRequired={true}
-              value={"testingaccount@gmail.com"}
+              value={"testing@perobeai.com"}
               type={"email"}
-              disabled={true} 
+              disabled={true}
               onBlur={onBlur}
               onChange={onChange}
               selected={value}
@@ -97,7 +100,7 @@ function Login({email}) {
           }
         />
       </form>
-      </div>
+    </div>
   );
 }
 

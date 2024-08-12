@@ -1,23 +1,27 @@
 import React from "react";
 import { BigLogo, SmallLogo } from "../../../assets/assets";
-import { AuthToggle } from "../components";
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function LoginHeader() {
-  const location = useLocation();
   return (
-
-    <div className="flex items-center justify-between w-full px-20 -mt-12 ">
+    <div className="">
       <div className="absolute top-0 left-0 -z-20">
-          <div className="h-[25rem] w-screen border rounded-full bg-gradient-to-br from-[#78A3FC] via-[#DDCEEA] to-[#DD4A51] blur-[20rem]"></div>
+        <div className="h-[25rem] w-screen border rounded-full bg-gradient-to-br from-[#78A3FC] via-[#DDCEEA] to-[#DD4A51] blur-[20rem]"></div>
       </div>
-      <Link to={"/"}>
-        <img src={BigLogo} alt="PerObe AI" className="w-56 h-60 object-contain"/>
-      </Link>
-      {
-        location.pathname === "/login" ? <AuthToggle type={"login"} /> : <AuthToggle type={"signup"} />
-      }
-      
+      <div className="w-screen h-28 flex justify-start md:h-32 md:mx-auto md:max-w-5xl ">
+        <Link to={"/"}>
+          <img
+            src={BigLogo}
+            alt="PerObe AI"
+            className=" hidden md:block w-48 h-36 object-contain"
+          />
+          <img
+            src={SmallLogo}
+            alt="PerObe AI"
+            className="block md:hidden w-24 h-full object-contain ml-3"
+          />
+        </Link>
+      </div>
     </div>
   );
 }
