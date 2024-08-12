@@ -38,7 +38,7 @@ function GetStarted() {
     
   }, []);
 
-  const [canProceed, setCanProceed] = React.useState(true);
+  const [canProceed, setCanProceed] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
   const [activeStep, setActiveStep] = React.useState(0);
   const [isLastStep, setIsLastStep] = React.useState(false);
@@ -77,7 +77,7 @@ function GetStarted() {
         const imageURLs = await storage.getPictures({ uid: formattedData.uid });
         console.log("Image URLs", imageURLs);
 
-        const url = `http://127.0.0.1:8000/api/web/v1/image-embeddings?user_id=${formattedData.uid}`;
+        const url = `https://perobeai-bhgx.onrender.com/api/web/v1/image-embeddings?user_id=${formattedData.uid}`;
         console.log("making request to URL", url);
         const vector_db_resp = await fetch(url, {
           method: "POST",

@@ -16,18 +16,24 @@ function Chat() {
   const location = useLocation();
   const [unmountRecommendation, setUnmountRecommendation] = useState(false);
   const [loading, setLoading] = useState(false);
-  const userData = useSelector((state) => state.auth);
+  const [userData, setUserData] = useState({});
   const [recommendation, setRecommendation] = useState("");
   const [error, setError] = useState("");
   const [prompt, setPrompt] = useState("");
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
   const options = ["Chat", "Voice"];
+  const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   useEffect(() => {
     // TODO: will get the user data and add it in the store if it is not present
-    
+    if (!location?.state?.fromHomePage) {
+      return navigate("/");
+    }
+    const { uid, accessibility, city, preferred_fashion_style } =
+      location?.state;
+    setUserData({ uid, accessibility, city, preferred_fashion_style });
   }, []);
 
   const getRecommendation = async () => {
@@ -44,10 +50,15 @@ function Chat() {
         preferred_fashion_style: userData?.preferred_fashion_style,
         accessibility: userData?.accessibility,
       });
+      // todo: remove this after testing
+      console.log("REQUEST BODY", requestBody);
 
-      const uid = "lxQMbClaFDZAXH9gp6FDGEiCCT42";
+      const uid = userData?.uid;
+      // todo: remove this after testing
+      console.log("UID", uid);
+
       const url = `https://perobeai-bhgx.onrender.com/api/web/v1/recommend?user_id=${uid}`;
-
+      console.log("MAKING REQUEST TO THE URL ", url);
       const response = await fetch(url, {
         method: "POST",
         headers: {
@@ -147,7 +158,7 @@ function Chat() {
                       setPrompt(samplePrompt);
                       setTimeout(() => {
                         getRecommendation();
-                      },500);
+                      }, 500);
                     }}
                     className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 rounded-lg shadow-sm cursor-pointer transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:shadow-md"
                   />

@@ -31,6 +31,7 @@ function Home() {
 
       const firestoreUserData = await fireStore.getData({ uid });
       console.log("Firestore user data", firestoreUserData);
+      setUserData((prev) => ({ ...prev, ...firestoreUserData.data }));
       if (!Object.keys(firestoreUserData).length) {
         return navigate("/get-started", {
           state: { uid, email, fromHome: true },
@@ -122,7 +123,7 @@ function Home() {
             <button
               className="poppins-regular  bg-white text-black border-[1px] border-[#747674] rounded w-[400px] text-sm py-[0.57rem]  hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
               onClick={() => {
-                navigate("/chat", { state: { fromHomePage: true } });
+                navigate("/chat", { state: { ...userData,fromHomePage: true } });
               }}
             >
               Chat
