@@ -1,4 +1,3 @@
-import Layout from "./layout/Layout.jsx";
 import Header from "./header/Header.jsx";
 import Footer from "./footer/Footer.jsx";
 import ReactHelmet from "./reactHelmet/ReactHelmet.jsx";
@@ -14,11 +13,8 @@ import CheckAuth from "./checkAuth/CheckAuth.jsx";
 import Menu from "./menuComponent/MenuComponent.jsx";
 import SamplePrompt from "./samplePrompt/SamplePrompt.jsx";
 
-
-
 // TODO: WILL NEED TO CHANGE SOME OF THE NAMES OF THE COMPONENTS
 export {
-  Layout,
   Header,
   Footer,
   ReactHelmet,

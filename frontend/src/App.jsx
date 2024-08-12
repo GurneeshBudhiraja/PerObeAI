@@ -1,5 +1,5 @@
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import { CheckAuth, Layout } from "./components/components.js";
+import { CheckAuth } from "./components/components.js";
 import {
   Home,
   Login,
@@ -9,6 +9,7 @@ import {
   GetStarted,
   AccountSettings,
 } from "./pages/pages.js";
+import Layout from "./components/layout/Layout.jsx";
 import { HelmetProvider } from "react-helmet-async";
 
 
