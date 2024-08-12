@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route, redirect } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import { CheckAuth, Layout } from "./components/components.js";
 import {
   Home,
@@ -16,13 +16,12 @@ function App() {
     <HelmetProvider>
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route path="" element={<Home />} />
-            <Route path="/chat/:id?" element={<Chat />} />            
-            <Route path="/login" element={<Login />} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/get-started" element={<GetStarted />} />
-            <Route path="/*" element={<NotFound />} />
+          <Route exact path="/" element={<Layout />}>
+            <Route exact path="" element={<Home />} />
+            <Route exact path="chat" element={<Chat />} />            
+            <Route exact path="login" element={<Login />} />
+            <Route exact path="get-started" element={<GetStarted />} />
+            <Route exact path="/*" element={<Navigate to={"/"} />} />
           </Route>
         </Routes>
       </BrowserRouter>

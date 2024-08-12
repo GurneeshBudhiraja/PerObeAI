@@ -3,6 +3,7 @@ import { ReactHelmet } from '../components.js';
 import LoginHeader from "./LoginHeader.jsx";
 import HomeHeader from './HomeHeader.jsx';
 import ChatHeader from './ChatHeader.jsx';
+import GetStartedHeader from './GetStartedHeader.jsx';
 import { useLocation } from 'react-router-dom';
 
 function Header() {
@@ -25,6 +26,12 @@ function Header() {
     return (
       <div>
         <ReactHelmet title="Chat - PerObe AI" />
+      </div>
+    );
+  } else if(location.pathname==="/get-started"){
+    return (
+      <div>
+        <ReactHelmet title="Get Started - PerObe AI" />
       </div>
     );
   }

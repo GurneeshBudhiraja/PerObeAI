@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 import { InputText } from "primereact/inputtext";
 import { Dropdown } from "primereact/dropdown";
 import { InputTextarea } from "primereact/inputtextarea";
+import { Input } from "@material-tailwind/react";
 import { FloatLabel } from "primereact/floatlabel";
 
-function SecondStepperContent({ canProceed, userData ,setUserData }) {
-
+function SecondStepperContent({ canProceed, userData, setUserData }) {
   const accessibilities = [
     { accessibility: "None" },
     { accessibility: "Blind" },
@@ -22,19 +22,18 @@ function SecondStepperContent({ canProceed, userData ,setUserData }) {
     { colorBlindnessType: "Rod Monochromacy" },
   ];
 
-  
   return (
     <div>
-      <InputText
+      <Input
+        label="City"
         value={userData?.city}
         onChange={(e) => {
           setUserData({ ...userData, city: e.target.value });
         }}
-        className="bg-gray-200"
+        className="bg-gray-200 p-3"
         placeholder="City"
       />
-      <div className="card flex justify-content-center">
-        {/* TODO: will make a separate component of this dropdown */}
+      <div className="my-8 flex flex-col sm:flex-row justify-between  gap-2 w-full h-full ">
         <Dropdown
           value={userData?.accessibility}
           onChange={(e) =>
@@ -48,32 +47,41 @@ function SecondStepperContent({ canProceed, userData ,setUserData }) {
           optionLabel="accessibility"
           checkmark={true}
           placeholder="Accessibility"
-          className="w-full md:w-14rem"
+          className="w-full sm:w-1/2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out text-gray-700 p-2 "
+          panelClassName="bg-white border border-black rounded-lg shadow-lg"
         />
+
+        {userData.accessibility?.accessibility === "Color Blind" && (
+          <Dropdown
+            value={userData?.colorBlindnessType}
+            onChange={(e) =>
+              setUserData({ ...userData, colorBlindnessType: e.value })
+            }
+            options={colorBlindnessType}
+            optionLabel="colorBlindnessType"
+            checkmark={true}
+            placeholder="Type"
+            className="w-full sm:w-1/2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out text-gray-700 p-2 "
+          panelClassName="bg-white border border-black rounded-lg shadow-lg"
+          />
+        )}
       </div>
-      {userData.accessibility?.accessibility === "Color Blind" && (
-        <Dropdown
-          value={userData?.colorBlindnessType}
-          onChange={(e) =>
-            setUserData({ ...userData, colorBlindnessType: e.value })
-          }
-          options={colorBlindnessType}
-          optionLabel="colorBlindnessType"
-          checkmark={true}
-          placeholder="Color Blindness Type"
-          className="w-full md:w-14rem"
-        />
-      )}
-      <div className="card flex justify-content-center">
+      <div className="w-full">
         <FloatLabel>
-          <InputTextarea
+          <Input
+            label="Preferred Fashion Style"
+            className="w-full"
             id="description"
             value={userData?.preferred_fashion_style}
-            onChange={(e) => setUserData({ ...userData, preferred_fashion_style: e.target.value })}
+            onChange={(e) =>
+              setUserData({
+                ...userData,
+                preferred_fashion_style: e.target.value,
+              })
+            }
             rows={5}
             cols={30}
           />
-          <label htmlFor="description">Description</label>
         </FloatLabel>
       </div>
     </div>

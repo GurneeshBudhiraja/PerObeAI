@@ -26,14 +26,14 @@ function Home() {
       }
 
       const { uid, email } = user;
-
+      console.log("User found", uid, email);
       setUserData({ uid, email });
 
       const firestoreUserData = await fireStore.getData({ uid });
-
+      console.log("Firestore user data", firestoreUserData);
       if (!Object.keys(firestoreUserData).length) {
         return navigate("/get-started", {
-          state: { userData, fromHome: true },
+          state: { uid, email, fromHome: true },
         });
       }
 
@@ -52,7 +52,6 @@ function Home() {
 
   const googleSignInWrapper = async () => {
     const userData = await googleSignIn();
-
     if (userData.isNewUser) {
       return navigate("/get-started", {
         state: { userData, fromHomePage: true },

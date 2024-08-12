@@ -45,8 +45,8 @@ function Chat() {
         accessibility: userData?.accessibility,
       });
 
-      const uid = "JKVDl1ErPjaj3TPRNuBUsN3W9xS2";
-      const url = `http://127.0.0.1:8000/api/web/v1/recommend?user_id=${uid}`;
+      const uid = "lxQMbClaFDZAXH9gp6FDGEiCCT42";
+      const url = `https://perobeai-bhgx.onrender.com/api/web/v1/recommend?user_id=${uid}`;
 
       const response = await fetch(url, {
         method: "POST",
