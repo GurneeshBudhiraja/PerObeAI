@@ -1,8 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link, useLocation } from "react-router-dom";
+import { SmallLogo, BigLogo } from "../../../assets/assets.jsx";
 import { VoiceChat } from "../pages.js";
-import {auth} from "../../firebase/firebaseServices.js";
+import { auth, fireStore } from "../../firebase/firebaseServices.js";
 
 // components and icons
 import { InputText } from "primereact/inputtext";
@@ -13,6 +14,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Menu } from "../../components/components.js";
 import { Dropdown } from "primereact/dropdown";
+import { setUser } from "../../store/authSlice/authSlice.js";
 
 function Chat() {
   const dispatch = useDispatch();
@@ -28,8 +30,8 @@ function Chat() {
   const options = ["Chat", "Voice"];
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(options[0]);
-  const { isAuth, uid, accessibility, city, preferred_fashion_style } = useSelector((state)=>state.auth);
-
+  const { isAuth, uid, accessibility, city, preferred_fashion_style } =
+    useSelector((state) => state.auth);
 
   const getImages = async () => {
     try {
@@ -63,10 +65,53 @@ function Chat() {
   };
 
   useEffect(() => {
-    if(!isAuth){
-      return navigate("/");
-    }
-    
+    const getCurrentUser = async () => {
+      try {
+        const currentUser = await auth.currentUser();
+        const { uid = undefined, email = undefined } = currentUser || {};
+        if (!uid || !email) {
+          navigate("/");
+        }
+        const userChoices = await fireStore.getData({ uid });
+        if (!userChoices) {
+          navigate("/get-started", {
+            state: { uid, email, fromHome: true },
+          });
+        }
+
+        const {
+          city = undefined,
+          accessibility = undefined,
+          preferred_fashion_style = undefined,
+        } = userChoices;
+
+        dispatch(
+          setUser({
+            isAuth: true,
+            uid,
+            email,
+            city,
+            accessibility,
+            preferred_fashion_style,
+          })
+        );
+        setUserData({
+          uid,
+          email,
+          city,
+          accessibility,
+          preferred_fashion_style,
+        });
+      } catch (error) {
+        console.log("Error in getting current user", error);
+        setError("Something went wrong. Please try again later.");
+        setTimeout(() => {
+          navigate("/");
+        }, 800);
+      }
+    };
+
+    getCurrentUser();
   }, []);
 
   const getRecommendation = async () => {
@@ -129,14 +174,27 @@ function Chat() {
     <>
       <div className="bg-[#131314] h-full w-full text-[#eeeeee] flex flex-col justify-center items-center relative">
         <div className="flex w-full items-center justify-between p-3 bg-white shadow-lg shadow-gray-800/30 z-10">
-          <Link to={"/"} className="max-h-10 overflow-hidden">
+          <Link
+            to={"/"}
+            className="lg:flex items-center justify-center hidden mt-4 md:mt-0"
+          >
             <img
-              src="../../../assets/perobeai-logo-small.svg"
+              src={BigLogo}
+              alt="PerobeAI Logo"
+              className="h-full max-h-full"
+            />
+          </Link>
+          <Link
+            to={"/"}
+            className="inline-block lg:hidden  max-h-10 overflow-hidden"
+          >
+            <img
+              src={SmallLogo}
               alt="PerobeAI Logo"
               className="h-14 max-w-prose object-contain ml-7"
             />
           </Link>
-          <div className="flex justify-center items-center text-end w-10 ">
+          <div className="flex-1 text-end ">
             <Menu className="ml-auto" />
           </div>
         </div>
