@@ -1,9 +1,9 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState ={
+  isAuth: false,
   email: null,
   uid: null,
-  isAuth: false,
   preferred_fashion_style:null, 
   accessibility:null,
   city:null,
@@ -15,12 +15,12 @@ export const authSlice = createSlice({
   initialState,
   reducers:{
     setUser:(state,action)=>{
+      state.isAuth = action.payload.isAuth;
       state.email = action.payload.email;
       state.uid = action.payload.uid; 
       state.city = action.payload.city;
       state.preferred_fashion_style = action.payload.preferred_fashion_style;
       state.accessibility = action.payload.accessibility;
-      state.isAuth = true; 
     },
   logoutUser:(state)=>{
     state.uid = null;

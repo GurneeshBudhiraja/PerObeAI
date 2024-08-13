@@ -1,7 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate, Link, useLocation } from "react-router-dom";
 import { VoiceChat } from "../pages.js";
+import {auth} from "../../firebase/firebaseServices.js";
+
 // components and icons
 import { InputText } from "primereact/inputtext";
 import SendIcon from "@mui/icons-material/Send";
@@ -11,10 +13,8 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Menu } from "../../components/components.js";
 import { Dropdown } from "primereact/dropdown";
-import { setUser } from "../../store/authSlice/authSlice.js";
 
 function Chat() {
-  const location = useLocation();
   const dispatch = useDispatch();
   const [unmountRecommendation, setUnmountRecommendation] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -28,6 +28,8 @@ function Chat() {
   const options = ["Chat", "Voice"];
   const navigate = useNavigate();
   const [selectedOption, setSelectedOption] = useState(options[0]);
+  const { isAuth, uid, accessibility, city, preferred_fashion_style } = useSelector((state)=>state.auth);
+
 
   const getImages = async () => {
     try {
@@ -61,14 +63,10 @@ function Chat() {
   };
 
   useEffect(() => {
-    // Get the user data and add it to the store if it is not present
-    if (!location?.state?.fromHomePage) {
+    if(!isAuth){
       return navigate("/");
     }
-    const { uid, accessibility, city, preferred_fashion_style } =
-      location?.state;
-    dispatch(setUser({ uid, accessibility, city, preferred_fashion_style }));
-    setUserData({ uid, accessibility, city, preferred_fashion_style });
+    
   }, []);
 
   const getRecommendation = async () => {

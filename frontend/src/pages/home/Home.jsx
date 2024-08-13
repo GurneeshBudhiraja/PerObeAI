@@ -32,6 +32,7 @@ function Home() {
       const firestoreUserData = await fireStore.getData({ uid });
       console.log("Firestore user data", firestoreUserData);
       setUserData((prev) => ({ ...prev, ...firestoreUserData.data }));
+
       if (!Object.keys(firestoreUserData).length) {
         return navigate("/get-started", {
           state: { uid, email, fromHome: true },
@@ -42,7 +43,7 @@ function Home() {
         firestoreUserData;
 
       dispatch(
-        setUser({ uid, email, preferred_fashion_style, accessibility, city })
+        setUser({ uid, email, preferred_fashion_style, accessibility, city, isAuth: true })
       );
     };
     setTimeout(() => {
@@ -89,69 +90,65 @@ function Home() {
   ];
 
   return (
-    <div className="max-h-fit w-screen text-zinc-100 lg:flex flex-wrap mt-[1.75rem]">
+    <div className="max-h-fit w-screen text-zinc-100 lg:flex flex-wrap mt-[1.75rem] mb-6">
       <div
-        className="flex flex-col gap-10 w-full lg:w-1/2 items-start pl-7 lg:pl-[5rem] flex-wrap"
+        className="flex flex-col lg:flex-row gap-10 w-full  items-start pl-7 lg:pl-[5rem] flex-wrap"
         id="hero-section-left"
       >
-        <div className="flex flex-col tracking-wider gap-1">
-          <span className="text-4xl md:text-5xl lg:text-6xl font-semibold bg-gradient-to-r from-pink-500 via-purple-400 to-indigo-500 text-transparent bg-clip-text">
-            PerObe AI
-          </span>
-          <span className="text-base font-medium md:text-lg">
-            AI for Your Wardrobe
-          </span>
-        </div>
-
-        <div className="max-w-full space-y-4">
-          {heroFeaturePoints.map((point, index) => (
-            <HeroPoints
-              key={index}
-              text={point.text}
-              keypoints={point.keypoints}
-            />
-          ))}
-        </div>
-        <div
-          className={`mb-9 w-full md:w-auto ${
-            show ? "opacity-100" : "opacity-0"
-          } transition-all duration-200 ease-in max-w-fit`}
-        >
-          {isAuth ? (
-            <button
-              className="poppins-regular bg-white text-black border-[1px] border-[#747674] rounded w-[300px] sm:w-[300px] lg:w-[400px] text-sm py-3 hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
-              onClick={() => {
-                navigate("/chat", {
-                  state: { ...userData, fromHomePage: true },
-                });
-              }}
-              style={{ marginBottom: "1rem" }} // Adding space below the button
-            >
-              Chat
-            </button>
-          ) : (
-            <div className="flex flex-col gap-7 ">
-                <SignInWithGoogleButton onClick={googleSignInWrapper} />
-              <button
-                className="poppins-regular bg-white text-black border-[1px] border-[#747674] rounded w-[300px] sm:w-[300px] lg:w-[400px] text-sm py-3 hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
-                onClick={() => {
-                  navigate("/login");
-                }}
-                style={{ marginBottom: "1rem" }} // Adding space below the button
-              >
-                Access Testing Account
-              </button>
+        <div className="flex flex-col gap-8 lg:flex-row w-full   ">
+          <div className="flex flex-col tracking-wider gap-1 lg:w-1/2 ">
+            <span className="text-4xl md:text-5xl lg:text-6xl font-semibold bg-gradient-to-r from-pink-500 via-purple-400 to-indigo-500 text-transparent bg-clip-text">
+              PerObe AI
+            </span>
+            <span className="text-base font-medium md:text-lg">
+              AI for Your Wardrobe
+            </span>
+            <div className="max-w-full mt-4 space-y-4 px-2">
+              {heroFeaturePoints.map((point, index) => (
+                <HeroPoints
+                  key={index}
+                  text={point.text}
+                  keypoints={point.keypoints}
+                />
+              ))}
             </div>
-          )}
-        </div>
-      </div>
+          </div>
 
-      <div
-        className="w-full lg:w-1/2 hidden lg:flex lg:justify-center"
-        id="hero-section-right"
-      >
-        {/* TODO: Add the pictures here once the app is ready */}
-        <p className="text-gray-400">Will add the image here</p>
+          <div
+            className={`mb-9 w-full md:w-auto ${
+              show ? "opacity-100" : "opacity-0"
+            } transition-all duration-200 ease-in max-w-fit `}
+          >
+            {isAuth ? (
+              <div className="w-[300px] md:w-[400px] transition-all duration-200 ease-in-out  h-full flex justify-center items-center ">
+                <button
+                  className="poppins-regular bg-white text-black border-[1px] border-[#747674] rounded w-full text-sm py-3 hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out"
+                  onClick={() => {
+                    navigate("/chat");
+                  }}
+                  style={{ marginBottom: "1rem" }} // Adding space below the button
+                >
+                  Chat
+                </button>
+              </div>
+            ) : (
+              <div className="flex flex-col justify-center gap-7 h-full">
+                <div className="w-[300px] md:w-[400px] transition-all duration-200 ease-in-out ">
+                  <SignInWithGoogleButton onClick={googleSignInWrapper} />
+                </div>
+                <button
+                  className="poppins-regular bg-white text-black border-[1px] border-[#747674] rounded w-[300px] md:w-[400px] text-sm py-[0.55rem] hover:bg-gray-200 hover:shadow-gray-600 hover:shadow-2xl transition-all duration-200 ease-in-out active:bg-gray-300"
+                  onClick={() => {
+                    navigate("/login");
+                  }}
+                  style={{ marginBottom: "1rem" }} // Adding space below the button
+                >
+                  Access Testing Account
+                </button>
+              </div>
+            )}
+          </div>
+        </div>
       </div>
     </div>
   );

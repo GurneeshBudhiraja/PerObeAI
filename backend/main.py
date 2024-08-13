@@ -56,8 +56,6 @@ Middlewares Configuration
 """
 configure_gzip_middleware(app)
 
-# app.add_middleware(BaseHTTPMiddleware, dispatch=configure_response_format_middleware)
-
 configure_cors_middleware(app)
 
 configure_trusted_host_middleware(app)
@@ -70,6 +68,8 @@ app.include_router(embedding_router)
 app.include_router(recommendation_router)
 app.include_router(vector_store_router)
 
+
+# TODO: will remove this after testing
 from fastapi import Depends
 from app.firebase_utils import verify_firebase_uid
 

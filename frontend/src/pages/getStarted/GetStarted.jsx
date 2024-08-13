@@ -65,7 +65,7 @@ function GetStarted() {
         formattedData.uid = userData.uid;
         formattedData.email = userData.email;
 
-        dispatch(setUser({ ...formattedData }));
+        dispatch(setUser({ ...formattedData, isAuth: true }));
 
         const { city, accessibility, preferred_fashion_style } = formattedData;
         const resp = await fireStore.addData({

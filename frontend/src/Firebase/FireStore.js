@@ -15,7 +15,7 @@ class FireStore{
     this.db = getFirestore(app);
   }
 
-  addData({uid,...data}){
+  addData({uid, data}){
     try {
       const dataRef = doc(this.db, keys.firebaseFirestoreId,uid);
       return setDoc(dataRef, data,{merge:true});

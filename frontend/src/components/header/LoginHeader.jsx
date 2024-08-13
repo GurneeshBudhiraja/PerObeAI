@@ -6,7 +6,7 @@ function LoginHeader() {
   return (
     <div className="">
       <div className="absolute top-0 left-0 -z-20">
-        <div className="h-[25rem] w-screen border rounded-full bg-gradient-to-br from-[#78A3FC] via-[#DDCEEA] to-[#DD4A51] blur-[20rem]"></div>
+        <div className="h-[30rem] w-screen border rounded-full bg-gradient-to-br from-[#78A3FC] via-[#DDCEEA] to-[#DD4A51] blur-[9rem] lg:blur-[20rem]"></div>
       </div>
       <div className="w-screen h-28 flex justify-start md:h-32 md:mx-auto md:max-w-5xl ">
         <Link to={"/"}>

@@ -6,7 +6,7 @@ function SignInWithGoogleButton({ onClick }) {
       <button
         className="gsi-material-button "
         style={{
-          width: "300px",
+          width: "100%",
         }}
       >
         <div className="gsi-material-button-state"></div>
