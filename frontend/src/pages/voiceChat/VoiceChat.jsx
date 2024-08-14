@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import alanBtn from "@alan-ai/alan-sdk-web";
 import keys from "../../keys/keys.js";
 import { useSelector } from "react-redux";
+import {recommendationUrl} from "../../utils/urlConstants.js";
 
 function VoiceChat() {
   const userData = useSelector((state) => state.auth);
@@ -20,15 +21,13 @@ function VoiceChat() {
 
             alanInstance.playText("Wait a moment while I am thinking...");
 
-            const uid = userData?.uid;
-
-            const url = `https://perobeai-bhgx.onrender.com/api/web/v1/recommend?user_id=${uid}`;
-            console.log("MAKING REQUEST TO URL: ", url);
-
+            const url = recommendationUrl;
+            
             const resp = await fetch(url, {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
+                "Authorization": `Bearer ${userData?.accessToken}`,
               },
               body: JSON.stringify({
                 user_prompt: refactor_user_prompt,

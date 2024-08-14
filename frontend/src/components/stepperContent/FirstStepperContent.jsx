@@ -2,20 +2,25 @@ import React, { useState } from "react";
 import { FileUpload } from "primereact/fileupload";
 import { storage } from "../../firebase/firebaseServices";
 
-function FirstStepperContent({ uid, canProceed }) {
+function FirstStepperContent({ uid, canProceed, setIsLoading, setError, setSuccess }) {
   const [isImages, setIsImages] = useState(false);
   const submitImages = async (event) => {
     try {
+      
+      setIsLoading(true);
       const filesData = event.files;
       if (!filesData.length) {
         return;
       }
       setIsImages(true);
-      const imageResp = await storage.uploadFile({ uid, files: filesData });
-      console.log(imageResp);
+      await storage.uploadFile({ uid, files: filesData });
+      setIsLoading(false);
+      setSuccess("Images uploaded successfully");
       canProceed(true);
     } catch (error) {
+      canProceed(false);
       console.log("Error in uploading images", error.message);
+      setError("Error in uploading images. Please try again");
     } finally {
       event.options.clear();
     }
@@ -29,9 +34,7 @@ function FirstStepperContent({ uid, canProceed }) {
       multiple
       accept="image/*"
       previewWidth={50}
-      contentClassName={`max-h-[11rem] mt-3 overflow-auto ${
-        isImages ? "border-2 border-black border-dotted" : ""
-      } p-2`}
+      contentClassName="max-h-[11rem] mt-3 overflow-auto"
       headerClassName="flex gap-4 items-center justify-center mb-2"
       emptyTemplate={
         <div className="flex flex-col items-center justify-center text-center p-4 border-2 border-dashed border-gray-300 rounded-lg bg-white/60 shadow-inner ">

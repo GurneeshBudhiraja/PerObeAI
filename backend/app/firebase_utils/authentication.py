@@ -28,7 +28,7 @@ def verify_firebase_uid(
         user_info = auth.verify_id_token(firebase_id_token)
         return user_info["user_id"]
 
-    except ValueError:
+    except ValueError as e:
         # For invalid tokens
         raise CustomException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -36,7 +36,7 @@ def verify_firebase_uid(
             details={"description": "Forbidden: Invalid ID token"},
         )
 
-    except firebase_admin.auth.ExpiredIdTokenError:
+    except firebase_admin.auth.ExpiredIdTokenError as e:
         # For expired tokens
         raise CustomException(
             status_code=status.HTTP_403_FORBIDDEN,
@@ -44,7 +44,7 @@ def verify_firebase_uid(
             details={"description": "Forbidden: Expired ID token"},
         )
 
-    except firebase_admin.auth.RevokedIdTokenError:
+    except firebase_admin.auth.RevokedIdTokenError as e:
         # For revoked tokens
         raise CustomException(
             status_code=status.HTTP_403_FORBIDDEN,

@@ -1,5 +1,4 @@
 from fastapi import FastAPI
-from starlette.middleware.base import BaseHTTPMiddleware
 from dotenv import load_dotenv
 from fastapi.exceptions import RequestValidationError
 
@@ -28,7 +27,6 @@ from app.middlewares import (
     configure_cors_middleware,
     configure_trusted_host_middleware,
     configure_gzip_middleware,
-    configure_response_format_middleware,
 )
 
 """
@@ -67,17 +65,6 @@ Routers
 app.include_router(embedding_router)
 app.include_router(recommendation_router)
 app.include_router(vector_store_router)
-
-
-# TODO: will remove this after testing
-from fastapi import Depends
-from app.firebase_utils import verify_firebase_uid
-
-
-@app.get("/testing")
-def testing(user_id: str = Depends(verify_firebase_uid)):
-    print(user_id)
-    return {"message": f"user_id is {user_id} "}
 
 
 if __name__ == "__main__":

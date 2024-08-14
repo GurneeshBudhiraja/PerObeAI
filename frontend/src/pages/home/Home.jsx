@@ -21,21 +21,20 @@ function Home() {
     const getCurrentUser = async () => {
       const user = await auth.currentUser();
       if (!user) {
-        console.log("No user found");
         return;
       }
 
-      const { uid, email } = user;
-      console.log("User found", uid, email);
-      setUserData({ uid, email });
+      const { uid, email, accessToken } = user;
+
+      setUserData({ uid, email, accessToken });
 
       const firestoreUserData = await fireStore.getData({ uid });
-      console.log("Firestore user data", firestoreUserData);
+
       setUserData((prev) => ({ ...prev, ...firestoreUserData.data }));
 
       if (!Object.keys(firestoreUserData).length) {
         return navigate("/get-started", {
-          state: { uid, email, fromHome: true },
+          state: { uid, email, accessToken, fromHome: true },
         });
       }
 
@@ -43,7 +42,7 @@ function Home() {
         firestoreUserData;
 
       dispatch(
-        setUser({ uid, email, preferred_fashion_style, accessibility, city, isAuth: true })
+        setUser({ uid, email, preferred_fashion_style, accessibility, city, accessToken, isAuth: true })
       );
     };
     setTimeout(() => {

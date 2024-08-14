@@ -13,9 +13,9 @@ router = APIRouter(prefix="/api/web/v1", tags=["outfit_recommendation"])
 
 
 @router.post("/recommend")
-# TODO: will add the firebase uid verification
 def get_recommendation(
-    user_id: str, body: RecommendationRequestBody = Body(...)
+    user_id: str = Depends(verify_firebase_uid),
+    body: RecommendationRequestBody = Body(...),
 ) -> JSONResponse:
     """
     Route to get the outfit recommendation based on the user's preferences
@@ -28,7 +28,7 @@ def get_recommendation(
         JSONResponse: The JSON response object
     """
     try:
-
+        print(user_id)
         user_prompt = body.user_prompt
 
         city = body.city
@@ -70,7 +70,9 @@ def get_recommendation(
 
 
 @router.post("/get-images")
-def get_images(user_id: str, body: GetImages) -> JSONResponse:
+def get_images(
+    body: GetImages, user_id: str = Depends(verify_firebase_uid)
+) -> JSONResponse:
     """
     Route to get the image URLs from the outfit description
 

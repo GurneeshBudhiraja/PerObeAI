@@ -1,9 +1,9 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate, Link, useLocation } from "react-router-dom";
-import { SmallLogo, BigLogo } from "../../../assets/assets.jsx";
+import { useNavigate } from "react-router-dom";
 import { VoiceChat } from "../pages.js";
 import { auth, fireStore } from "../../firebase/firebaseServices.js";
+import { recommendationUrl } from "../../utils/urlConstants.js";
 
 // components and icons
 import { InputText } from "primereact/inputtext";
@@ -69,14 +69,18 @@ function Chat() {
     const getCurrentUser = async () => {
       try {
         const currentUser = await auth.currentUser();
-        const { uid = undefined, email = undefined } = currentUser || {};
+        const {
+          uid = undefined,
+          email = undefined,
+          accessToken = undefined,
+        } = currentUser || {};
         if (!uid || !email) {
           navigate("/");
         }
         const userChoices = await fireStore.getData({ uid });
         if (!userChoices) {
           navigate("/get-started", {
-            state: { uid, email, fromHome: true },
+            state: { uid, email, accessToken, fromHome: true },
           });
         }
 
@@ -94,6 +98,7 @@ function Chat() {
             city,
             accessibility,
             preferred_fashion_style,
+            accessToken,
           })
         );
         setUserData({
@@ -102,6 +107,7 @@ function Chat() {
           city,
           accessibility,
           preferred_fashion_style,
+          accessToken,
         });
       } catch (error) {
         console.log("Error in getting current user", error);
@@ -132,14 +138,12 @@ function Chat() {
         preferred_fashion_style: userData?.preferred_fashion_style,
         accessibility: userData?.accessibility,
       });
-
-      const uid = userData?.uid;
-      const url = `https://perobeai-bhgx.onrender.com/api/web/v1/recommend?user_id=${uid}`;
-
-      const response = await fetch(url, {
+      
+      const response = await fetch(recommendationUrl, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${userData?.accessToken}`,
         },
         body: requestBody,
       });
@@ -178,7 +182,9 @@ function Chat() {
         <div className="flex w-full items-center justify-center px-3 py-2 lg:p-4 bg-[#eeeeee] shadow-lg shadow-gray-800/75 lg:pr-[2rem] ">
           <div className="flex justify-center items-center cursor-pointer mb-1 ">
             <ArrowBackIosIcon
-              onClick={() => navigate(-1)}
+              onClick={() => {
+                navigate("/");
+              }}
               className="text-gray-900 hover:text-gray-700 focus:outline-none"
               aria-label="Go back to the previous menu"
             />

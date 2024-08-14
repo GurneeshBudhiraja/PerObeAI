@@ -7,6 +7,7 @@ const initialState ={
   preferred_fashion_style:null, 
   accessibility:null,
   city:null,
+  accessToken:null,
 }
 
 
@@ -21,6 +22,7 @@ export const authSlice = createSlice({
       state.city = action.payload.city;
       state.preferred_fashion_style = action.payload.preferred_fashion_style;
       state.accessibility = action.payload.accessibility;
+      state.accessToken = action.payload.accessToken;
     },
   logoutUser:(state)=>{
     state.uid = null;
@@ -29,6 +31,8 @@ export const authSlice = createSlice({
     state.city = null;
     state.preferred_fashion_style = null;
     state.accessibility = null;
+    state.accessToken = null;
+    
   }
 }
 });

@@ -15,8 +15,9 @@ router = APIRouter(prefix="/api/web/v1", tags=["embeddings_router"])
 
 @router.post("/image-embeddings")
 async def create_image_embeddings(
-    images: list[ImageURL], user_id: str  # TODO: will add the depends after debug
+    images: list[ImageURL], user_id: str = Depends(verify_firebase_uid)
 ) -> JSONResponse:
+    print(user_id)
     """
     Route to process the images, generate the multimodal embeddings and formats the data in the required format and stores them in the vector store
 

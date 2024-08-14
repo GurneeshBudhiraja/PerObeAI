@@ -3,13 +3,16 @@ from fastapi.responses import JSONResponse
 from app.errors.custom_exception import CustomException
 from app.models.image_url import ImageURL
 from app.vector_store import VectorStore
+from app.firebase_utils import verify_firebase_uid
+
 
 router = APIRouter(prefix="/api/web/v1/vector", tags=["vector store operations"])
 
 
 @router.delete("/delete")
-# TODO: will add the authentication
-def delete_vector(image_data: ImageURL, user_id: str) -> JSONResponse:
+def delete_vector(
+    image_data: ImageURL, user_id: str = Depends(verify_firebase_uid)
+) -> JSONResponse:
     """
     Deletes the vector from the vector store
 
