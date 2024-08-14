@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { VoiceChat } from "../pages.js";
 import { auth, fireStore } from "../../firebase/firebaseServices.js";
-import { recommendationUrl } from "../../utils/urlConstants.js";
+import { getImagesURL, recommendationUrl } from "../../utils/urlConstants.js";
 
 // components and icons
 import { InputText } from "primereact/inputtext";
@@ -40,12 +40,13 @@ function Chat() {
       const uid = userData?.uid;
       const outfit_description = recommendation;
 
-      const url = `https://perobeai-bhgx.onrender.com/api/web/v1/get-images?user_id=${uid}`;
+      const url = getImagesURL;
 
       const response = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: `Bearer ${userData?.accessToken}`,
         },
         body: JSON.stringify({ outfit_description }),
       });
@@ -138,7 +139,7 @@ function Chat() {
         preferred_fashion_style: userData?.preferred_fashion_style,
         accessibility: userData?.accessibility,
       });
-      
+
       const response = await fetch(recommendationUrl, {
         method: "POST",
         headers: {
