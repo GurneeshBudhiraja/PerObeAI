@@ -17,7 +17,7 @@ function MenuComponent() {
   const dispatch = useDispatch();
   const { email } = useSelector((state) => state.auth);
   return (
-    <>
+    <div className="z-50">
       <Menu
         menuButton={
           <MenuButton>
@@ -113,7 +113,7 @@ function MenuComponent() {
           </Alert>
         </Snackbar>
       )}
-    </>
+    </div>
   );
 }
 

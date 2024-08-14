@@ -15,6 +15,7 @@ import Alert from "@mui/material/Alert";
 import { Menu } from "../../components/components.js";
 import { Dropdown } from "primereact/dropdown";
 import { setUser } from "../../store/authSlice/authSlice.js";
+import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 
 function Chat() {
   const dispatch = useDispatch();
@@ -114,11 +115,12 @@ function Chat() {
     getCurrentUser();
   }, []);
 
-  const getRecommendation = async () => {
+  const getRecommendation = async (prompt) => {
     try {
       // for preventing the sample prompt from being shown
       setImages([]);
       setLoading(true);
+
       if (!prompt.trim()) {
         setError("Please enter a prompt");
         return;
@@ -166,36 +168,23 @@ function Chat() {
 
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && prompt) {
-      getRecommendation();
+      getRecommendation(prompt);
     }
   };
 
   return (
     <>
       <div className="bg-[#131314] h-full w-full text-[#eeeeee] flex flex-col justify-center items-center relative">
-        <div className="flex w-full items-center justify-between p-3 bg-white shadow-lg shadow-gray-800/30 z-10">
-          <Link
-            to={"/"}
-            className="lg:flex items-center justify-center hidden mt-4 md:mt-0"
-          >
-            <img
-              src={BigLogo}
-              alt="PerobeAI Logo"
-              className="h-full max-h-full"
+        <div className="flex w-full items-center justify-center px-3 py-2 lg:p-4 bg-[#eeeeee] shadow-lg shadow-gray-800/75 lg:pr-[2rem] ">
+          <div className="flex justify-center items-center cursor-pointer mb-1 ">
+            <ArrowBackIosIcon
+              onClick={() => navigate(-1)}
+              className="text-gray-900 hover:text-gray-700 focus:outline-none"
+              aria-label="Go back to the previous menu"
             />
-          </Link>
-          <Link
-            to={"/"}
-            className="inline-block lg:hidden  max-h-10 overflow-hidden"
-          >
-            <img
-              src={SmallLogo}
-              alt="PerobeAI Logo"
-              className="h-14 max-w-prose object-contain ml-7"
-            />
-          </Link>
-          <div className="flex-1 text-end ">
-            <Menu className="ml-auto" />
+          </div>
+          <div className="flex-1 p-1 text-end">
+            <Menu />
           </div>
         </div>
         <div className="z-20 mt-5 sm:mt-12 fixed top-14 left-4">
@@ -244,7 +233,7 @@ function Chat() {
             )}
 
             {!recommendation && !images.length && (
-              <div className="space-y-4">
+              <div className="space-y-4 flex flex-col justify-center items-center w-full px-2  ">
                 {[
                   "What should I wear to a summer wedding?",
                   "Give me an outfit idea for a first date.",
@@ -256,9 +245,7 @@ function Chat() {
                     samplePrompt={samplePrompt}
                     onClick={() => {
                       setPrompt(samplePrompt);
-                      setTimeout(() => {
-                        getRecommendation();
-                      }, 500);
+                      getRecommendation(samplePrompt);
                     }}
                     className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 mx-6 rounded-lg shadow-sm cursor-pointer transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:shadow-md"
                   />
@@ -295,7 +282,9 @@ function Chat() {
                 placeholder="Need outfit advice? Ask here..."
                 className="outline-none w-full bg-[#212121] border-[1px] border-gray-200 rounded-full p-4 focus:bg-[#343333c0] transition-all duration-100 ease-in-out tracking-normal poppins-regular hover:bg-[#3433338f] flex-grow pr-16 "
                 value={prompt}
-                onChange={(e) => setPrompt(e.target.value)}
+                onChange={(e) => {
+                  setPrompt(e.target.value);
+                }}
                 onKeyDown={handleKeyDown}
               />
               <button
@@ -305,7 +294,7 @@ function Chat() {
                     ? "opacity-50 cursor-not-allowed"
                     : "opacity-100 cursor-pointer"
                 } outline-blue-700`}
-                onClick={getRecommendation}
+                onClick={() => getRecommendation(prompt)}
                 disabled={!prompt || loading}
               >
                 {!loading ? (
