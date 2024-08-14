@@ -9,7 +9,6 @@ import FormSubmitButton from "./formSubmitButton/FormSubmitButton.jsx";
 import HeroPoints from "./heroPoints/HeroPoints.jsx";
 import FirstStepperContent from "./stepperContent/FirstStepperContent.jsx";
 import SecondStepperContent from "./stepperContent/SecondStepperContent.jsx";
-import CheckAuth from "./checkAuth/CheckAuth.jsx";
 import Menu from "./menuComponent/MenuComponent.jsx";
 import SamplePrompt from "./samplePrompt/SamplePrompt.jsx";
 
@@ -26,7 +25,6 @@ export {
   HeroPoints,
   FirstStepperContent,
   SecondStepperContent,
-  CheckAuth,
   Menu,
   SamplePrompt,
 };

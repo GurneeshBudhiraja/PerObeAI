@@ -5,11 +5,4 @@ import GetStarted from "./getStarted/GetStarted.jsx";
 import VoiceChat from "./voiceChat/VoiceChat.jsx";
 import AccountSettings from "./accountSettings/AccountSettings.jsx";
 
-export {
-  Login,
-  Home,
-  Chat,
-  GetStarted,
-  VoiceChat,
-  AccountSettings,
-};
+export { Login, Home, Chat, GetStarted, VoiceChat, AccountSettings };

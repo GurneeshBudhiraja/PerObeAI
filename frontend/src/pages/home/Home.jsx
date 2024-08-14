@@ -53,6 +53,8 @@ function Home() {
 
   const googleSignInWrapper = async () => {
     const userData = await googleSignIn();
+    console.log("User data: ", userData);
+    
     if (userData.isNewUser) {
       return navigate("/get-started", {
         state: { userData, fromHomePage: true },
