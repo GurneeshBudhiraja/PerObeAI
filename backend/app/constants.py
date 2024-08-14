@@ -1,8 +1,8 @@
 # List of allowed origins for the CORS middleware
-ALLOWED_ORIGINS = ["https://perobeai.vercel.app"]
+ALLOWED_ORIGINS = ["*"]
 
 # List of allowed hosts for the FastAPI trusted host middleware
-ALLOWED_HOSTS = ["perobeai.vercel.app"]
+ALLOWED_HOSTS = ["*"]
 
 # Vector store constants
 PINECONE_INDEX_NAME = "perobe-ai"
