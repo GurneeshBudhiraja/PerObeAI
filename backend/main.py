@@ -52,11 +52,13 @@ app = FastAPI(
 """
 Middlewares Configuration
 """
-configure_gzip_middleware(app)
-
 configure_cors_middleware(app)
 
 configure_trusted_host_middleware(app)
+
+configure_gzip_middleware(app)
+
+
 
 
 """

@@ -1,5 +1,5 @@
 # List of allowed origins for the CORS middleware
-ALLOWED_ORIGINS = ["*"]
+ALLOWED_ORIGINS = ["https://perobeai.vercel.app"]
 
 # List of allowed hosts for the FastAPI trusted host middleware
 ALLOWED_HOSTS = ["*"]
