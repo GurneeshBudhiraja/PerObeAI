@@ -25,7 +25,6 @@ from app.routers.web_apis.v1 import (
 
 from app.middlewares import (
     configure_cors_middleware,
-    configure_trusted_host_middleware,
     configure_gzip_middleware,
 )
 
@@ -54,7 +53,6 @@ Middlewares Configuration
 """
 configure_cors_middleware(app)
 
-configure_trusted_host_middleware(app)
 
 configure_gzip_middleware(app)
 
