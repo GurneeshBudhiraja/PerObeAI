@@ -1,6 +1,6 @@
-import React from "react";
-import { BigLogo, SmallLogo } from "../../../assets/assets";
 import { Link } from "react-router-dom";
+
+import { BigLogo, SmallLogo } from "../../../assets/assets.jsx";
 
 function LoginHeader() {
   return (

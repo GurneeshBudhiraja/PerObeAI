@@ -1,25 +1,12 @@
-/* eslint-disable react/prop-types */
-import React, { useState, useEffect } from "react";
 import { Dropdown } from "primereact/dropdown";
 import { Input } from "@material-tailwind/react";
 import { FloatLabel } from "primereact/floatlabel";
+import {
+  accessibilities,
+  colorBlindnessType,
+} from "../../pages/accountSettings/accountSettingsConstants.js";
 
 function SecondStepperContent({ canProceed, userData, setUserData }) {
-  const accessibilities = [
-    { accessibility: "None" },
-    { accessibility: "Blind" },
-    { accessibility: "Color Blind" },
-  ];
-  const colorBlindnessType = [
-    { colorBlindnessType: "Deuteranopia" },
-    { colorBlindnessType: "Protanopia" },
-    { colorBlindnessType: "Tritanopia" },
-    { colorBlindnessType: "Tritanomaly" },
-    { colorBlindnessType: "Deuteranomaly" },
-    { colorBlindnessType: "Cone Monochromacy" },
-    { colorBlindnessType: "Rod Monochromacy" },
-  ];
-
   return (
     <div>
       <Input
@@ -31,6 +18,7 @@ function SecondStepperContent({ canProceed, userData, setUserData }) {
         className="bg-gray-200 p-3"
         placeholder="City"
       />
+
       <div className="my-8 flex flex-col sm:flex-row justify-between  gap-2 w-full h-full ">
         <Dropdown
           value={userData?.accessibility}
@@ -60,7 +48,7 @@ function SecondStepperContent({ canProceed, userData, setUserData }) {
             checkmark={true}
             placeholder="Type"
             className="w-full sm:w-1/2 bg-gray-50 border border-gray-300 rounded-lg shadow-sm focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-all duration-200 ease-in-out text-gray-700 p-2 "
-          panelClassName="bg-white border border-black rounded-lg shadow-lg"
+            panelClassName="bg-white border border-black rounded-lg shadow-lg"
           />
         )}
       </div>

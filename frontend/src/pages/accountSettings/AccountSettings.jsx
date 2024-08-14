@@ -1,23 +1,38 @@
 import React, { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+import { setUser } from "../../store/authSlice/authSlice.js";
+
+// Icons and components
 import { Dropdown } from "primereact/dropdown";
 import { Input } from "@material-tailwind/react";
 import { FloatLabel } from "primereact/floatlabel";
 import Backdrop from "@mui/material/Backdrop";
 import CircularProgress from "@mui/material/CircularProgress";
 import { Button } from "@material-tailwind/react";
-import { useDispatch, useSelector } from "react-redux";
-import { Snackbar, Alert, getStepUtilityClass } from "@mui/material";
-import { fireStore, auth } from "../../firebase/firebaseServices.js";
+import { Snackbar, Alert } from "@mui/material";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
-import { setUser } from "../../store/authSlice/authSlice.js";
+
+// Firebase services
+import { fireStore, auth } from "../../firebase/firebaseServices.js";
+
+// Utility function to title case the string and account settings constants
 import { titleCase } from "./accountSettingsUtils/accountSettingsUtils.js";
+import {
+  accessibilities,
+  colorBlindnessType,
+} from "./accountSettingsConstants.js";
 
 function AccountSettings() {
   const navigate = useNavigate();
-  const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
+
+  const [loading, setLoading] = useState(false);
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(false);
+
+  const storeUserData = useSelector((state) => state.auth);
+
   const [userData, setUserData] = useState({
     uid: "",
     email: "",
@@ -25,25 +40,28 @@ function AccountSettings() {
     accessibility: "",
     preferred_fashion_style: "",
   });
-  const storeUserData = useSelector((state) => state.auth);
-  const [error, setError] = useState(false);
 
   useEffect(() => {
     setError(false);
     const getUserData = async () => {
       try {
+        // Get the data from the store
         const storeData = {
           uid: storeUserData?.uid,
           email: storeUserData?.email,
         };
 
+        // Current user data using Firebase Auth if not available in the store
         if (!storeData?.uid || !storeData?.email) {
           const currentUser = await auth.currentUser();
           const uid = currentUser?.uid;
           const email = currentUser?.email;
+
+          // Navigate to the home page if the user is not authenticated
           if (!uid) {
             return navigate("/");
           }
+
           setUserData({ ...userData, uid, email });
           storeData.uid = uid;
           storeData.email = email;
@@ -54,9 +72,12 @@ function AccountSettings() {
             email: storeData?.email,
           });
         }
+        // User choices from the Firestore
         const userChoices = await fireStore.getData({ uid: storeData?.uid });
+        // Destructuring the user choices
         const { city, accessibility, preferred_fashion_style } = userChoices;
 
+        // Set the user data in the state
         if (accessibility === "Blind" || accessibility === "None") {
           setUserData((prev) => ({
             ...prev,
@@ -73,6 +94,8 @@ function AccountSettings() {
             preferred_fashion_style,
           }));
         }
+
+        // Set the user data in the store
         dispatch(
           setUser({
             city,
@@ -85,7 +108,6 @@ function AccountSettings() {
         );
       } catch (error) {
         setError(true);
-        console.log("Error", error.message);
       }
     };
     getUserData();
@@ -105,35 +127,23 @@ function AccountSettings() {
             ? userData?.colorBlindnessType.colorBlindnessType
             : userData?.accessibility.accessibility,
       };
+      // Update new data in the Firestore
       await fireStore.addData({ uid: userData?.uid, data: updatedData });
+
+      // Success message
       setSuccess("Preferences updated successfully");
-      setTimeout(()=>{
+
+      // Reload the page for showing the updated data
+      setTimeout(() => {
         window.location.reload();
-      },1100);
+      }, 1100);
     } catch (error) {
-      console.log("Error", error.message);
+      // Error message
       setError("Something went wrong, please try again later");
     } finally {
       setLoading(false);
     }
   };
-  // Accessibility options
-  const accessibilities = [
-    { accessibility: "None" },
-    { accessibility: "Blind" },
-    { accessibility: "Color Blind" },
-  ];
-
-  // Color blindness types
-  const colorBlindnessType = [
-    { colorBlindnessType: "Deuteranopia" },
-    { colorBlindnessType: "Protanopia" },
-    { colorBlindnessType: "Tritanopia" },
-    { colorBlindnessType: "Tritanomaly" },
-    { colorBlindnessType: "Deuteranomaly" },
-    { colorBlindnessType: "Cone Monochromacy" },
-    { colorBlindnessType: "Rod Monochromacy" },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8 px-4 md:px-8">

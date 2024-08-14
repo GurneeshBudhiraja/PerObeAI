@@ -1,4 +1,3 @@
-import React from "react";
 import CheckCircleOutlineIcon from "@mui/icons-material/CheckCircleOutline";
 
 function HeroPoints({ text, keypoints }) {

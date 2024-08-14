@@ -57,8 +57,6 @@ configure_cors_middleware(app)
 configure_gzip_middleware(app)
 
 
-
-
 """
 Routers
 """

@@ -58,7 +58,6 @@ def clothes_recommendation_agent(
 
         agent = create_tool_calling_agent(llm=llm, prompt=prompt, tools=agent_tools)
 
-        # TODO: remove verbose=True later on
         agent_executor = AgentExecutor(agent=agent, tools=agent_tools, verbose=True)
 
         agent_response = agent_executor.invoke(

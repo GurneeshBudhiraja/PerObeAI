@@ -1,25 +1,27 @@
 import React, { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import { VoiceChat } from "../pages.js";
-import { auth, fireStore } from "../../firebase/firebaseServices.js";
-import { getImagesURL, recommendationUrl } from "../../utils/urlConstants.js";
-
-// components and icons
-import { InputText } from "primereact/inputtext";
 import SendIcon from "@mui/icons-material/Send";
-import { SamplePrompt } from "../../components/components";
 import CircularProgress from "@mui/material/CircularProgress";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
-import { Menu } from "../../components/components.js";
 import { Dropdown } from "primereact/dropdown";
-import { setUser } from "../../store/authSlice/authSlice.js";
 import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+import { getImagesURL, recommendationUrl } from "../../utils/urlConstants.js";
+import { setUser } from "../../store/authSlice/authSlice.js";
+
+// Firebase services
+import { auth, fireStore } from "../../firebase/firebaseServices.js";
+
+// Custom components/pages
+import { VoiceChat } from "../pages.js";
+import { InputText } from "primereact/inputtext";
+import { SamplePrompt } from "../../components/components";
+import { Menu } from "../../components/components.js";
 
 function Chat() {
   const dispatch = useDispatch();
-  const [unmountRecommendation, setUnmountRecommendation] = useState(false);
+  const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({});
   const [recommendation, setRecommendation] = useState("");
@@ -28,15 +30,22 @@ function Chat() {
   const [images, setImages] = useState([]);
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
+
+  // Replaces the new recommendation with the new one
+  const [unmountRecommendation, setUnmountRecommendation] = useState(false);
+
+  // Options for the dropdown
   const options = ["Chat", "Voice"];
-  const navigate = useNavigate();
+
+  // By deafult Chat is selected
   const [selectedOption, setSelectedOption] = useState(options[0]);
+
+  // Get the user data from the redux store
   const { isAuth, uid, accessibility, city, preferred_fashion_style } =
     useSelector((state) => state.auth);
 
   const getImages = async () => {
     try {
-      console.log("Getting images");
       const uid = userData?.uid;
       const outfit_description = recommendation;
 
@@ -52,15 +61,14 @@ function Chat() {
       });
 
       const imagesData = await response.json();
-      console.log(imagesData);
 
       if (imagesData?.image_urls?.length) {
-        setImages(imagesData.image_urls);
+        // Replace the recommendation with the images
         setRecommendation("");
+        setImages(imagesData.image_urls);
       } else {
         setError("No images found. Please try again.");
       }
-      console.log(imagesData);
     } catch (error) {
       setError("Error in getting images. Please try again later.");
     }
@@ -75,10 +83,15 @@ function Chat() {
           email = undefined,
           accessToken = undefined,
         } = currentUser || {};
+
+        // Navigate to the home page if the user is not logged in
         if (!uid || !email) {
           navigate("/");
         }
+
         const userChoices = await fireStore.getData({ uid });
+
+        // User is new if no user choices, navigate to get-started page
         if (!userChoices) {
           navigate("/get-started", {
             state: { uid, email, accessToken, fromHome: true },
@@ -91,6 +104,7 @@ function Chat() {
           preferred_fashion_style = undefined,
         } = userChoices;
 
+        // Set the data in the redux store
         dispatch(
           setUser({
             isAuth: true,
@@ -102,6 +116,8 @@ function Chat() {
             accessToken,
           })
         );
+
+        // Updating the page state
         setUserData({
           uid,
           email,
@@ -111,8 +127,9 @@ function Chat() {
           accessToken,
         });
       } catch (error) {
-        console.log("Error in getting current user", error);
         setError("Something went wrong. Please try again later.");
+
+        // Navigate to the home page in the case of error
         setTimeout(() => {
           navigate("/");
         }, 800);
@@ -124,7 +141,6 @@ function Chat() {
 
   const getRecommendation = async (prompt) => {
     try {
-      // for preventing the sample prompt from being shown
       setImages([]);
       setLoading(true);
 
@@ -133,6 +149,7 @@ function Chat() {
         return;
       }
 
+      // Request body for the recommendation
       const requestBody = JSON.stringify({
         user_prompt: prompt.trim(),
         city: userData?.city,
@@ -150,10 +167,12 @@ function Chat() {
       });
 
       const data = await response.json();
+
       if (!data?.response) {
         throw new Error("Something went wrong. Please try again later.");
       }
 
+      // Replace the old recommendation with the new one
       setUnmountRecommendation(true);
 
       setTimeout(() => {
@@ -165,12 +184,15 @@ function Chat() {
     } finally {
       setLoading(false);
       setPrompt("");
+
+      // Focusing the input field
       setTimeout(() => {
         inputRef?.current?.focus();
       }, 0);
     }
   };
 
+  // Send the prompt on the Enter key press
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && prompt) {
       getRecommendation(prompt);
@@ -226,9 +248,9 @@ function Chat() {
                 <div
                   className={`text-[#eeeeee] animate-slide-in-bottom flex flex-col items-start gap-5 px-8 ${
                     !unmountRecommendation ? "opacity-100" : "opacity-0"
-                  } transition-all duration-500 ease-in-out`}
+                  } transition-all duration-500 ease-in-out `}
                 >
-                  {recommendation}
+                    {recommendation}
                   <button
                     className="bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 text-gray-800 font-medium py-2 px-6 rounded-lg shadow transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg active:scale-95"
                     onClick={getImages}
@@ -245,7 +267,6 @@ function Chat() {
                   "What should I wear to a summer wedding?",
                   "Give me an outfit idea for a first date.",
                   "How can I accessorize a little black dress?",
-                  "What should I wear on a rainy day?",
                 ].map((samplePrompt, index) => (
                   <SamplePrompt
                     key={index}

@@ -1,40 +1,45 @@
-import React from 'react';
-import { ReactHelmet } from '../components.js';
+import React from "react";
+import { ReactHelmet } from "../components.js";
+import { useLocation } from "react-router-dom";
+
 import LoginHeader from "./LoginHeader.jsx";
-import HomeHeader from './HomeHeader.jsx';
-import ChatHeader from './ChatHeader.jsx';
-import GetStartedHeader from './GetStartedHeader.jsx';
-import { useLocation } from 'react-router-dom';
+import HomeHeader from "./HomeHeader.jsx";
 
 function Header() {
   const location = useLocation();
-  if(location.pathname === "/login" || location.pathname === "/signup") {
+  if (location.pathname === "/login") {
     return (
       <div>
-        {location.pathname==="/login" ? <ReactHelmet title="Login - PerObe AI" /> : <ReactHelmet title="Sign Up - PerObe AI" />}
+        <ReactHelmet title="Login - PerObe AI" />
         <LoginHeader />
       </div>
     );
-  } else if (location.pathname==="/") {
+  } else if (location.pathname === "/") {
     return (
       <div>
         <ReactHelmet title="Home - PerObe AI" />
-        < HomeHeader/>
+        <HomeHeader />
       </div>
     );
-  } else if (location.pathname==="/chat") {
+  } else if (location.pathname === "/chat") {
     return (
       <div>
         <ReactHelmet title="Chat - PerObe AI" />
       </div>
     );
-  } else if(location.pathname==="/get-started"){
+  } else if (location.pathname === "/get-started") {
     return (
       <div>
         <ReactHelmet title="Get Started - PerObe AI" />
       </div>
     );
+  } else if (location.pathname === "/settings") {
+    return (
+      <div>
+        <ReactHelmet title="Settings - PerObe AI" />
+      </div>
+    );
   }
 }
 
-export default Header
+export default Header;

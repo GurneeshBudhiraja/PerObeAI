@@ -54,6 +54,4 @@ def generate_recommendation(
         )
 
     except Exception as e:
-        # TODO: will remove the print statement after testing
-        print(f"Error in generating recommendation: {e}")
         raise Exception("Error in generating recommendation")

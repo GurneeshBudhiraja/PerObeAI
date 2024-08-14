@@ -1,15 +1,13 @@
-import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
-import { useNavigate, Link } from "react-router-dom";
-import { BigLogo, SmallLogo } from "../../../assets/assets";
+import { Link } from "react-router-dom";
 import GitHubIcon from "@mui/icons-material/GitHub";
-import Button from "@mui/material/Button";
+
+import { BigLogo, SmallLogo } from "../../../assets/assets.jsx";
 import { Menu } from "../../components/components.js";
 
 function HomeHeader() {
+  // Current user data from the store
   const isAuthenticated = useSelector((state) => state.auth.isAuth);
-  const navigate = useNavigate();
-
 
   return (
     <div className="h-[6rem] border-b-[0.1rem] border-zinc-600 flex items-center  px-10 w-full text-black md:bg-transparent">
@@ -42,9 +40,7 @@ function HomeHeader() {
               target="_blank"
               className={`mx-4 md:block ${isAuthenticated ? "hidden" : ""}`}
             >
-              <GitHubIcon
-                fontSize="large"
-              />
+              <GitHubIcon fontSize="large" />
             </Link>
           </div>
         </div>

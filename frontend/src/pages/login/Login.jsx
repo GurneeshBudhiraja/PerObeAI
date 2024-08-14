@@ -1,35 +1,40 @@
 import React, { useState } from "react";
-import { useForm, Controller, set } from "react-hook-form";
-import {
-  Input,
-  SignInWithGoogleButton,
-  FormSubmitButton,
-} from "../../components/components.js";
-import { auth, fireStore } from "../../firebase/firebaseServices.js";
+import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
-import { setUser } from "../../store/authSlice/authSlice.js";
 import { useNavigate } from "react-router-dom";
 import { Snackbar, Alert } from "@mui/material";
 
+// Import actions for updating the authentication state in the store
+import { setUser } from "../../store/authSlice/authSlice.js";
+
+// Custom components
+import { Input, FormSubmitButton } from "../../components/components.js";
+
+// Firebase services
+import { auth, fireStore } from "../../firebase/firebaseServices.js";
+
 function Login() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
   const {
     handleSubmit,
     control,
     formState: { errors },
   } = useForm();
 
-  const dispatch = useDispatch();
-  const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
-  const navigate = useNavigate();
-
   const loginUser = async (data) => {
     try {
       setError("");
       setLoading(true);
 
+      // Destructure the userEmail and password from the form data
       const { userEmail = "testing@perobeai.com", password } = data;
 
+      // Allow only the testing account to login
       if (userEmail !== "testing@perobeai.com") {
         setError(
           "This is a testing account. Please use the testing account credentials to login."
@@ -37,22 +42,26 @@ function Login() {
         setLoading(false);
         return;
       }
+
       const user = await auth.logInWithEmail({ email: userEmail, password });
 
-      console.log("user", user); //TODO: will remove after testing
       const { uid, email } = user.user;
-      console.log(uid);
+
       const firestoreUserData = await fireStore.getData({ uid });
+
+      // Desctructure the user choices/data from the firestore
       const { accessibility, city, preferred_fashion_style } =
         firestoreUserData;
+
       dispatch(
         setUser({ uid, email, accessibility, city, preferred_fashion_style })
       );
+
+      // Redirect to the chat page after successful login
       setTimeout(() => {
         navigate("/chat");
       }, 200);
     } catch (error) {
-      console.log(error);
       setError("Failed to login. Please try again later.");
     } finally {
       setLoading(false);
@@ -65,6 +74,7 @@ function Login() {
         <span className="text-[1.35rem] tracking-wider poppins-medium md:text-[1.5rem] md:tracking-widest md:font-semibold">
           Log in to the Testing Account
         </span>
+
         <form
           onSubmit={handleSubmit(loginUser)}
           className="flex flex-col justify-center items-center gap-6 mb-4 w-3/4"
@@ -74,7 +84,6 @@ function Login() {
             name="userEmail"
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
-                // TODO: will add the error here
                 isRequired={true}
                 value={"testing@perobeai.com"}
                 type={"email"}
@@ -90,7 +99,6 @@ function Login() {
             name="password"
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
-                // TODO: will add the error here
                 type={"password"}
                 labelName={"Password"}
                 isRequired={true}
@@ -110,6 +118,7 @@ function Login() {
           />
         </form>
       </div>
+
       {error && (
         <Snackbar
           open={!!error}

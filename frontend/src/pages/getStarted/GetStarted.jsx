@@ -2,59 +2,75 @@ import React, { useState } from "react";
 import { useLocation, Link } from "react-router-dom";
 import { Stepper, Step, Button } from "@material-tailwind/react";
 import Backdrop from "@mui/material/Backdrop";
-import { BigLogo, SmallLogo } from "../../../assets/assets.jsx";
 import { CircularProgress } from "@mui/material";
-import { imageEmbeddings } from "../../utils/urlConstants.js";
-import { titleCase } from "../accountSettings/accountSettingsUtils/accountSettingsUtils.js";
+import { Snackbar, Alert } from "@mui/material";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../store/authSlice/authSlice.js";
+
+import { imageEmbeddingsURL } from "../../utils/urlConstants.js";
+
+// Firebase services
+import { storage, fireStore, auth } from "../../firebase/firebaseServices.js";
+
+// Custom components
 import {
   FirstStepperContent,
   SecondStepperContent,
 } from "../../components/components.js";
-import { Snackbar, Alert } from "@mui/material";
-import { useNavigate } from "react-router-dom";
-import { storage, fireStore, auth } from "../../firebase/firebaseServices.js";
-import { useDispatch } from "react-redux";
-import { setUser } from "../../store/authSlice/authSlice.js";
+
+// Utility function for title casing
+import { titleCase } from "../accountSettings/accountSettingsUtils/accountSettingsUtils.js";
+
+// App logos
+import { BigLogo, SmallLogo } from "../../../assets/assets.jsx";
 
 function GetStarted() {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const location = useLocation();
-  const [userData, setUserData] = useState({
-    city: "",
-    accessibility: "",
-    preferred_fashion_style: "",
-  });
 
   const [error, setError] = useState("");
   const [success, setSuccess] = useState("");
-
-  React.useEffect(() => {
-    if (!location?.state?.fromHome) {
-      return navigate("/");
-    }
-    const getCurrentUser = async () => {
-      const {
-        uid = undefined,
-        email = undefined,
-        accessToken = undefined,
-      } = await auth.currentUser();
-      if (!uid || !email || !accessToken) {
-        return navigate("/");
-      }
-      setUserData((prev) => ({ ...prev, uid, email, accessToken }));
-    };
-    getCurrentUser();
-  }, [navigate, location?.state?.fromHome]);
-
   const [canProceed, setCanProceed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [activeStep, setActiveStep] = useState(0);
   const [isLastStep, setIsLastStep] = useState(false);
   const [isFirstStep, setIsFirstStep] = useState(false);
 
+  const [userData, setUserData] = useState({
+    city: "",
+    accessibility: "",
+    preferred_fashion_style: "",
+  });
+
+  React.useEffect(() => {
+    // Redirect to the home page if the user tries to access this page directly
+    if (!location?.state?.fromHome) {
+      return navigate("/");
+    }
+
+    const getCurrentUser = async () => {
+      const {
+        uid = undefined,
+        email = undefined,
+        accessToken = undefined,
+      } = await auth.currentUser();
+
+      // Check if the user is authenticated
+      if (!uid || !email || !accessToken) {
+        return navigate("/");
+      }
+      // Update the store
+      setUserData((prev) => ({ ...prev, uid, email, accessToken }));
+    };
+
+    getCurrentUser();
+  }, [navigate, location?.state?.fromHome]);
+
   const handleNext = async () => {
     try {
+      // Keep track of the active step
       if (!isLastStep) {
         setActiveStep((cur) => cur + 1);
       } else {
@@ -68,14 +84,21 @@ function GetStarted() {
             : titleCase(userData?.accessibility?.accessibility)) || "";
 
         formattedData.city = titleCase(userData.city);
-        formattedData.preferred_fashion_style =
-          titleCase(userData.preferred_fashion_style);
+
+        formattedData.preferred_fashion_style = titleCase(
+          userData.preferred_fashion_style
+        );
+
         formattedData.uid = userData.uid;
+
         formattedData.email = userData.email;
+
         formattedData.accessToken = userData.accessToken;
 
+        // Update the store
         dispatch(setUser({ ...formattedData, isAuth: true }));
 
+        // Add the data to the firestore
         const { city, accessibility, preferred_fashion_style } = formattedData;
 
         await fireStore.addData({
@@ -83,31 +106,36 @@ function GetStarted() {
           data: { city, accessibility, preferred_fashion_style },
         });
 
+        // Get the image URLs for generating and storing the embeddings
         const imageURLs = await storage.getPictures({ uid: formattedData.uid });
 
-        console.log(imageURLs);
-
-        const url = imageEmbeddings;
+        const url = imageEmbeddingsURL;
 
         const vector_db_resp = await fetch(url, {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
-            Authorization: `Bearer ${userData?.accessToken}`,
+            // update this
+            "Authorization": `Bearer ${userData?.accessToken}`,
           },
           body: JSON.stringify(imageURLs),
         });
 
         const vector_db_resp_json = await vector_db_resp.json();
 
+        // Show the success message
         setSuccess("Preferences saved successfully");
 
+        // Redirect to the chat page
         if (Object.keys(vector_db_resp_json).length) {
           setTimeout(() => {
             navigate("/chat");
           }, 1000);
         } else {
+          // Show the error message
           setError("Something went wrong. Please try again");
+
+          // Redirect to the home page
           setTimeout(() => {
             navigate("/");
           }, 500);
@@ -122,6 +150,7 @@ function GetStarted() {
 
   const handlePrev = () => !isFirstStep && setActiveStep((cur) => cur - 1);
 
+  // Render the content based on the active step
   const renderStepContent = () => {
     switch (activeStep) {
       case 0:
@@ -162,12 +191,6 @@ function GetStarted() {
         />
       </Link>
       <div className="w-[90%] h-[75%] max-w-3xl mx-auto py-8 px-6 shadow-sm rounded-lg backdrop-blur-3xl bg-white/40">
-        {isLoading && (
-          <div className="text-gray-600 font-medium text-center mb-4">
-            {/* will change this later on */}
-            Processing your input...
-          </div>
-        )}
         <Stepper
           activeStep={activeStep}
           isLastStep={(value) => setIsLastStep(value)}
@@ -189,8 +212,8 @@ function GetStarted() {
             onClick={() => setActiveStep(1)}
             className={`cursor-pointer flex items-center justify-center w-10 h-10 rounded-full ${
               activeStep === 1
-                ? "bg-[#C4B5FD] text-[#5B21B6]" // Light Purple Background with Darker Purple Text
-                : "bg-[#E0E7FF] text-[#1E3A8A]" // Lighter Blue Background with Darker Blue Text
+                ? "bg-[#C4B5FD] text-[#5B21B6]"
+                : "bg-[#E0E7FF] text-[#1E3A8A]"
             }`}
           >
             <div className="font-medium">2</div>
@@ -203,8 +226,8 @@ function GetStarted() {
             disabled={isFirstStep}
             className={`px-5 py-2 rounded-lg transition-all duration-200 ease-in-out shadow-sm ${
               isFirstStep
-                ? "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed" // Light Gray Background with Medium Gray Text
-                : "bg-[#F3F4F6] text-[#374151] hover:bg-[#E5E7EB]" // Very Light Gray Background with Darker Gray Text
+                ? "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed"
+                : "bg-[#F3F4F6] text-[#374151] hover:bg-[#E5E7EB]"
             }`}
           >
             Prev
@@ -214,15 +237,16 @@ function GetStarted() {
             disabled={!canProceed}
             className={`px-5 py-2 rounded-lg transition-all duration-200 ease-in-out shadow-sm ${
               canProceed
-                ? "bg-[#6366F1] text-white hover:bg-[#4F46E5]" // Indigo Background with White Text
-                : "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed" // Light Gray Background with Medium Gray Text
-            } ${isLastStep && "bg-[#10B981] hover:bg-[#059669]"}`} // Green Background with Hover Effect for Submit
+                ? "bg-[#6366F1] text-white hover:bg-[#4F46E5]"
+                : "bg-[#E5E7EB] text-[#9CA3AF] cursor-not-allowed"
+            } ${isLastStep && "bg-[#10B981] hover:bg-[#059669]"}`}
           >
             {!isLastStep ? "Next" : "Submit"}
           </Button>
         </div>
       </div>
-      {/* ui feature */}
+
+      {/* ui features */}
       {isLoading && (
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

@@ -1,25 +1,39 @@
 import React, { useState } from "react";
 import { FileUpload } from "primereact/fileupload";
+
+// Firebase service
 import { storage } from "../../firebase/firebaseServices";
 
-function FirstStepperContent({ uid, canProceed, setIsLoading, setError, setSuccess }) {
+function FirstStepperContent({
+  uid,
+  canProceed,
+  setIsLoading,
+  setError,
+  setSuccess,
+}) {
   const [isImages, setIsImages] = useState(false);
+
   const submitImages = async (event) => {
     try {
-      
       setIsLoading(true);
       const filesData = event.files;
+
       if (!filesData.length) {
         return;
       }
+
       setIsImages(true);
+
       await storage.uploadFile({ uid, files: filesData });
+
       setIsLoading(false);
+
       setSuccess("Images uploaded successfully");
+
       canProceed(true);
     } catch (error) {
       canProceed(false);
-      console.log("Error in uploading images", error.message);
+
       setError("Error in uploading images. Please try again");
     } finally {
       event.options.clear();

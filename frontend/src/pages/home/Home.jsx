@@ -1,25 +1,39 @@
 import React, { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+
+// Home constants
+import { heroFeaturePoints } from "./homeConstants.js";
+
+// Import actions for updating the authentication state in the store
+import { setUser } from "../../store/authSlice/authSlice.js";
+
+// Custom components
 import {
   HeroPoints,
   SignInWithGoogleButton,
 } from "../../components/components.js";
-import googleSignIn from "../../utils/googleSignIn.js";
-import { auth, fireStore } from "../../firebase/firebaseServices.js";
-import { useNavigate } from "react-router-dom";
-import { useSelector, useDispatch } from "react-redux";
 
-import { setUser } from "../../store/authSlice/authSlice.js";
+// Google sign in utility function
+import googleSignIn from "../../utils/googleSignIn.js";
+
+// Firebase services
+import { auth, fireStore } from "../../firebase/firebaseServices.js";
 
 function Home() {
-  const [show, setShow] = useState(false);
-  const [userData, setUserData] = React.useState({});
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  // Current user from the store
   const { isAuth } = useSelector((state) => state.auth);
+
+  const [show, setShow] = useState(false);
+  const [userData, setUserData] = React.useState({});
 
   useEffect(() => {
     const getCurrentUser = async () => {
       const user = await auth.currentUser();
+
       if (!user) {
         return;
       }
@@ -30,8 +44,10 @@ function Home() {
 
       const firestoreUserData = await fireStore.getData({ uid });
 
+      // Updating the state
       setUserData((prev) => ({ ...prev, ...firestoreUserData.data }));
 
+      // Check if the user is new
       if (!Object.keys(firestoreUserData).length) {
         return navigate("/get-started", {
           state: { uid, email, accessToken, fromHome: true },
@@ -41,54 +57,43 @@ function Home() {
       const { preferred_fashion_style, accessibility, city } =
         firestoreUserData;
 
+      // Update the store
       dispatch(
-        setUser({ uid, email, preferred_fashion_style, accessibility, city, accessToken, isAuth: true })
+        setUser({
+          uid,
+          email,
+          preferred_fashion_style,
+          accessibility,
+          city,
+          accessToken,
+          isAuth: true,
+        })
       );
     };
+
     setTimeout(() => {
       setShow(true);
     }, 500);
+
     getCurrentUser();
   }, []);
 
+  // Wrapper function to trigger the google sign in
   const googleSignInWrapper = async () => {
     const userData = await googleSignIn();
-    console.log("User data: ", userData);
-    
+
+    // Redirect to the get started page for the new user
     if (userData.isNewUser) {
       return navigate("/get-started", {
         state: { userData, fromHomePage: true },
       });
     } else {
+      // Refactoring the data for the store
       const { isNewUser, ...rest } = userData;
       dispatch(setUser(rest));
     }
     return;
   };
-
-  const heroFeaturePoints = [
-    {
-      text: "Access Your Wardrobe Anytime, Anywhere",
-      keypoints: [
-        "View and manage your uploaded clothing photos",
-        "Seamlessly organize your wardrobe from anywhere",
-      ],
-    },
-    {
-      text: "Get Personalized Outfit Recommendations",
-      keypoints: [
-        "Suggestions based on your uploaded clothes",
-        "Customized for your events and local weather conditions",
-      ],
-    },
-    {
-      text: "Inclusive Fashion Assistance for All",
-      keypoints: [
-        "Special support for blind and color blind users",
-        "Accessibility features ensuring the best style advice for everyone",
-      ],
-    },
-  ];
 
   return (
     <div className="max-h-fit w-screen text-zinc-100 lg:flex flex-wrap mt-[1.75rem] mb-6">
@@ -127,7 +132,7 @@ function Home() {
                   onClick={() => {
                     navigate("/chat");
                   }}
-                  style={{ marginBottom: "1rem" }} // Adding space below the button
+                  style={{ marginBottom: "1rem" }}
                 >
                   Chat
                 </button>

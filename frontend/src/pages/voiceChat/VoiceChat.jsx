@@ -31,7 +31,7 @@ function VoiceChat() {
               method: "POST",
               headers: {
                 "Content-Type": "application/json",
-                "Authorization": `Bearer ${userData?.accessToken}`,
+                Authorization: `Bearer ${userData?.accessToken}`,
               },
               body: JSON.stringify({
                 user_prompt: refactor_user_prompt,
