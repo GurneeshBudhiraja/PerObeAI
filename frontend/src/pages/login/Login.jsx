@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -80,6 +80,7 @@ function Login() {
         setError("Something went wrong. Please try again later.");
       }
     } finally {
+
       setLoading(false);
     }
   };
@@ -115,9 +116,9 @@ function Login() {
             name="password"
             render={({ field: { onChange, onBlur, value } }) => (
               <Input
+                isRequired={true}
                 type={"password"}
                 labelName={"Password"}
-                isRequired={true}
                 onChange={onChange}
                 className={""}
                 onBlur={onBlur}
