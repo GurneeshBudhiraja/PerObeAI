@@ -44,7 +44,12 @@ function MenuComponent() {
           </div>
         )}
 
+        {/* My Wardrobe: To see the uploaded pictures */}
+        <MenuItem className={""}>
+          <Link to={"/my-wardrobe"}>My Wardrobe</Link>
+        </MenuItem>
         {/* ACCOUNT SETTINGS */}
+
         <MenuItem
           onClick={() => {
             return navigate("/settings");
@@ -76,11 +81,11 @@ function MenuComponent() {
         </MenuItem>
 
         {/* GITHUB LINK */}
-        <MenuItem>
+        <MenuItem className={"md:hidden"}>
           <Link
             to={"https://github.com/GurneeshBudhiraja/PerObeAI"}
             target="_blank"
-            className="text-start md:hidden"
+            className="text-start"
           >
             <GitHubIcon
               fontSize="large"

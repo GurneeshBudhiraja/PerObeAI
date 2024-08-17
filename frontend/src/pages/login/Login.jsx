@@ -62,7 +62,23 @@ function Login() {
         navigate("/chat");
       }, 200);
     } catch (error) {
-      setError("Failed to login. Please try again later.");
+      // TODO: will remove this after testing
+      console.log(error.message);
+      if (error.code === "auth/too-many-requests") {
+        // Handle too many incorrect attempts, prompting a temporary account lock
+        setError(
+          "This account has been disabled. Please try again after some time."
+        );
+      } else if (error.code === "auth/user-disabled") {
+        // Checking for the disabled accounts
+        setError("This account has been disabled.");
+      } else if (error.code === "auth/invalid-credential") {
+        // Checking for the wrong password
+        setError("Incorrect password. Please try again.");
+      } else {
+        // For the rest of the errors
+        setError("Something went wrong. Please try again later.");
+      }
     } finally {
       setLoading(false);
     }

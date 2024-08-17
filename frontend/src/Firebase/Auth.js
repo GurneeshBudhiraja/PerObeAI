@@ -84,7 +84,7 @@ class FirebaseAuth {
     try {
       return signInWithEmailAndPassword(this.auth, email, password);
     } catch (error) {
-      return {};
+      return {}
     }
   };
 

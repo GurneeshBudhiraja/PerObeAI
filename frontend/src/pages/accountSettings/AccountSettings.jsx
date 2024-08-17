@@ -150,7 +150,7 @@ function AccountSettings() {
       <div className="flex items-center mb-8 ">
         <ArrowBackIosIcon
           onClick={() => navigate(-1)}
-          className="text-gray-900 hover:text-gray-700 focus:outline-none"
+          className="text-gray-900 hover:text-gray-700 focus:outline-none cursor-pointer"
           aria-label="Go back to the previous menu"
         />
         <p className="ml-4 text-3xl font-semibold text-gray-800">

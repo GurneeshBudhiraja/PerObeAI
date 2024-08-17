@@ -10,6 +10,7 @@ import {
   Chat,
   GetStarted,
   AccountSettings,
+  MyWardrobe,
 } from "./pages/pages.js";
 
 function App() {
@@ -23,6 +24,7 @@ function App() {
             <Route exact path="login" element={<Login />} />
             <Route exact path="get-started" element={<GetStarted />} />
             <Route exact path="settings" element={<AccountSettings />} />
+            <Route exact path="my-wardrobe" element={<MyWardrobe />} />
             <Route exact path="/*" element={<Navigate to={"/"} />} />
           </Route>
         </Routes>

@@ -4,5 +4,14 @@ import Chat from "./chat/Chat.jsx";
 import GetStarted from "./getStarted/GetStarted.jsx";
 import VoiceChat from "./voiceChat/VoiceChat.jsx";
 import AccountSettings from "./accountSettings/AccountSettings.jsx";
+import MyWardrobe from "./myWardrobe/MyWardrobe.jsx";
 
-export { Login, Home, Chat, GetStarted, VoiceChat, AccountSettings };
+export {
+  Login,
+  Home,
+  Chat,
+  GetStarted,
+  VoiceChat,
+  AccountSettings,
+  MyWardrobe,
+};
