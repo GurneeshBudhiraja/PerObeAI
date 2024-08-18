@@ -13,3 +13,5 @@ firebase_admin_credentials.json
 *.ipynb
 
 *.egg-info
+
+*.DS_Store
