@@ -80,6 +80,12 @@ function VoiceChat() {
 
   return (
     <div className="h-full flex flex-col items-center justify-center">
+      {!recommendation && (
+        <div className="flex flex-col text-center p-2 border-2 border-[#6b3c83af] rounded-lg mx-2 gap-2 text-[1rem] tracking-wider lg:text-lg select-none bg-gradient-to-br from-transparent via-[#5e2ed8b4] to-[#4b50e8ae] ">
+          Press the mic and say a command like:
+          <span>&apos;Recommend something for the party tonight.&apos;</span>
+        </div>
+      )}
       {recommendation && (
         <div
           className={`h-full flex flex-col justify-center items-center transition-all duration-500 ease-in-out max-w-prose ${

@@ -62,8 +62,6 @@ function Login() {
         navigate("/chat");
       }, 200);
     } catch (error) {
-      // TODO: will remove this after testing
-      console.log(error.message);
       if (error.code === "auth/too-many-requests") {
         // Handle too many incorrect attempts, prompting a temporary account lock
         setError(
@@ -80,7 +78,6 @@ function Login() {
         setError("Something went wrong. Please try again later.");
       }
     } finally {
-
       setLoading(false);
     }
   };
