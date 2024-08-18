@@ -14,7 +14,8 @@ router = APIRouter(prefix="/api/web/v1", tags=["outfit_recommendation"])
 
 @router.post("/recommend")
 def get_recommendation(
-    user_id: str = Depends(verify_firebase_uid),
+    # TODO: will add the depends here later on
+    user_id: str,
     body: RecommendationRequestBody = Body(...),
 ) -> JSONResponse:
     """
@@ -28,7 +29,7 @@ def get_recommendation(
         JSONResponse: The JSON response object
     """
     try:
-        print(user_id)
+
         user_prompt = body.user_prompt
 
         city = body.city
