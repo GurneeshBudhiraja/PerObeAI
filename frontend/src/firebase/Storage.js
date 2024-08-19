@@ -40,6 +40,7 @@ class Storage {
   async getPictures({ uid }) {
     try {
       const pictures = [];
+
       const listRef = ref(this.storage, uid);
 
       const response = await listAll(listRef);
@@ -51,6 +52,7 @@ class Storage {
       }
       return pictures;
     } catch (error) {
+      console.log(error)
       throw new Error("Error in getting pictures", error.message);
     }
   }

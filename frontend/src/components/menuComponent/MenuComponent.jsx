@@ -45,8 +45,13 @@ function MenuComponent() {
         )}
 
         {/* My Wardrobe: To see the uploaded pictures */}
-        <MenuItem className={""}>
-          <Link to={"/my-wardrobe"}>My Wardrobe</Link>
+        <MenuItem
+          className={""}
+          onClick={() => {
+            return navigate("/my-wardrobe");
+          }}
+        >
+          My Wardrobe
         </MenuItem>
         {/* ACCOUNT SETTINGS */}
 
