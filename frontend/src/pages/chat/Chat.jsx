@@ -227,12 +227,12 @@ function Chat() {
               selectedOption === "Chat"
                 ? "bg-gradient-to-br from-[#DAC1BD] via-[#908EAD] to-[#6872A5] text-black tracking-wider  "
                 : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white tracking-widest "
-            } translate-all duration-300 ease-in-out`}
+            } transition-all duration-300 ease-in-out`}
             panelClassName={`border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50 tracking-wider  ${
               selectedOption === "Chat"
                 ? "bg-gradient-to-br from-[#DAC1BD] via-[#908EAD] to-[#6872A5] text-black tracking-wider  "
                 : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white "
-            }   translate-all duration-300 ease-in-out `}
+            }   transition-color duration-300 ease-in-out `}
           />
         </div>
 
