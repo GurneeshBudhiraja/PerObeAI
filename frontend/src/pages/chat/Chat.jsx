@@ -13,7 +13,7 @@ import { setUser } from "../../store/authSlice/authSlice.js";
 // Firebase services
 import { auth, fireStore } from "../../firebase/firebaseServices.js";
 
-// Custom components/pages
+// Custom components/pages/functions
 import { VoiceChat } from "../pages.js";
 import { InputText } from "primereact/inputtext";
 import { SamplePrompt } from "../../components/components";
@@ -223,8 +223,16 @@ function Chat() {
             options={options}
             optionLabel="name"
             checkmark={true}
-            className="py-1 px-2 hover:bg-gray-700 bg-gray-800 text-white border-[1px] border-gray-600 rounded-lg shadow-lg tracking-widest z-20"
-            panelClassName="bg-gray-800 text-white border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50"
+            className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg z-20 ${
+              selectedOption === "Chat"
+                ? "bg-gradient-to-br from-[#DAC1BD] via-[#908EAD] to-[#6872A5] text-black tracking-wider  "
+                : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white tracking-widest "
+            } translate-all duration-300 ease-in-out`}
+            panelClassName={`border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50 tracking-wider  ${
+              selectedOption === "Chat"
+                ? "bg-gradient-to-br from-[#DAC1BD] via-[#908EAD] to-[#6872A5] text-black tracking-wider  "
+                : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white "
+            }   translate-all duration-300 ease-in-out `}
           />
         </div>
 
@@ -250,7 +258,7 @@ function Chat() {
                     !unmountRecommendation ? "opacity-100" : "opacity-0"
                   } transition-all duration-500 ease-in-out `}
                 >
-                    {recommendation}
+                  {recommendation}
                   <button
                     className="bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 text-gray-800 font-medium py-2 px-6 rounded-lg shadow transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg active:scale-95"
                     onClick={getImages}
