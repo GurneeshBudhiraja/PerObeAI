@@ -10,6 +10,7 @@ import alanBtn from "@alan-ai/alan-sdk-web";
 function VoiceChat() {
   const userData = useSelector((state) => state.auth);
   const [recommendation, setRecommendation] = useState("");
+  const [loading, setLoading] = useState(true);
 
   // Replace the new recommendation with the old one
   const [unmountRecommendation, setUnmountRecommendation] = useState(false);
@@ -71,7 +72,7 @@ function VoiceChat() {
         }
       },
     });
-
+    setLoading(false);
     return () => {
       alanInstance.remove();
       alanInstance.deactivate();
@@ -81,7 +82,7 @@ function VoiceChat() {
   return (
     <div className="h-full flex flex-col items-center justify-center">
       {!recommendation && (
-        <div className="flex flex-col text-center p-2 border-2 border-[#6b3c83af] rounded-lg mx-2 gap-2 text-[1rem] tracking-wider lg:text-lg select-none bg-gradient-to-br from-transparent via-[#5e2ed8b4] to-[#4b50e8ae] ">
+        <div className={`flex flex-col text-center p-2 border-2 border-[#6b3c839f] rounded-lg mx-2 gap-2 text-[1rem] tracking-wider lg:text-[1.1rem] select-none bg-gradient-to-br from-transparent via-[#5e2ed86f] to-[#3f60f081] ${loading?"opacity-0 -translate-y-4":"opacity-100 translate-y-0"} duration-300 ease-linear transition-all `}>
           Press the mic and say a command like:
           <span>&apos;Recommend something for the party tonight.&apos;</span>
         </div>

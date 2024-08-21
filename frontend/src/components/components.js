@@ -8,6 +8,7 @@ import FirstStepperContent from "./stepperContent/FirstStepperContent.jsx";
 import SecondStepperContent from "./stepperContent/SecondStepperContent.jsx";
 import Menu from "./menuComponent/MenuComponent.jsx";
 import SamplePrompt from "./samplePrompt/SamplePrompt.jsx";
+import ImageGallery from "./imageGallery/ImageGallery.jsx";
 
 export {
   Header,
@@ -20,4 +21,5 @@ export {
   SecondStepperContent,
   Menu,
   SamplePrompt,
+  ImageGallery,
 };
