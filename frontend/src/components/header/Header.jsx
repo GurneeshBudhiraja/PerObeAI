@@ -4,6 +4,7 @@ import { useLocation } from "react-router-dom";
 
 import LoginHeader from "./LoginHeader.jsx";
 import HomeHeader from "./HomeHeader.jsx";
+import ChatHeader from "./ChatHeader.jsx";
 
 function Header() {
   const location = useLocation();
@@ -25,6 +26,7 @@ function Header() {
     return (
       <div>
         <ReactHelmet title="Chat - PerObe AI" />
+        <ChatHeader />
       </div>
     );
   } else if (location.pathname === "/get-started") {

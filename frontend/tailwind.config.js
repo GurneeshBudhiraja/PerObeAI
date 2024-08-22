@@ -4,6 +4,9 @@ export default withMT({
   content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
+      boxShadow: {
+        "3xl": "1px 1px 10px 1px #ffffff",
+      },
       keyframes: {
         slideInBottom: {
           "0%": { transform: "translateY(100%)", opacity: "0" },

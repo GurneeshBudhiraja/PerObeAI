@@ -87,7 +87,7 @@ function VoiceChat() {
       {!recommendation && (
         <div
           className={`flex flex-col text-center p-2 border-2 border-[#6b3c839f] rounded-lg mx-2 gap-2 text-[1rem] tracking-wider lg:text-[1.1rem] select-none bg-gradient-to-br from-transparent via-[#5e2ed86f] to-[#3f60f081] ${
-            loading ? "opacity-0 -translate-y-4" : "opacity-100 translate-y-0"
+            loading ? "opacity-0 scale-90" : "opacity-100 scale-100"
           } duration-300 ease-linear transition-all `}
         >
           Press the mic and say a command like:

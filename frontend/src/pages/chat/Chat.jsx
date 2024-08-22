@@ -6,7 +6,7 @@ import CircularProgress from "@mui/material/CircularProgress";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Dropdown } from "primereact/dropdown";
-import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
+
 import { getImagesURL, recommendationUrl } from "../../utils/urlConstants.js";
 import { setUser } from "../../store/authSlice/authSlice.js";
 
@@ -16,12 +16,15 @@ import { auth, fireStore } from "../../firebase/firebaseServices.js";
 // Custom components/pages/functions
 import { VoiceChat } from "../pages.js";
 import { InputText } from "primereact/inputtext";
-import { SamplePrompt } from "../../components/components";
-import { Menu } from "../../components/components.js";
+import { SamplePrompt } from "../../components/components.js";
+
+// Constants for the chat
+import { samplePrompts } from "./chatConstants.js";
 
 function Chat() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({});
   const [recommendation, setRecommendation] = useState("");
@@ -200,114 +203,59 @@ function Chat() {
   };
 
   return (
-    <>
-      <div className="bg-[#131314] h-full w-full text-[#eeeeee] flex flex-col justify-center items-center relative">
-        <div className="flex w-full items-center justify-center px-3 py-2 lg:p-4 bg-[#eeeeee] shadow-lg shadow-gray-800/75 lg:pr-[2rem] ">
-          <div className="flex justify-center items-center cursor-pointer mb-1 ">
-            <ArrowBackIosIcon
-              onClick={() => {
-                navigate("/");
-              }}
-              className="text-gray-900 hover:text-gray-700 focus:outline-none"
-              aria-label="Go back to the previous menu"
-            />
-          </div>
-          <div className="flex-1 p-1 text-end">
-            <Menu />
-          </div>
-        </div>
-        <div className="z-20 mt-5 sm:mt-12 fixed top-14 left-4">
+    <div className="bg-[#131314] h-full w-full text-[#eeeeee] flex flex-col justify-between items-center relative">
+      <div className="flex flex-col w-full h-full justify-between py-5">
+        {/* Dropdown */}
+        <div>
           <Dropdown
             value={selectedOption}
             onChange={(e) => setSelectedOption(e.value)}
             options={options}
             optionLabel="name"
             checkmark={true}
-            className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg z-20 ${
+            className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg ml-3 lg:ml-7 ${
               selectedOption === "Chat"
-                ? "bg-gradient-to-br from-[#DAC1BD] via-[#908EAD] to-[#6872A5] text-black tracking-wider  "
+                ? "bg-gradient-to-tl from-[#ef6d9f]  to-[#eebfa2] text-black tracking-wider  "
                 : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white tracking-widest "
             } transition-all duration-300 ease-in-out`}
             panelClassName={`border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50 tracking-wider  ${
               selectedOption === "Chat"
-                ? "bg-gradient-to-br from-[#DAC1BD] via-[#908EAD] to-[#6872A5] text-black tracking-wider  "
+                ? "bg-gradient-to-tl from-[#ef6d9f]  to-[#eebfa2] text-black tracking-wider  "
                 : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white "
-            }   transition-color duration-300 ease-in-out `}
+            }   transition-color duration-300 ease-in-out`}
           />
         </div>
+        {selectedOption === "Chat" && (
+          // Sample prompts
+          <div
+            className={`w-full ${
+              recommendation ? "hidden" : "flex"
+            } justify-center items-center px-12 `}
+          >
+            <div className="grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg  ">
+              {samplePrompts.map((samplePrompt, index) => (
+                <SamplePrompt
+                  key={index}
+                  index={index}
+                  samplePrompt={samplePrompt.prompt}
+                  onClick={() => {
+                    setPrompt(samplePrompt.prompt);
+                    getRecommendation(samplePrompt.prompt);
+                  }}
+                  className={samplePrompt.style}
+                />
+              ))}
+            </div>
+          </div>
+        )}
 
         {selectedOption === "Voice" ? (
           <VoiceChat />
         ) : (
-          <div className="h-full flex flex-col justify-center items-center transition-all duration-300 ease-out max-w-prose">
-            {images.length > 0 ? (
-              <div className="grid grid-cols-2 gap-4 p-4 overflow-auto w-full sm:w-3/4 md:w-2/3 lg:w-1/2">
-                {images.map((image, index) => (
-                  <img
-                    key={index}
-                    src={image.url}
-                    alt={`Outfit ${index + 1}`}
-                    className="w-full h-full object-cover rounded-lg shadow-lg transform hover:scale-105 transition-transform duration-300 ease-in-out"
-                  />
-                ))}
-              </div>
-            ) : (
-              recommendation && (
-                <div
-                  className={`text-[#eeeeee] animate-slide-in-bottom flex flex-col items-start gap-5 px-8 ${
-                    !unmountRecommendation ? "opacity-100" : "opacity-0"
-                  } transition-all duration-500 ease-in-out `}
-                >
-                  {recommendation}
-                  <button
-                    className="bg-gradient-to-r from-gray-100 via-gray-200 to-gray-100 text-gray-800 font-medium py-2 px-6 rounded-lg shadow transition-all duration-300 ease-in-out hover:scale-105 hover:shadow-lg active:scale-95"
-                    onClick={getImages}
-                  >
-                    Get Pictures of the recommended outfit
-                  </button>
-                </div>
-              )
-            )}
-
-            {!recommendation && !images.length && (
-              <div className="space-y-4 flex flex-col justify-center items-center w-full px-2  ">
-                {[
-                  "What should I wear to a summer wedding?",
-                  "Give me an outfit idea for a first date.",
-                  "How can I accessorize a little black dress?",
-                ].map((samplePrompt, index) => (
-                  <SamplePrompt
-                    key={index}
-                    samplePrompt={samplePrompt}
-                    onClick={() => {
-                      setPrompt(samplePrompt);
-                      getRecommendation(samplePrompt);
-                    }}
-                    className="bg-gray-100 hover:bg-gray-200 text-gray-800 font-medium py-2 px-4 mx-6 rounded-lg shadow-sm cursor-pointer transition-all duration-300 ease-in-out transform hover:-translate-y-1 hover:scale-105 hover:shadow-md"
-                  />
-                ))}
-              </div>
-            )}
-
-            {error && (
-              <Snackbar
-                open={!!error}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                autoHideDuration={3300}
-                onClose={() => setError("")}
-              >
-                <Alert
-                  onClose={() => setError("")}
-                  severity="error"
-                  sx={{ width: "100%" }}
-                >
-                  {error}
-                </Alert>
-              </Snackbar>
-            )}
-
+          // Input field for the chat
+          <div className="w-full flex justify-center items-center my-4 md:my-6">
             <div
-              className={`w-4/5 md:w-3/4 lg:w-2/4 h-[3rem] flex items-center justify-center fixed bottom-10 left-1/2 -translate-x-1/2 ${
+              className={`w-4/5 md:w-3/4 lg:w-2/4 h-[3rem] flex items-center justify-center ${
                 loading ? "cursor-not-allowed" : "cursor-auto"
               }`}
             >
@@ -316,7 +264,7 @@ function Chat() {
                 disabled={loading}
                 autoFocus
                 placeholder="Need outfit advice? Ask here..."
-                className="outline-none w-full bg-[#212121] border-[1px] border-gray-200 rounded-full p-4 focus:bg-[#343333c0] transition-all duration-100 ease-in-out tracking-normal poppins-regular hover:bg-[#3433338f] flex-grow pr-16 "
+                className="outline-none w-full bg-[#212121] border-[0.75px] border-gray-200 rounded-full p-4 px-5 focus:bg-[#343333c0] transition-all duration-100 ease-in-out tracking-wide poppins-regular hover:bg-[#3433338f] flex-grow pr-16  focus:border-[1px] "
                 value={prompt}
                 onChange={(e) => {
                   setPrompt(e.target.value);
@@ -339,11 +287,28 @@ function Chat() {
                   <CircularProgress size={30} style={{ color: "#D46676" }} />
                 )}
               </button>
+
+              {error && (
+                <Snackbar
+                  open={!!error}
+                  anchorOrigin={{ vertical: "top", horizontal: "right" }}
+                  autoHideDuration={3300}
+                  onClose={() => setError("")}
+                >
+                  <Alert
+                    onClose={() => setError("")}
+                    severity="error"
+                    sx={{ width: "100%" }}
+                  >
+                    {error}
+                  </Alert>
+                </Snackbar>
+              )}
             </div>
           </div>
         )}
       </div>
-    </>
+    </div>
   );
 }
 
