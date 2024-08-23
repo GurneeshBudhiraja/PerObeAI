@@ -5,7 +5,8 @@ export default withMT({
   theme: {
     extend: {
       boxShadow: {
-        "3xl": "1px 1px 10px 1px #ffffff",
+        "3xl": "1px 1px 20px 1px rgba(255, 255, 255, 0.645)",
+        "active-shadow": "1px 1px 15px 0.5px rgba(255, 255, 255, 0.8)",
       },
       keyframes: {
         slideInBottom: {

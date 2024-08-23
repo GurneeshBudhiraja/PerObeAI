@@ -22,9 +22,9 @@ function SamplePrompt({
   return (
     <div
       onClick={!loading ? onClick : null}
-      className={`${className} p-3 rounded w-36 h-36 text-sm lg:text-base lg:w-44 lg:h-40 ${
+      className={`${className} p-3 rounded w-36 h-36 text-sm lg:text-base lg:w-44 lg:h-40 select-none ${
         loading ? "cursor-not-allowed " : "cursor-pointer"
-      }  hover:scale-105 md:hover:-translate-y-3 hover:shadow-3xl transition-all duration-200 ease-linear text-start relative`}
+      }  hover:scale-[1.03] md:hover:-translate-y-2 md:active:-translate-y-1 md:active:scale-100 md:active:shadow-active-shadow hover:shadow-3xl transition-all duration-[250ms] ease-in-out text-start relative`}
     >
       {samplePrompt}
       {IconComponent && (

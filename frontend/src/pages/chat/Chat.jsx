@@ -141,7 +141,7 @@ function Chat() {
   };
 
   return (
-    <div className="bg-[#131314] h-full w-full text-[#eeeeee] flex flex-col justify-between items-center relative">
+    <div className="py-3 bg-[#131314] h-screen w-full text-[#eeeeee] flex flex-col justify-between items-center relative overflow-scroll">
       <div className="flex flex-col w-full h-full justify-between py-5">
         {/* Dropdown */}
         <div>
@@ -151,14 +151,14 @@ function Chat() {
             options={options}
             optionLabel="name"
             checkmark={true}
-            className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg ml-3 lg:ml-7 ${
+            className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg ml-3 mb-3 lg:ml-7 ${
               selectedOption === "Chat"
-                ? "bg-gradient-to-tl from-[#ef6d9f]  to-[#eebfa2] text-black tracking-wider  "
+                ? "bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wider  "
                 : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white tracking-widest "
             } transition-all duration-300 ease-in-out`}
             panelClassName={`border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50 tracking-wider  ${
               selectedOption === "Chat"
-                ? "bg-gradient-to-tl from-[#ef6d9f]  to-[#eebfa2] text-black tracking-wider  "
+                ? "bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wider  "
                 : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white "
             }   transition-color duration-300 ease-in-out`}
           />
@@ -167,11 +167,15 @@ function Chat() {
           // Sample prompts
           <div
             className={`${
-              !recommendation.response ? "w-full" : " mx-auto md:max-w-2xl"
-            } justify-center items-center px-12 `}
+              !recommendation.response ? "w-full" : "mx-auto md:max-w-2xl"
+            } flex justify-center items-center`}
           >
             {!recommendation.response ? (
-              <div className={`grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg ${!unmountRecommendation?"opacity-100":"opacity-0"} transition-all duration-200 ease-in-out `}>
+              <div
+                className={`grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg ${
+                  !unmountRecommendation ? "opacity-100" : "opacity-0"
+                } transition-all duration-200 ease-in-out `}
+              >
                 {samplePrompts.map((samplePrompt, index) => (
                   <SamplePrompt
                     key={index}
@@ -201,7 +205,11 @@ function Chat() {
               </div>
             ) : (
               <div className="flex flex-col  items-start p-3 ">
-                <div className={`max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-tl from-[#3a6186] to-[#89253e] text-gray-300 selection:bg-black/75 tracking-wide font-normal border-2 border-gray-100 rounded-lg ${!unmountRecommendation?"opacity-100":"opacity-0"} transition-all duration-300 ease-in-out `}>
+                <div
+                  className={`max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-tl from-[#3a6186] to-[#89253e] text-gray-300 selection:bg-black/75 tracking-wide font-normal border-2 border-gray-100 rounded-lg ${
+                    !unmountRecommendation ? "opacity-100" : "opacity-0"
+                  } transition-all duration-300 ease-in-out `}
+                >
                   {recommendation.response}
                 </div>
               </div>
@@ -213,7 +221,7 @@ function Chat() {
           <VoiceChat />
         ) : (
           // Input field for the chat
-          <div className="w-full flex justify-center items-center my-4 md:my-6">
+          <div className="w-full flex justify-center items-center  md:my-6">
             <div
               className={`w-4/5 md:w-3/4 lg:w-2/4 h-[3rem] flex items-center justify-center ${
                 loading ? "cursor-not-allowed" : "cursor-auto"
