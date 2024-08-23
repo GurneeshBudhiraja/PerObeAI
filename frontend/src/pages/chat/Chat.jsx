@@ -30,8 +30,7 @@ function Chat() {
   // TODO: will change to empty string after testing and styling
   const [recommendation, setRecommendation] = useState({
     is_valid: false,
-    response:
-      "I can only help you create outfit recommendations. Please try again with a prompt that asks for an outfit recommendation. For example, 'What should I wear to a wedding?' or 'What outfit should I wear to a job interview?'I can only help you create outfit recommendations. Please try again with a prompt that asks for an outfit recommendation. For example, 'What should I wear to a wedding?' or 'What outfit should I wear to a job interview?'I can only help you create outfit recommendations. Please try again with a prompt that asks for an outfit recommendation. For example, 'What should I wear to a wedding?' or 'What outfit should I wear to a job interview?'",
+    response: "",
   });
   const [error, setError] = useState("");
   const [prompt, setPrompt] = useState("");
@@ -172,7 +171,7 @@ function Chat() {
             } justify-center items-center px-12 `}
           >
             {!recommendation.response ? (
-              <div className="grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg  ">
+              <div className={`grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg ${!unmountRecommendation?"opacity-100":"opacity-0"} transition-all duration-200 ease-in-out `}>
                 {samplePrompts.map((samplePrompt, index) => (
                   <SamplePrompt
                     key={index}
@@ -202,7 +201,7 @@ function Chat() {
               </div>
             ) : (
               <div className="flex flex-col  items-start p-3 ">
-                <div className="max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-tl from-[#3a6186] to-[#89253e] text-gray-300 selection:bg-black/75 tracking-wide font-normal border-2 border-gray-100 rounded-lg ">
+                <div className={`max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-tl from-[#3a6186] to-[#89253e] text-gray-300 selection:bg-black/75 tracking-wide font-normal border-2 border-gray-100 rounded-lg ${!unmountRecommendation?"opacity-100":"opacity-0"} transition-all duration-300 ease-in-out `}>
                   {recommendation.response}
                 </div>
               </div>
