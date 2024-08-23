@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
-import { recommendationUrl } from "../../utils/urlConstants.js";
+import { getRecommendationUrl } from "../../utils/urlConstants.js";
 import keys from "../../keys/keys.js";
 
 // Alan button from the sdk
@@ -27,7 +27,7 @@ function VoiceChat() {
 
             alanInstance.playText("Wait a moment while I am thinking...");
 
-            const url = recommendationUrl;
+            const url = getRecommendationUrl;
 
             const resp = await fetch(url, {
               method: "POST",

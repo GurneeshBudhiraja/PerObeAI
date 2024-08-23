@@ -14,8 +14,7 @@ router = APIRouter(prefix="/api/web/v1", tags=["outfit_recommendation"])
 
 @router.post("/recommend")
 def get_recommendation(
-    # TODO: will add the depends here later on
-    user_id: str,
+    user_id: str = Depends(verify_firebase_uid),
     body: RecommendationRequestBody = Body(...),
 ) -> JSONResponse:
     """
@@ -29,7 +28,6 @@ def get_recommendation(
         JSONResponse: The JSON response object
     """
     try:
-
         user_prompt = body.user_prompt
 
         city = body.city
@@ -44,7 +42,7 @@ def get_recommendation(
 
             return JSONResponse(
                 status_code=status.HTTP_200_OK,
-                content={"response": is_valid_user_prompt["reply"]},
+                content=is_valid_user_prompt,
             )
 
         agent_response = clothes_recommendation_agent(
@@ -57,7 +55,10 @@ def get_recommendation(
 
         return JSONResponse(
             status_code=status.HTTP_200_OK,
-            content={"response": agent_response["description"]},
+            content={
+                "is_valid": is_valid_user_prompt["is_valid"],
+                "response": agent_response["description"],
+            },
         )
 
     except Exception as e:

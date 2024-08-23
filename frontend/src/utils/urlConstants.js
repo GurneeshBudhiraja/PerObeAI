@@ -3,7 +3,7 @@ URL constants for making requests to the backend API
 */
 // TODO: Change URLS back before pushing to production
 // Endpoint for the outfit recommendation
-const recommendationUrl =
+const getRecommendationUrl =
   // "https://perobeai-bhgx.onrender.com/api/web/v1/recommend";
   "http://127.0.0.1:8000/api/web/v1/recommend";
 
@@ -16,4 +16,4 @@ const imageEmbeddingsURL =
 // const getImagesURL = "https://perobeai-bhgx.onrender.com/api/web/v1/get-images";
 const getImagesURL = "http://127.0.0.1:8000/api/web/v1/get-images";
 
-export { recommendationUrl, imageEmbeddingsURL, getImagesURL };
+export { getRecommendationUrl, imageEmbeddingsURL, getImagesURL };

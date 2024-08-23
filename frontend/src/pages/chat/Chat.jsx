@@ -7,7 +7,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Dropdown } from "primereact/dropdown";
 
-import { getImagesURL, recommendationUrl } from "../../utils/urlConstants.js";
+import { getRecommendation } from "./chatUtils.js";
 import { setUser } from "../../store/authSlice/authSlice.js";
 
 // Firebase services
@@ -27,7 +27,12 @@ function Chat() {
 
   const [loading, setLoading] = useState(false);
   const [userData, setUserData] = useState({});
-  const [recommendation, setRecommendation] = useState("");
+  // TODO: will change to empty string after testing and styling
+  const [recommendation, setRecommendation] = useState({
+    is_valid: false,
+    response:
+      "I can only help you create outfit recommendations. Please try again with a prompt that asks for an outfit recommendation. For example, 'What should I wear to a wedding?' or 'What outfit should I wear to a job interview?'I can only help you create outfit recommendations. Please try again with a prompt that asks for an outfit recommendation. For example, 'What should I wear to a wedding?' or 'What outfit should I wear to a job interview?'I can only help you create outfit recommendations. Please try again with a prompt that asks for an outfit recommendation. For example, 'What should I wear to a wedding?' or 'What outfit should I wear to a job interview?'",
+  });
   const [error, setError] = useState("");
   const [prompt, setPrompt] = useState("");
   const [images, setImages] = useState([]);
@@ -43,43 +48,17 @@ function Chat() {
   // By deafult Chat is selected
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
-  // Get the user data from the redux store
-  const { isAuth, uid, accessibility, city, preferred_fashion_style } =
-    useSelector((state) => state.auth);
-
-  const getImages = async () => {
-    try {
-      const uid = userData?.uid;
-      const outfit_description = recommendation;
-
-      const url = getImagesURL;
-
-      const response = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userData?.accessToken}`,
-        },
-        body: JSON.stringify({ outfit_description }),
-      });
-
-      const imagesData = await response.json();
-
-      if (imagesData?.image_urls?.length) {
-        // Replace the recommendation with the images
-        setRecommendation("");
-        setImages(imagesData.image_urls);
-      } else {
-        setError("No images found. Please try again.");
-      }
-    } catch (error) {
-      setError("Error in getting images. Please try again later.");
-    }
-  };
+  // Get the authentication status from the redux store
+  const { isAuth } = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
+        // Return if the user is already authenticated
+        if (isAuth) {
+          return;
+        }
+
         const currentUser = await auth.currentUser();
         const {
           uid = undefined,
@@ -140,65 +119,25 @@ function Chat() {
     };
 
     getCurrentUser();
-  }, []);
-
-  const getRecommendation = async (prompt) => {
-    try {
-      setImages([]);
-      setLoading(true);
-
-      if (!prompt.trim()) {
-        setError("Please enter a prompt");
-        return;
-      }
-
-      // Request body for the recommendation
-      const requestBody = JSON.stringify({
-        user_prompt: prompt.trim(),
-        city: userData?.city,
-        preferred_fashion_style: userData?.preferred_fashion_style,
-        accessibility: userData?.accessibility,
-      });
-
-      const response = await fetch(recommendationUrl, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${userData?.accessToken}`,
-        },
-        body: requestBody,
-      });
-
-      const data = await response.json();
-
-      if (!data?.response) {
-        throw new Error("Something went wrong. Please try again later.");
-      }
-
-      // Replace the old recommendation with the new one
-      setUnmountRecommendation(true);
-
-      setTimeout(() => {
-        setRecommendation(data?.response);
-        setUnmountRecommendation(false);
-      }, 450);
-    } catch (error) {
-      setError(error.message);
-    } finally {
-      setLoading(false);
-      setPrompt("");
-
-      // Focusing the input field
-      setTimeout(() => {
-        inputRef?.current?.focus();
-      }, 0);
-    }
-  };
+  }, [dispatch, isAuth, navigate]);
 
   // Send the prompt on the Enter key press
   const handleKeyDown = (e) => {
     if (e.key === "Enter" && prompt) {
-      getRecommendation(prompt);
+      getRecommendation(
+        prompt,
+        setImages,
+        setError,
+        setLoading,
+        userData?.city,
+        userData?.preferred_fashion_style,
+        userData?.accessibility,
+        inputRef,
+        userData?.accessToken,
+        setRecommendation,
+        setPrompt,
+        setUnmountRecommendation
+      );
     }
   };
 
@@ -228,24 +167,46 @@ function Chat() {
         {selectedOption === "Chat" && (
           // Sample prompts
           <div
-            className={`w-full ${
-              recommendation ? "hidden" : "flex"
+            className={`${
+              !recommendation.response ? "w-full" : " mx-auto md:max-w-2xl"
             } justify-center items-center px-12 `}
           >
-            <div className="grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg  ">
-              {samplePrompts.map((samplePrompt, index) => (
-                <SamplePrompt
-                  key={index}
-                  index={index}
-                  samplePrompt={samplePrompt.prompt}
-                  onClick={() => {
-                    setPrompt(samplePrompt.prompt);
-                    getRecommendation(samplePrompt.prompt);
-                  }}
-                  className={samplePrompt.style}
-                />
-              ))}
-            </div>
+            {!recommendation.response ? (
+              <div className="grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg  ">
+                {samplePrompts.map((samplePrompt, index) => (
+                  <SamplePrompt
+                    key={index}
+                    index={index}
+                    loading={loading}
+                    samplePrompt={samplePrompt.prompt}
+                    onClick={() => {
+                      setPrompt(samplePrompt.prompt);
+                      getRecommendation(
+                        samplePrompt.prompt,
+                        setImages,
+                        setError,
+                        setLoading,
+                        userData?.city,
+                        userData?.preferred_fashion_style,
+                        userData?.accessibility,
+                        inputRef,
+                        userData?.accessToken,
+                        setRecommendation,
+                        setPrompt,
+                        setUnmountRecommendation
+                      );
+                    }}
+                    className={samplePrompt.style}
+                  />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col  items-start p-3 ">
+                <div className="max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-tl from-[#3a6186] to-[#89253e] text-gray-300 selection:bg-black/75 tracking-wide font-normal border-2 border-gray-100 rounded-lg ">
+                  {recommendation.response}
+                </div>
+              </div>
+            )}
           </div>
         )}
 
@@ -278,7 +239,22 @@ function Chat() {
                     ? "opacity-50 cursor-not-allowed"
                     : "opacity-100 cursor-pointer"
                 } outline-blue-700`}
-                onClick={() => getRecommendation(prompt)}
+                onClick={() =>
+                  getRecommendation(
+                    prompt,
+                    setImages,
+                    setError,
+                    setLoading,
+                    userData?.city,
+                    userData?.preferred_fashion_style,
+                    userData?.accessibility,
+                    inputRef,
+                    userData?.accessToken,
+                    setRecommendation,
+                    setPrompt,
+                    setUnmountRecommendation
+                  )
+                }
                 disabled={!prompt || loading}
               >
                 {!loading ? (
