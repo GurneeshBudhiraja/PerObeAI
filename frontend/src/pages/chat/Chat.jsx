@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import SendIcon from "@mui/icons-material/Send";
@@ -29,11 +29,13 @@ function Chat() {
   const [userData, setUserData] = useState({});
   // TODO: will change to empty string after testing and styling
   const [recommendation, setRecommendation] = useState({
-    is_valid: false,
+    is_valid: true,
     response: "",
   });
   const [error, setError] = useState("");
   const [prompt, setPrompt] = useState("");
+
+  // TODO: will change to empty array after testing and styling
   const [images, setImages] = useState([]);
   const inputRef = useRef(null);
   const buttonRef = useRef(null);
@@ -148,7 +150,7 @@ function Chat() {
   };
 
   return (
-    <div className="py-3 bg-[#131314] h-screen w-full text-[#eeeeee] flex flex-col justify-between items-center relative overflow-scroll">
+    <div className="py-3 bg-[#131314] h-screen w-full text-[#eeeeee] flex flex-col justify-between items-center relative overflow-scroll ">
       <div className="flex flex-col w-full h-full justify-between py-5">
         {/* Dropdown */}
         <div>
@@ -177,7 +179,7 @@ function Chat() {
               !recommendation.response ? "w-full" : "mx-auto md:max-w-2xl"
             } flex justify-center items-center`}
           >
-            {(!recommendation.response && !images.length) ? (
+            {!recommendation.response && !images.length ? (
               <div
                 className={`grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg ${
                   !unmountRecommendation ? "opacity-100" : "opacity-0"
@@ -217,20 +219,40 @@ function Chat() {
                     !unmountRecommendation ? "opacity-100" : "opacity-0"
                   } transition-all duration-300 ease-in-out `}
                 >
-                  {recommendation.response}
+                  <div>{recommendation.response}</div>
                 </div>
-                {recommendation.is_valid && (
+                <div
+                  className={`w-full flex justify-center items-center mt-2 p-3 ${
+                    !unmountRecommendation ? "opacity-100" : "opacity-0"
+                  } transition-all duration-300 ease-in-out `}
+                >
+                  {!!images.length && (
+                    <div className="w-64 h-64 overflow-x-scroll whitespace-nowrap snap-x snap-mandatory md:overflow-x-visible md:w-full md:h-auto md:flex md:justify-evenly md:items-center space-x-3 border-2 rounded-lg border-gray-300 overflow-y-hidden bg-gradient-to-tl from-[#BE93C5]  to-[#7BC6CC] shadow-lg shadow-white/25">
+                      {images.map((image, index) => (
+                        <img
+                          key={index}
+                          src={image.url}
+                          loading="lazy"
+                          alt="outfit"
+                          className="inline-block rounded-lg object-contain p-2 w-64 h-64 snap-center snap-always  md:w-1/3 md:h-auto"
+                        />
+                      ))}
+                    </div>
+                  )}
+                </div>
+
+                {recommendation.is_valid && !images.length && (
                   <div className="w-full flex justify-center items-center mt-3 ">
                     <button
-                      className="w-fit bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wide text-sm lg:text-base p-2 shadow-get-images-button md:hover:shadow-get-images-button-hover md:hover:-translate-x-1 md:hover:-translate-y-1 transition-all duration-300 ease-in-out rounded-2xl md:active:translate-x-1 md:active:translate-y-1 md:active:shadow-none "
+                      className="w-fit bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wide text-sm lg:text-base p-2 shadow-get-images-button md:hover:shadow-get-images-button-hover md:hover:-translate-x-1 md:hover:-translate-y-1 transition-all duration-300 ease-in-out rounded-2xl xs:active:translate-x-1 xs:active:translate-y-1 xs:active:shadow-none "
                       onClick={() =>
                         getImages({
                           setError,
                           recommendation: recommendation?.response,
                           setLoading,
                           accessToken: userData?.accessToken,
-                          setRecommendation,
                           setImages,
+                          inputRef,
                         })
                       }
                     >
@@ -247,7 +269,7 @@ function Chat() {
           <VoiceChat />
         ) : (
           // Input field for the chat
-          <div className="w-full flex justify-center items-center  md:my-6">
+          <div className="w-full flex justify-center items-center ">
             <div
               className={`w-4/5 md:w-3/4 lg:w-2/4 h-[3rem] flex items-center justify-center ${
                 loading ? "cursor-not-allowed" : "cursor-auto"
@@ -258,7 +280,7 @@ function Chat() {
                 disabled={loading}
                 autoFocus
                 placeholder="Need outfit advice? Ask here..."
-                className="outline-none w-full bg-[#212121] border-[0.75px] border-gray-200 rounded-full p-4 px-5 focus:bg-[#343333ce] transition-all duration-100 ease-in-out tracking-wide poppins-regular hover:bg-[#3433338f] flex-grow pr-16  focus:border-[1px] "
+                className="outline-none w-full bg-[#212121] border-[0.75px] border-gray-200 rounded-full p-4 px-5 focus:bg-[#343333ce] transition-all duration-100 ease-in-out tracking-wide poppins-regular hover:bg-[#3433338f] flex-grow pr-16 focus:border-[1px] "
                 value={prompt}
                 onChange={(e) => {
                   setPrompt(e.target.value);

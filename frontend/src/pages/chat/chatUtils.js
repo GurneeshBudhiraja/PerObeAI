@@ -77,10 +77,10 @@ const getRecommendation = async (
 const getImages = async ({
   recommendation,
   accessToken,
-  setRecommendation,
   setLoading,
   setError,
   setImages,
+  inputRef,
 }) => {
   try {
     setLoading(true);
@@ -104,9 +104,6 @@ const getImages = async ({
     console.log(imagesData);
 
     if (imagesData?.image_urls?.length) {
-      // Replace the recommendation with the images
-      setRecommendation("");
-
       setLoading(false);
 
       setImages(imagesData.image_urls);
@@ -118,6 +115,10 @@ const getImages = async ({
   } catch (error) {
     setLoading(false);
     setError("Error in getting images. Please try again later.");
+  } finally {
+    setTimeout(() => {
+      inputRef?.current?.focus();
+    }, 0);
   }
 };
 
