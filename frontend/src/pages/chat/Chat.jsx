@@ -7,7 +7,7 @@ import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Dropdown } from "primereact/dropdown";
 
-import { getRecommendation } from "./chatUtils.js";
+import { getRecommendation, getImages } from "./chatUtils.js";
 import { setUser } from "../../store/authSlice/authSlice.js";
 
 // Firebase services
@@ -48,14 +48,21 @@ function Chat() {
   const [selectedOption, setSelectedOption] = useState(options[0]);
 
   // Get the authentication status from the redux store
-  const { isAuth } = useSelector((state) => state.auth);
+  const storeData = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
         // Return if the user is already authenticated
-        if (isAuth) {
-          return;
+        if (storeData.isAuth) {
+          setUserData({
+            uid: storeData?.uid,
+            email: storeData?.email,
+            city: storeData?.city,
+            accessibility: storeData?.accessibility,
+            preferred_fashion_style: storeData?.preferred_fashion_style,
+            accessToken: storeData?.accessToken,
+          });
         }
 
         const currentUser = await auth.currentUser();
@@ -118,7 +125,7 @@ function Chat() {
     };
 
     getCurrentUser();
-  }, [dispatch, isAuth, navigate]);
+  }, [dispatch, storeData.isAuth, navigate]);
 
   // Send the prompt on the Enter key press
   const handleKeyDown = (e) => {
@@ -153,7 +160,7 @@ function Chat() {
             checkmark={true}
             className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg ml-3 mb-3 lg:ml-7 ${
               selectedOption === "Chat"
-                ? "bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wider  "
+                ? "bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wider"
                 : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white tracking-widest "
             } transition-all duration-300 ease-in-out`}
             panelClassName={`border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50 tracking-wider  ${
@@ -170,7 +177,7 @@ function Chat() {
               !recommendation.response ? "w-full" : "mx-auto md:max-w-2xl"
             } flex justify-center items-center`}
           >
-            {!recommendation.response ? (
+            {(!recommendation.response && !images.length) ? (
               <div
                 className={`grid grid-cols-2 grid-rows-2 grid-flow-col mx-auto md:grid-cols-4 md:grid-flow-row md:grid-rows-1 gap-8 rounded-lg ${
                   !unmountRecommendation ? "opacity-100" : "opacity-0"
@@ -206,12 +213,31 @@ function Chat() {
             ) : (
               <div className="flex flex-col  items-start p-3 ">
                 <div
-                  className={`max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-tl from-[#3a6186] to-[#89253e] text-gray-300 selection:bg-black/75 tracking-wide font-normal border-2 border-gray-100 rounded-lg ${
+                  className={`max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-br from-[#BE93C5]  to-[#7BC6CC] text-black selection:bg-[#CDD8F9] tracking-wide font-normal border-2 border-gray-100 rounded-lg ${
                     !unmountRecommendation ? "opacity-100" : "opacity-0"
                   } transition-all duration-300 ease-in-out `}
                 >
                   {recommendation.response}
                 </div>
+                {recommendation.is_valid && (
+                  <div className="w-full flex justify-center items-center mt-3 ">
+                    <button
+                      className="w-fit bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wide text-sm lg:text-base p-2 shadow-get-images-button md:hover:shadow-get-images-button-hover md:hover:-translate-x-1 md:hover:-translate-y-1 transition-all duration-300 ease-in-out rounded-2xl md:active:translate-x-1 md:active:translate-y-1 md:active:shadow-none "
+                      onClick={() =>
+                        getImages({
+                          setError,
+                          recommendation: recommendation?.response,
+                          setLoading,
+                          accessToken: userData?.accessToken,
+                          setRecommendation,
+                          setImages,
+                        })
+                      }
+                    >
+                      View Outfit Images
+                    </button>
+                  </div>
+                )}
               </div>
             )}
           </div>
@@ -232,7 +258,7 @@ function Chat() {
                 disabled={loading}
                 autoFocus
                 placeholder="Need outfit advice? Ask here..."
-                className="outline-none w-full bg-[#212121] border-[0.75px] border-gray-200 rounded-full p-4 px-5 focus:bg-[#343333c0] transition-all duration-100 ease-in-out tracking-wide poppins-regular hover:bg-[#3433338f] flex-grow pr-16  focus:border-[1px] "
+                className="outline-none w-full bg-[#212121] border-[0.75px] border-gray-200 rounded-full p-4 px-5 focus:bg-[#343333ce] transition-all duration-100 ease-in-out tracking-wide poppins-regular hover:bg-[#3433338f] flex-grow pr-16  focus:border-[1px] "
                 value={prompt}
                 onChange={(e) => {
                   setPrompt(e.target.value);
@@ -241,7 +267,7 @@ function Chat() {
               />
               <button
                 ref={buttonRef}
-                className={`ml-2 absolute right-6 ${
+                className={`ml-2 absolute right-6 flex justify-center items-center ${
                   !prompt || loading
                     ? "opacity-50 cursor-not-allowed"
                     : "opacity-100 cursor-pointer"
@@ -267,7 +293,7 @@ function Chat() {
                 {!loading ? (
                   <SendIcon />
                 ) : (
-                  <CircularProgress size={30} style={{ color: "#D46676" }} />
+                  <CircularProgress size={30} style={{ color: "#CCD7FA" }} />
                 )}
               </button>
 

@@ -19,7 +19,6 @@ const getRecommendation = async (
   setUnmountRecommendation
 ) => {
   try {
-    setImages([]);
     setLoading(true);
 
     if (!prompt.trim()) {
@@ -50,17 +49,17 @@ const getRecommendation = async (
       throw new Error("Something went wrong. Please try again later.");
     }
 
+    // TODO: remove this console.log after testing
     console.log(data);
 
     // Replace the old recommendation with the new one
     setUnmountRecommendation(true);
 
-    
     setTimeout(() => {
+      setImages([]);
       setRecommendation(data);
       setUnmountRecommendation(false);
     }, 450);
-  
   } catch (error) {
     setError(error.message);
   } finally {
@@ -75,14 +74,17 @@ const getRecommendation = async (
 };
 
 // Get the images based on the recommendation
-const getImages = async (
+const getImages = async ({
   recommendation,
   accessToken,
   setRecommendation,
+  setLoading,
   setError,
-  setImages
-) => {
+  setImages,
+}) => {
   try {
+    setLoading(true);
+
     const outfit_description = recommendation;
 
     const url = getImagesURL;
@@ -98,14 +100,23 @@ const getImages = async (
 
     const imagesData = await response.json();
 
+    // TODO: remove this console.log after testing
+    console.log(imagesData);
+
     if (imagesData?.image_urls?.length) {
       // Replace the recommendation with the images
       setRecommendation("");
+
+      setLoading(false);
+
       setImages(imagesData.image_urls);
     } else {
+      setLoading(false);
+
       setError("No images found. Please try again.");
     }
   } catch (error) {
+    setLoading(false);
     setError("Error in getting images. Please try again later.");
   }
 };

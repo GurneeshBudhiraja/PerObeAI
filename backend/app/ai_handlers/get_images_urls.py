@@ -10,10 +10,10 @@ def get_images_from_description(user_id: str, outfit_description: str) -> JSONRe
         Get the image URLs from the outfit description
 
         Args:
-          outfit_description (str): The outfit description
+            outfit_description (str): The outfit description
 
         Returns:
-          JSONResponse: The JSON response object
+            JSONResponse: The JSON response object
         """
 
         description_vector_embedding = embed_text(text=outfit_description)

@@ -7,6 +7,8 @@ export default withMT({
       boxShadow: {
         "3xl": "1px 1px 20px 1px rgba(255, 255, 255, 0.645)",
         "active-shadow": "1px 1px 15px 0.5px rgba(255, 255, 255, 0.8)",
+        "get-images-button": "4px 3px #D66D75",
+        "get-images-button-hover": "6px 6px 2px #D66D75",
       },
       keyframes: {
         slideInBottom: {
