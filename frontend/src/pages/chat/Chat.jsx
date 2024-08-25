@@ -160,16 +160,8 @@ function Chat() {
             options={options}
             optionLabel="name"
             checkmark={true}
-            className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg ml-3 mb-3 lg:ml-7 ${
-              selectedOption === "Chat"
-                ? "bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wider"
-                : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white tracking-widest "
-            } transition-all duration-300 ease-in-out`}
-            panelClassName={`border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50 tracking-wider  ${
-              selectedOption === "Chat"
-                ? "bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wider  "
-                : "bg-gradient-to-br from-[#100D2B] via-[#302B61] to-[#242440] text-white "
-            }   transition-color duration-300 ease-in-out`}
+            className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg ml-3 mb-3 lg:ml-7 text-black tracking-wider bg-gradient-to-tl from-[#C9D6FF] to-[#E2E2E2] transition-all duration-300 ease-in-out`}
+            panelClassName={`border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50 tracking-wider bg-gradient-to-tl from-[#C9D6FF] to-[#E2E2E2] transition-color duration-300 ease-in-out`}
           />
         </div>
         {selectedOption === "Chat" && (
@@ -213,28 +205,28 @@ function Chat() {
                 ))}
               </div>
             ) : (
-              <div className="flex flex-col  items-start p-3 ">
+              <div className="flex flex-col  items-start px-5 mb-5  ">
                 <div
-                  className={`max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-br from-[#BE93C5]  to-[#7BC6CC] text-black selection:bg-[#CDD8F9] tracking-wide font-normal border-2 border-gray-100 rounded-lg ${
+                  className={`max-h-64 leading-relaxed text-[0.90rem] md:text-base overflow-y-scroll p-3 mb-2 bg-gradient-to-br from-[#BE93C5]  to-[#7BC6CC] text-black selection:bg-[#CDD8F9] tracking-wide font-normal ${
                     !unmountRecommendation ? "opacity-100" : "opacity-0"
-                  } transition-all duration-300 ease-in-out `}
+                  } transition-all duration-300 ease-in-out border-2 rounded-lg shadow-lg shadow-white/25 `}
                 >
                   <div>{recommendation.response}</div>
                 </div>
                 <div
-                  className={`w-full flex justify-center items-center mt-2 p-3 ${
+                  className={`w-full flex justify-center items-center mt-1 ${
                     !unmountRecommendation ? "opacity-100" : "opacity-0"
                   } transition-all duration-300 ease-in-out `}
                 >
                   {!!images.length && (
-                    <div className="w-64 h-64 overflow-x-scroll whitespace-nowrap snap-x snap-mandatory md:overflow-x-visible md:w-full md:h-auto md:flex md:justify-evenly md:items-center space-x-3 border-2 rounded-lg border-gray-300 overflow-y-hidden bg-gradient-to-tl from-[#BE93C5]  to-[#7BC6CC] shadow-lg shadow-white/25">
+                    <div className="w-auto h-auto overflow-x-scroll whitespace-nowrap snap-x snap-mandatory md:overflow-x-visible md:w-full md:h-auto md:flex md:justify-evenly md:items-center space-x-3  overflow-y-hidden bg-gradient-to-tl from-[#BE93C5]  to-[#7BC6CC] shadow-lg shadow-white/25 py-2 border-2 rounded-lg border-white">
                       {images.map((image, index) => (
                         <img
                           key={index}
                           src={image.url}
                           loading="lazy"
                           alt="outfit"
-                          className="inline-block rounded-lg object-contain p-2 w-64 h-64 snap-center snap-always  md:w-1/3 md:h-auto"
+                          className="inline-block rounded-3xl object-contain p-2 w-64 h-64 snap-center snap-always md:w-1/3 md:h-auto "
                         />
                       ))}
                     </div>

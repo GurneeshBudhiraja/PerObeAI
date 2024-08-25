@@ -136,7 +136,7 @@ function AccountSettings() {
       // Reload the page for showing the updated data
       setTimeout(() => {
         window.location.reload();
-      }, 1100);
+      }, 100);
     } catch (error) {
       // Error message
       setError("Something went wrong, please try again later");

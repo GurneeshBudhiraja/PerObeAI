@@ -49,9 +49,6 @@ const getRecommendation = async (
       throw new Error("Something went wrong. Please try again later.");
     }
 
-    // TODO: remove this console.log after testing
-    console.log(data);
-
     // Replace the old recommendation with the new one
     setUnmountRecommendation(true);
 
@@ -99,9 +96,6 @@ const getImages = async ({
     });
 
     const imagesData = await response.json();
-
-    // TODO: remove this console.log after testing
-    console.log(imagesData);
 
     if (imagesData?.image_urls?.length) {
       setLoading(false);
