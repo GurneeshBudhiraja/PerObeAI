@@ -41,12 +41,13 @@ function Header() {
         <ReactHelmet title="Settings - PerObe AI" />
       </div>
     );
-  } else if(location.pathname==="/my-wardrobe"){
-    return(
+  } else if (location.pathname === "/my-wardrobe") {
+    return (
       <div>
         <ReactHelmet title="Wardrobe - PerObe AI" />
+        <ChatHeader />
       </div>
-    )
+    );
   }
 }
 

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { Snackbar, Alert, CircularProgress, Backdrop } from "@mui/material";
@@ -13,9 +13,13 @@ function MyWardrobe() {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+  const imageRefs = useRef([]);
 
   const user = useSelector((state) => state.auth);
+
   const [firestorePictures, setFirestorePictures] = useState([]);
+
+  const [active, setActive] = React.useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -56,6 +60,8 @@ function MyWardrobe() {
       try {
         const pictures = await fetchPictures(user.uid);
 
+        setActive(pictures[0].url);
+
         setFirestorePictures(pictures);
       } catch (error) {
         setError("Something went wrong while fetching pictures.");
@@ -78,16 +84,44 @@ function MyWardrobe() {
     return () => {
       setError("");
       setLoading(false);
-      setFirestorePictures([]);
     };
   }, [user, dispatch, navigate]);
 
   return (
-    <div>
-      <div>
-        {firestorePictures && 
-        <ImageGallery pictures={firestorePictures} />
-        }
+    <div className="bg-gradient-to-tl from-[#feab5e7b] via-[#c779d06a] to-[#4bc0c86b] h-full w-full overflow-scroll flex justify-center items-center p-4">
+      <div className="grid gap-4 m-4 md:m-0 md:my-4">
+        <div className="h-64 md:h-auto ">
+          <img
+            src={active}
+            className="h-full w-full max-w-full rounded-2xl shadow-lg shadow-black  object-contain object-center md:h-[480px]"
+          />
+        </div>
+        <div className="overflow-x-auto mx-auto max-w-4xl snap-x snap-mandatory ">
+          <div className="flex space-x-4 py-4">
+            {firestorePictures.map((picture, index) => (
+              <div
+                key={index}
+                className="flex-shrink-0 snap-center"
+                ref={(el) => (imageRefs.current[index] = el)}
+              >
+                <img
+                  onClick={() => {
+                    imageRefs.current[index].scrollIntoView({
+                      behavior: "smooth",
+                      inline: "center",
+                    });
+                    setActive(picture.url);
+                  }}
+                  src={picture.url}
+                  alt={"Picture " + index}
+                  className={`h-20 max-w-full cursor-pointer rounded-lg object-contain ${
+                    active === picture.url ? "border-2 border-blue-500" : ""
+                  }`}
+                />
+              </div>
+            ))}
+          </div>
+        </div>
       </div>
 
       {/* Loading UI */}
