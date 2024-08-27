@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
+
+// Store action
 import { setUser } from "../../store/authSlice/authSlice.js";
 
 // Icons and components
@@ -16,8 +18,10 @@ import ArrowBackIosIcon from "@mui/icons-material/ArrowBackIos";
 // Firebase services
 import { fireStore, auth } from "../../firebase/firebaseServices.js";
 
-// Utility function to title case the string and account settings constants
-import { titleCase } from "./accountSettingsUtils/accountSettingsUtils.js";
+// Utility function
+import { updatePreferences } from "./accountSettingsUtils/accountSettingsUtils.js";
+
+// Constants for the dropdowns
 import {
   accessibilities,
   colorBlindnessType,
@@ -31,6 +35,7 @@ function AccountSettings() {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState(false);
 
+  // User data from the redux store
   const storeUserData = useSelector((state) => state.auth);
 
   const [userData, setUserData] = useState({
@@ -39,16 +44,17 @@ function AccountSettings() {
     city: "",
     accessibility: "",
     preferred_fashion_style: "",
+    accessToken: "",
   });
 
   useEffect(() => {
     setError(false);
     const getUserData = async () => {
       try {
-        // Get the data from the store
         const storeData = {
           uid: storeUserData?.uid,
           email: storeUserData?.email,
+          accessToken: storeUserData?.accessToken,
         };
 
         // Current user data using Firebase Auth if not available in the store
@@ -56,28 +62,35 @@ function AccountSettings() {
           const currentUser = await auth.currentUser();
           const uid = currentUser?.uid;
           const email = currentUser?.email;
+          const accessToken = currentUser?.accessToken;
+          storeData.uid = uid;
+          storeData.email = email;
+          storeData.accessToken = accessToken;
 
           // Navigate to the home page if the user is not authenticated
           if (!uid) {
             return navigate("/");
           }
 
-          setUserData({ ...userData, uid, email });
-          storeData.uid = uid;
-          storeData.email = email;
+          // Updating the state with the user uid, email and accessToken  fetched from Firebase Auth
+          setUserData({ ...userData, uid, email, accessToken });
         } else {
+          // Updating the state with the uid, email and accessToken from the store
           setUserData({
             ...userData,
             uid: storeData?.uid,
             email: storeData?.email,
+            accessToken: storeData?.accessToken,
           });
         }
-        // User choices from the Firestore
+
+        // User choices from the Firebase Firestore
         const userChoices = await fireStore.getData({ uid: storeData?.uid });
         // Destructuring the user choices
         const { city, accessibility, preferred_fashion_style } = userChoices;
 
-        // Set the user data in the state
+        // Updating the state with the user choices
+        // When accessibility is Blind or None
         if (accessibility === "Blind" || accessibility === "None") {
           setUserData((prev) => ({
             ...prev,
@@ -86,6 +99,7 @@ function AccountSettings() {
             preferred_fashion_style,
           }));
         } else {
+          // When accessibility is Color Blind
           setUserData((prev) => ({
             ...prev,
             city,
@@ -95,7 +109,7 @@ function AccountSettings() {
           }));
         }
 
-        // Set the user data in the store
+        // Updating the store with the user data
         dispatch(
           setUser({
             city,
@@ -104,6 +118,7 @@ function AccountSettings() {
             uid: storeData?.uid,
             email: storeData?.email,
             isAuth: true,
+            accessToken: storeData?.accessToken,
           })
         );
       } catch (error) {
@@ -111,39 +126,7 @@ function AccountSettings() {
       }
     };
     getUserData();
-  }, []);
-
-  const updatePreferences = async () => {
-    try {
-      setLoading(true);
-      setError(false);
-      setSuccess(false);
-
-      const updatedData = {
-        city: titleCase(userData?.city),
-        preferred_fashion_style: titleCase(userData?.preferred_fashion_style),
-        accessibility:
-          userData?.accessibility.accessibility === "Color Blind"
-            ? userData?.colorBlindnessType.colorBlindnessType
-            : userData?.accessibility.accessibility,
-      };
-      // Update new data in the Firestore
-      await fireStore.addData({ uid: userData?.uid, data: updatedData });
-
-      // Success message
-      setSuccess("Preferences updated successfully");
-
-      // Reload the page for showing the updated data
-      setTimeout(() => {
-        window.location.reload();
-      }, 100);
-    } catch (error) {
-      // Error message
-      setError("Something went wrong, please try again later");
-    } finally {
-      setLoading(false);
-    }
-  };
+  }, [dispatch, navigate, storeUserData]);
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-blue-100 py-8 px-4 md:px-8">
@@ -240,7 +223,14 @@ function AccountSettings() {
         <Button
           color="blue"
           className="w-full py-3 px-6 rounded-lg shadow-lg"
-          onClick={updatePreferences}
+          onClick={() =>
+            updatePreferences({
+              setLoading,
+              setError,
+              setSuccess,
+              userData,
+            })
+          }
         >
           Save Settings
         </Button>

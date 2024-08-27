@@ -1,17 +1,8 @@
 import Login from "./login/Login.jsx";
 import Home from "./home/Home.jsx";
-import Chat from "./chat/Chat.jsx";
+import ChatPage from "./chatPage/ChatPage.jsx";
 import GetStarted from "./getStarted/GetStarted.jsx";
-import VoiceChat from "./voiceChat/VoiceChat.jsx";
 import AccountSettings from "./accountSettings/AccountSettings.jsx";
 import MyWardrobe from "./myWardrobe/MyWardrobe.jsx";
 
-export {
-  Login,
-  Home,
-  Chat,
-  GetStarted,
-  VoiceChat,
-  AccountSettings,
-  MyWardrobe,
-};
+export { Login, Home, ChatPage, GetStarted, AccountSettings, MyWardrobe };

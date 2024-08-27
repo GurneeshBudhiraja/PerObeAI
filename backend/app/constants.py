@@ -1,6 +1,5 @@
 # List of allowed origins for the CORS middleware
-# TODO: update the list before deploying to production
-ALLOWED_ORIGINS = ["*"]
+ALLOWED_ORIGINS = ["https://perobeai.vercel.app"]
 
 
 # Vector store constants

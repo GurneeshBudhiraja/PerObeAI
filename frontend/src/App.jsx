@@ -7,7 +7,7 @@ import { HelmetProvider } from "react-helmet-async";
 import {
   Home,
   Login,
-  Chat,
+  ChatPage,
   GetStarted,
   AccountSettings,
   MyWardrobe,
@@ -20,7 +20,7 @@ function App() {
         <Routes>
           <Route exact path="/" element={<StoreProvider />}>
             <Route exact path="" element={<Home />} />
-            <Route exact path="chat" element={<Chat />} />
+            <Route exact path="chat" element={<ChatPage />} />
             <Route exact path="login" element={<Login />} />
             <Route exact path="get-started" element={<GetStarted />} />
             <Route exact path="settings" element={<AccountSettings />} />

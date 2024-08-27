@@ -76,7 +76,7 @@ function Home() {
     }, 500);
 
     getCurrentUser();
-  }, []);
+  }, [dispatch, navigate]);
 
   // Wrapper function to trigger the google sign in
   const googleSignInWrapper = async () => {

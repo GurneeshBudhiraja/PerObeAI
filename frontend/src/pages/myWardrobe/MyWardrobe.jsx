@@ -1,24 +1,36 @@
-import React, { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+// Components
 import { Snackbar, Alert, CircularProgress, Backdrop } from "@mui/material";
 
+// Firebase services
 import { auth, fireStore } from "../../firebase/firebaseServices.js";
+
+// Utility functions
 import { fetchPictures } from "./myWardrobeUtils/utils.js";
+
+// Store actions
 import { setUser } from "../../store/authSlice/authSlice.js";
 
 function MyWardrobe() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
   const [loading, setLoading] = useState(null);
   const [error, setError] = useState(null);
+
+  // For scrolling to the selected image
   const imageRefs = useRef([]);
 
+  // For active image
+  const [active, setActive] = useState(null);
+
+  // User data from the store
   const user = useSelector((state) => state.auth);
 
   const [firestorePictures, setFirestorePictures] = useState([]);
-
-  const [active, setActive] = React.useState(null);
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -45,6 +57,7 @@ function MyWardrobe() {
           isAuth: true,
         };
 
+        // Update the state in the store
         dispatch(setUser(storeData));
       } catch (error) {
         setError("Something went wrong. Please try again later.");
@@ -57,14 +70,16 @@ function MyWardrobe() {
 
     const fetchPicturesData = async () => {
       try {
+        // Getting pictures from Firebase storage
         const pictures = await fetchPictures(user.uid);
 
+        // By default, set the first picture as active
         setActive(pictures[0].url);
 
+        // Updating the state with the fetched pictures
         setFirestorePictures(pictures);
       } catch (error) {
         setError("Something went wrong while fetching pictures.");
-
         setTimeout(() => navigate("/"), 1000);
       } finally {
         setLoading(false);
@@ -73,6 +88,7 @@ function MyWardrobe() {
 
     setLoading(true);
 
+    // Check if the user is authenticated
     if (!user.isAuth) {
       fetchUser();
     } else {
@@ -89,12 +105,15 @@ function MyWardrobe() {
   return (
     <div className="bg-gradient-to-tl from-[#feab5e7b] via-[#c779d06a] to-[#4bc0c86b] h-full w-full overflow-scroll flex justify-center items-center p-4">
       <div className="grid gap-4 m-4 md:m-0 md:my-4">
+        {/* Current selected Image */}
         <div className="h-64 md:h-auto ">
           <img
             src={active}
             className="h-full w-full max-w-full rounded-2xl shadow-lg shadow-black  object-contain object-center md:h-[480px]"
           />
         </div>
+
+        {/* Image scroll bar */}
         <div className="overflow-x-auto mx-auto max-w-4xl snap-x snap-mandatory ">
           <div className="flex space-x-4 py-4">
             {firestorePictures.map((picture, index) => (
@@ -123,7 +142,7 @@ function MyWardrobe() {
         </div>
       </div>
 
-      {/* Loading UI */}
+      {/* Loading indicator for image fetching */}
       {loading && (
         <Backdrop
           sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}

@@ -1,63 +1,68 @@
 import { useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+
+// Firebase services
+import { auth, fireStore } from "../../firebase/firebaseServices.js";
+
+// Store action
+import { setUser } from "../../store/authSlice/authSlice.js";
+
+// Utility functions
+import { getRecommendation, getImages } from "./chatUtils.js";
+
+// Options for the dropdown
+const OPTIONS = ["Chat", "Voice"];
+
+// Icons and components
 import SendIcon from "@mui/icons-material/Send";
 import CircularProgress from "@mui/material/CircularProgress";
 import Snackbar from "@mui/material/Snackbar";
 import Alert from "@mui/material/Alert";
 import { Dropdown } from "primereact/dropdown";
-
-import { getRecommendation, getImages } from "./chatUtils.js";
-import { setUser } from "../../store/authSlice/authSlice.js";
-
-// Firebase services
-import { auth, fireStore } from "../../firebase/firebaseServices.js";
-
-// Custom components/pages/functions
-import { VoiceChat } from "../pages.js";
 import { InputText } from "primereact/inputtext";
 import { SamplePrompt } from "../../components/components.js";
 
-// Constants for the chat
+// Voice chat page
+import VoiceChat from "./VoiceChat.jsx";
+
+// Chat constants
 import { samplePrompts } from "./chatConstants.js";
 
-function Chat() {
+function ChatPage() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+
+  const inputRef = useRef(null);
+  const buttonRef = useRef(null);
 
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
 
-  const [userData, setUserData] = useState({});
+  const [prompt, setPrompt] = useState("");
+  const [images, setImages] = useState([]);
 
+  const [userData, setUserData] = useState({});
   const [recommendation, setRecommendation] = useState({
     is_valid: true,
     response: "",
   });
 
-  const [prompt, setPrompt] = useState("");
-
-  const [images, setImages] = useState([]);
-  const inputRef = useRef(null);
-  const buttonRef = useRef(null);
-
-  // Replaces the new recommendation with the new one
+  // Replaces the old recommendation with a new one
   const [unmountRecommendation, setUnmountRecommendation] = useState(false);
 
-  // Options for the dropdown
-  const options = ["Chat", "Voice"];
-
   // By deafult Chat is selected
-  const [selectedOption, setSelectedOption] = useState(options[0]);
+  const [selectedOption, setSelectedOption] = useState(OPTIONS[0]);
 
-  // Get the authentication status from the redux store
+  // User data from the redux store
   const storeData = useSelector((state) => state.auth);
 
   useEffect(() => {
     const getCurrentUser = async () => {
       try {
-        // Return if the user is already authenticated
+        // Check if the user is authenticated
         if (storeData.isAuth) {
+          // Updating the user data state
           setUserData({
             uid: storeData?.uid,
             email: storeData?.email,
@@ -66,6 +71,7 @@ function Chat() {
             preferred_fashion_style: storeData?.preferred_fashion_style,
             accessToken: storeData?.accessToken,
           });
+          return;
         }
 
         const currentUser = await auth.currentUser();
@@ -126,9 +132,8 @@ function Chat() {
         }, 800);
       }
     };
-
     getCurrentUser();
-  }, [dispatch, storeData.isAuth, navigate]);
+  }, [dispatch, navigate, storeData]);
 
   // Send the prompt on the Enter key press
   const handleKeyDown = (e) => {
@@ -158,15 +163,16 @@ function Chat() {
           <Dropdown
             value={selectedOption}
             onChange={(e) => setSelectedOption(e.value)}
-            options={options}
+            options={OPTIONS}
             optionLabel="name"
             checkmark={true}
             className={`py-1 px-2 border-[1px] border-gray-600 rounded-lg shadow-lg ml-3 mb-3 lg:ml-7 text-black tracking-wider bg-gradient-to-tl from-[#C9D6FF] to-[#E2E2E2] transition-all duration-300 ease-in-out`}
             panelClassName={`border-[1px] border-gray-600 rounded-lg shadow-lg mt-1 pl-3 pb-2 z-50 tracking-wider bg-gradient-to-tl from-[#C9D6FF] to-[#E2E2E2] transition-color duration-300 ease-in-out`}
           />
         </div>
+
+        {/* Sample prompts to show at the very start */}
         {selectedOption === "Chat" && (
-          // Sample prompts
           <div
             className={`${
               !recommendation.response ? "w-full" : "mx-auto md:max-w-2xl"
@@ -261,13 +267,14 @@ function Chat() {
         {selectedOption === "Voice" ? (
           <VoiceChat />
         ) : (
-          // Input field for the chat
+          // Chat
           <div className="w-full flex justify-center items-center ">
             <div
               className={`w-4/5 md:w-3/4 lg:w-2/4 h-[3rem] flex items-center justify-center ${
                 loading ? "cursor-not-allowed" : "cursor-auto"
               }`}
             >
+              {/* Input field for the chat */}
               <InputText
                 ref={inputRef}
                 disabled={loading}
@@ -280,6 +287,7 @@ function Chat() {
                 }}
                 onKeyDown={handleKeyDown}
               />
+              {/* Submit button */}
               <button
                 ref={buttonRef}
                 className={`ml-2 absolute right-6 flex justify-center items-center ${
@@ -312,6 +320,7 @@ function Chat() {
                 )}
               </button>
 
+              {/* Error alert */}
               {error && (
                 <Snackbar
                   open={!!error}
@@ -336,4 +345,4 @@ function Chat() {
   );
 }
 
-export default Chat;
+export default ChatPage;

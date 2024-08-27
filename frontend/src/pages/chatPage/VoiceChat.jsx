@@ -1,18 +1,22 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 
+// URL constants
 import { getRecommendationUrl } from "../../utils/urlConstants.js";
+
 import keys from "../../keys/keys.js";
 
 // Alan button from the sdk
 import alanBtn from "@alan-ai/alan-sdk-web";
 
 function VoiceChat() {
+  // User data from the store
   const userData = useSelector((state) => state.auth);
+
   const [recommendation, setRecommendation] = useState("");
   const [loading, setLoading] = useState(true);
 
-  // Replace the new recommendation with the old one
+  // Replace the old recommendation with a new one
   const [unmountRecommendation, setUnmountRecommendation] = useState(false);
 
   useEffect(() => {
@@ -22,7 +26,7 @@ function VoiceChat() {
         onCommand: async ({ command, user_prompt }) => {
           try {
             if (command === "recommendCommand") {
-              // Custom prefix to the user prompt for better recommendations
+              // Custom prefix to the user prompt for generating proper recommendations from Gemini AI
               const refactor_user_prompt = `Generate a recommendation for ${user_prompt}`;
 
               alanInstance.playText("Wait a moment while I am thinking...");
@@ -49,21 +53,22 @@ function VoiceChat() {
 
               const data = await resp.json();
 
-              // Remove the old recommendation and add the new one
+              // Unmount the old recommendation
               setUnmountRecommendation(true);
 
+              // Checking for the error
               if (data?.error) {
                 alanInstance.playText(
                   "Sorry, I am unable to process your request at the moment. Please try again later."
                 );
               } else {
+                alanInstance.playText(
+                  data?.response || "Sorry, I didn't understand the response."
+                );
                 setTimeout(() => {
                   setRecommendation(data?.response);
                   setUnmountRecommendation(false);
                 }, 450);
-                alanInstance.playText(
-                  data?.response || "Sorry, I didn't understand the response."
-                );
               }
             }
           } catch (error) {
