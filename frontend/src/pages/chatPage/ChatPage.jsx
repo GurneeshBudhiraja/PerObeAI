@@ -240,7 +240,7 @@ function ChatPage() {
                   )}
                 </div>
 
-                {recommendation.is_valid && !images.length && (
+                {true && (
                   <div className="w-full flex justify-center items-center mt-3 ">
                     <button
                       className="w-fit bg-gradient-to-br from-[#C9D6FF]  to-[#E2E2E2] text-black tracking-wide text-sm lg:text-base p-2 shadow-get-images-button md:hover:shadow-get-images-button-hover md:hover:-translate-x-1 md:hover:-translate-y-1 transition-all duration-300 ease-in-out rounded-2xl xs:active:translate-x-1 xs:active:translate-y-1 xs:active:shadow-none "
