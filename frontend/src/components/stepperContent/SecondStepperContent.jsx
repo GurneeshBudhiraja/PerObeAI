@@ -9,6 +9,7 @@ import {
 function SecondStepperContent({ canProceed, userData, setUserData }) {
   return (
     <div>
+      {/* City input */}
       <Input
         label="City"
         value={userData?.city}
@@ -19,6 +20,7 @@ function SecondStepperContent({ canProceed, userData, setUserData }) {
         placeholder="City"
       />
 
+      {/* Accessibility dropdown */}
       <div className="my-8 flex flex-col sm:flex-row justify-between  gap-2 w-full h-full ">
         <Dropdown
           value={userData?.accessibility}
@@ -52,6 +54,8 @@ function SecondStepperContent({ canProceed, userData, setUserData }) {
           />
         )}
       </div>
+
+      {/* Preferred fashion style input */}
       <div className="w-full">
         <FloatLabel>
           <Input

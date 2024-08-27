@@ -15,7 +15,7 @@ const samplePrompts = [
     "bg-gradient-to-tl from-[#eecda3]  to-[#ef629f] text-black tracking-wide",
   },
   {
-    prompt: "What should I wear to a summer wedding?",
+    prompt: "What should I wear to a wedding?",
     style:
       "bg-gradient-to-tl from-[#be93c5]  to-[#7bc6cc] text-black tracking-wide",
   },

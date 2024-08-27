@@ -12,8 +12,6 @@ const fetchPictures = async (uid) => {
 
     return pictures;
   } catch (error) {
-    // TODO: will remove this later on
-    console.log(error);
     return [];
   }
 };

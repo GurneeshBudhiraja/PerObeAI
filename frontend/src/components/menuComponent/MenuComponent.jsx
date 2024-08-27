@@ -1,16 +1,17 @@
-import React, { useState } from "react";
+import { useState } from "react";
+import { useNavigate, Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
+
+// Icons and components
 import { Menu, MenuItem, MenuButton } from "@szhsin/react-menu";
 import "@szhsin/react-menu/dist/index.css";
 import "@szhsin/react-menu/dist/transitions/zoom.css";
 import { Snackbar, Alert } from "@mui/material";
 import GitHubIcon from "@mui/icons-material/GitHub";
-
-import { useNavigate, Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { logoutUser } from "../../store/authSlice/authSlice.js";
-
-// Menu logo image
 import { MenuLogo } from "../../../assets/assets.jsx";
+
+// Store actions
+import { logoutUser } from "../../store/authSlice/authSlice.js";
 
 // Firebase service
 import { auth as firebaseAuth } from "../../firebase/firebaseServices.js";
@@ -26,10 +27,11 @@ function MenuComponent() {
 
   return (
     <div className="z-50">
+      {/* Menu component */}
       <Menu
         menuButton={
           <MenuButton>
-            <img src={MenuLogo} alt="Menu" className={`w-8 h-8 `} />
+            <img src={MenuLogo} alt="Menu" className={`w-8 h-8`} />
           </MenuButton>
         }
         transition
@@ -37,7 +39,7 @@ function MenuComponent() {
         direction="left"
         arrow
       >
-        {/* WELCOME MESSAGE ON THE MENU */}
+        {/* Welcome message on the menu */}
         {email && (
           <div className="flex items-center px-3 text-sm border-b-[1px] border-gray-300 ">
             Welcome, {email}
@@ -100,8 +102,7 @@ function MenuComponent() {
         </MenuItem>
       </Menu>
 
-      {/* alerts */}
-
+      {/* Error alert */}
       {error && (
         <Snackbar
           open={!!error}
@@ -119,6 +120,7 @@ function MenuComponent() {
         </Snackbar>
       )}
 
+      {/* Logout success alert */}
       {isLogout && (
         <Snackbar
           open={!!isLogout}
@@ -131,7 +133,7 @@ function MenuComponent() {
             severity="success"
             sx={{ width: "100%" }}
           >
-            {"You have been logged out successfully"}
+            You have been logged out successfully
           </Alert>
         </Snackbar>
       )}

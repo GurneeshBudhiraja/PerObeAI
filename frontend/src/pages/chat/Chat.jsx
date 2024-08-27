@@ -26,16 +26,17 @@ function Chat() {
   const navigate = useNavigate();
 
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
   const [userData, setUserData] = useState({});
-  // TODO: will change to empty string after testing and styling
+
   const [recommendation, setRecommendation] = useState({
     is_valid: true,
     response: "",
   });
-  const [error, setError] = useState("");
+
   const [prompt, setPrompt] = useState("");
 
-  // TODO: will change to empty array after testing and styling
   const [images, setImages] = useState([]);
   const inputRef = useRef(null);
   const buttonRef = useRef(null);

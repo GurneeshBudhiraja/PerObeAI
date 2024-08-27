@@ -1,3 +1,4 @@
+// Icons for sample prompts
 import CheckroomIcon from "@mui/icons-material/Checkroom";
 import IronOutlinedIcon from "@mui/icons-material/IronOutlined";
 import SellOutlinedIcon from "@mui/icons-material/SellOutlined";

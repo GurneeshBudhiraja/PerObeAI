@@ -1,5 +1,4 @@
 import { Link } from "react-router-dom";
-
 import { BigLogo, SmallLogo } from "../../../assets/assets.jsx";
 
 function LoginHeader() {

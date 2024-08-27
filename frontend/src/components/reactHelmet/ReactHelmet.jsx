@@ -1,6 +1,6 @@
 import { Helmet } from "react-helmet-async";
 
-function ReactHelmet({ title, content }) {
+function ReactHelmet({ title, content } ) {
   return (
     <div>
       <Helmet>

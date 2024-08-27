@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { FileUpload } from "primereact/fileupload";
 
 // Firebase service
@@ -13,6 +13,7 @@ function FirstStepperContent({
 }) {
   const [isImages, setIsImages] = useState(false);
 
+  // Function to upload images to firebase storage
   const submitImages = async (event) => {
     try {
       setIsLoading(true);

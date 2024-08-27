@@ -6,7 +6,6 @@ import { Snackbar, Alert, CircularProgress, Backdrop } from "@mui/material";
 import { auth, fireStore } from "../../firebase/firebaseServices.js";
 import { fetchPictures } from "./myWardrobeUtils/utils.js";
 import { setUser } from "../../store/authSlice/authSlice.js";
-import { ImageGallery } from "../../components/components.js";
 
 function MyWardrobe() {
   const dispatch = useDispatch();

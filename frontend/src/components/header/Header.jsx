@@ -1,13 +1,17 @@
-import React from "react";
+// ReactHelmet for setting custom document titles and meta tags in the application
 import { ReactHelmet } from "../components.js";
+// Check the pathname to determine the appropriate header component to render
 import { useLocation } from "react-router-dom";
 
+// Custom header components
 import LoginHeader from "./LoginHeader.jsx";
 import HomeHeader from "./HomeHeader.jsx";
-import ChatHeader from "./ChatHeader.jsx";
+// Common header component for multiple pages
+import CommonHeader from "./CommonHeader.jsx";
 
 function Header() {
   const location = useLocation();
+
   if (location.pathname === "/login") {
     return (
       <div>
@@ -26,7 +30,7 @@ function Header() {
     return (
       <div>
         <ReactHelmet title="Chat - PerObe AI" />
-        <ChatHeader />
+        <CommonHeader />
       </div>
     );
   } else if (location.pathname === "/get-started") {
@@ -45,7 +49,7 @@ function Header() {
     return (
       <div>
         <ReactHelmet title="Wardrobe - PerObe AI" />
-        <ChatHeader />
+        <CommonHeader />
       </div>
     );
   }
