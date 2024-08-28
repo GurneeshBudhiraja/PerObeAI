@@ -2,13 +2,16 @@
 URL constants for making requests to the backend API
 */
 
+// Getting the URL from the environment variables imported from keys.js
+import keys from "../keys/keys";
+
 // Endpoint for the outfit recommendation
-const getRecommendationUrl = "http://127.0.0.1:8000/api/web/v1/recommend";
+const getRecommendationUrl = keys.getRecommendationUrl;
 
 // Endpoint for generating and storing the image embeddings
-const imageEmbeddingsURL = "http://127.0.0.1:8000/api/web/v1/image-embeddings";
+const imageEmbeddingsURL = keys.imageEmbeddingsURL;
 
 // Endpoint for fetching images based on recommendations
-const getImagesURL = "http://127.0.0.1:8000/api/web/v1/get-images";
+const getImagesURL = keys.getImagesURL;
 
 export { getRecommendationUrl, imageEmbeddingsURL, getImagesURL };
