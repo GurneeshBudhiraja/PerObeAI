@@ -269,12 +269,12 @@ function ChatPage() {
         ) : (
           // Chat
           <div className="w-full flex justify-center items-center ">
+            {/* Input field for the chat */}
             <div
-              className={`w-4/5 md:w-3/4 lg:w-2/4 h-[3rem] flex items-center justify-center ${
+              className={`w-4/5 md:w-3/4 lg:w-2/4 h-[3rem] my-9 md:my-5 lg:my-0 flex items-center justify-center ${
                 loading ? "cursor-not-allowed" : "cursor-auto"
               }`}
             >
-              {/* Input field for the chat */}
               <InputText
                 ref={inputRef}
                 disabled={loading}
