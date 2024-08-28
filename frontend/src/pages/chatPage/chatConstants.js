@@ -10,7 +10,7 @@ const samplePrompts = [
       "bg-gradient-to-tl from-[#A770EF] via-[#CF8BF3] to-[#FDB99B] text-black tracking-wide",
   },
   {
-    prompt: "Recommend me an outfit for a romantic date night?",
+    prompt: "Recommend an outfit for a night out party on a cruise.",
     style:
       "bg-gradient-to-tl from-[#eecda3]  to-[#ef629f] text-black tracking-wide",
   },
