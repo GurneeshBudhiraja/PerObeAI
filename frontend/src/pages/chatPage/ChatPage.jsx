@@ -191,6 +191,11 @@ function ChatPage() {
                     loading={loading}
                     samplePrompt={samplePrompt.prompt}
                     onClick={() => {
+                      // scrolls to the bottom when 
+                      inputRef?.current.scrollIntoView({
+                        behavior: "smooth",
+                        block: "end",
+                      });
                       setPrompt(samplePrompt.prompt);
                       getRecommendation(
                         samplePrompt.prompt,
