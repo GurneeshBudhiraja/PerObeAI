@@ -15,11 +15,7 @@ const keys = {
 
   alanKey: import.meta.env.VITE_ALAN_KEY,
 
-  getRecommendationUrl: import.meta.env.VITE_GET_RECOMMENDATION_URL,
-
-  imageEmbeddingsURL: import.meta.env.VITE_IMAGE_EMBEDDINGS_URL,
-
-  getImagesURL: import.meta.env.VITE_GET_IMAGES_URL,
+  serverURL: import.meta.env.VITE_SERVER_URL,
 };
 
 export default keys;
